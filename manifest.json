@@ -1,0 +1,38 @@
+{
+"manifest_version": 2,
+	"name": "Peek",
+	"version": "1.0.1",
+	"author": "Corbin Davenport",
+	"description": "Peek lets you preview dozens of document types inside your browser.",
+	"homepage_url": "https://github.com/corbindavenport",
+	"options_page": "settings.html",
+	"permissions": [
+		"http://*/*",
+		"https://*/*"
+	],
+	"background": {
+		"scripts": ["js/background.js"]
+	},
+	"web_accessible_resources": [
+		"js/*",
+		"css/*",
+		"font/*",
+		"img/*",
+		"flv/*",
+		"settings.html"
+	],
+	"content_scripts": [
+		{
+		"matches": ["http://*/*", "https://*/*"],
+		"js": ["js/jquery-2.1.3.min.js", "js/jquery.tooltipster.min.js", "js/contentscript.js"],
+		"css": ["css/tooltipster.css", "css/tooltipster-peek.css"],
+		"run_at": "document_end"
+		}
+	],
+	"icons":{
+		"16":"img/icon16.png",
+		"32":"img/icon32.png",
+		"48":"img/icon48.png",
+		"128":"img/icon128.png"
+	}
+}

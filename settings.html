@@ -1,0 +1,45 @@
+<!--
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
+!-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Peek</title>
+<link rel="icon" type="image/png" href="img/icon16.png">
+<script src="js/jquery-2.1.3.min.js"></script>
+<script src="js/settings.js"></script>
+<link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<section id="wrapper" class="wrapper enabled">
+		<h1>Peek - Settings</h1>
+		<article>
+			<section class="settings-card">
+			<h2>Documents</h2>
+			<p>You can change the viewer used to Word Documents, Excel Spreadsheets, and PowerPoint presentations. The default is Google Docs.</p>
+			<div id="docviewer">
+				<p><input type="radio" name="documents" value="google"><label for="google">Google Docs viewer</label></p>
+				<p><input type="radio" name="documents" value="office"><label for="office">Office Online viewer</label></p>
+			</div>
+			<p>Note: This does not affect PDFs, RTFs, and links to Google Docs files.</p>
+			</section>
+		</article>
+		<article>
+			<h2>Donate</h2>
+			<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
+			<div id="bitcoin">
+				<p><b>Please send bitcoin to the following address:</b></p>
+				<p style="background:#ebebeb; padding:10px; font-family:Monaco,Menlo,Consolas,'Courier New',monospace; text-align:center; overflow-wrap:break-word !important;">1GSbhaUp8JSRepqQceHzrGhV1bPk9hcPuS</p>
+			</div>
+			<section id="settings-buttons" class="buttons" style="display: block;">
+				<input class="g-button g-button-submit" type="button" value="Donate via PayPal">
+				<input class="g-button g-button-submit" type="button" value="Donate via Bitcoin">
+			</section>
+		</article>
+	</section>
+</body>
+</html>

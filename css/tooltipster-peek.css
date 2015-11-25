@@ -1,0 +1,44 @@
+@font-face {
+    font-family: Roboto;
+    src: url('chrome-extension://__MSG_@@extension_id__/font/Roboto-Medium.ttf');
+}
+.tooltipster-peek video::-webkit-media-controls-panel, .tooltipster-peek audio::-webkit-media-controls-panel {
+	border-radius: 0px;
+	background: #727272;
+	margin: 0px;
+	position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.tooltipster-peek video::-webkit-media-controls-fullscreen-button {
+	display: none;
+}
+.tooltipster-peek {
+	border-radius: 2px !important;
+	border: 1px solid #727272 !important;
+	background: #727272 !important;
+	color: #FFF !important;
+}
+.tooltipster-peek .tooltipster-content embed, .tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio {
+	border-radius: 2px 2px 0px 0px !important;
+	border: 0px !important;
+	max-width: 400px !important;
+  max-height: 350px !important;
+}
+.tooltipster-peek .tooltipster-content .flashplayer {
+	width: 400px !important;
+  height: 225px !important;
+}
+.tooltipster-peek .tooltipster-content audio {
+	width: 400px !important;
+}
+.tooltipster-peek .tooltipster-content .peeksettings {
+	background:url('chrome-extension://__MSG_@@extension_id__/img/gear.png') no-repeat !important;
+  background-position: center !important;
+	width: 14px !important;
+	height: 14px !important;
+	display: block !important;
+	cursor: pointer !important;
+	float: right !important;
+}
