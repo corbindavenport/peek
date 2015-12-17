@@ -35,7 +35,7 @@ function previewHostedDocs(object) {
 		interactive: true,
 		delay: '0',
 		theme: 'tooltipster-peek',
-		content: $('<embed style="border: 0px; width: 400px; height: 300px;" src="https://docs.google.com/spreadsheets/d/' + docsid + '/pubhtml?widget=true&amp;headers=false"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
+		content: $('<embed style="border: 0px; width: 400px; height: 300px;" src="https://docs.google.com/viewer?srcid=' + docsid + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
 	});
 }
 
@@ -54,6 +54,10 @@ function previewOffice(object) {
 // HTML5 video player
 function previewVideo(object, type) {
 	var url = findURL(object.attr("href"));
+	if ((url.endsWith('.gifv')) && (url.indexOf("imgur.com") > -1)) {
+		// Use WebM video for Imgur GIFV links
+		url = url.replace(".gifv", ".webm");
+	}
 	console.log("[Peek] Found supported video link: " + url);
 	$(object).tooltipster({
 		interactive: true,
@@ -61,6 +65,59 @@ function previewVideo(object, type) {
 		theme: 'tooltipster-peek',
 		content: $('<video controls><source src="' + url + '" type="' + type + '"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
 	});
+}
+
+// Gfycat links
+function previewGfycat(object, type) {
+	var url = findURL(object.attr("href"));
+	var re = /(?:http:|https:|)(?:\/\/|)(?:gfycat\.com\/(?:\w*\/)*)(\w+$)/gi;
+	var gfycat = (re.exec(url)[1]);
+	console.log("[Peek] Found supported Gfycat link: " + gfycat);
+	$.getJSON( "https://gfycat.com/cajax/get/" + gfycat, function(data) {
+		$(object).tooltipster({
+			interactive: true,
+			delay: '0',
+			theme: 'tooltipster-peek',
+			content: $('<video controls loop id="' + gfycat + '" loop><source src="' + data.gfyItem.webmUrl + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
+		});
+	});
+}
+
+// Preview GIFs
+function previewGIF(object) {
+	var url = findURL(object.attr("href"));
+	console.log("[Peek] Found supported GIF link: " + url);
+	// Check if GIF is hosted on Imgur, then load WebM version
+	if (url.indexOf("imgur.com") > -1) {
+		url = url.replace(".gif", ".webm");
+		$(object).tooltipster({
+			interactive: true,
+			delay: '0',
+			theme: 'tooltipster-peek',
+			content: $('<video controls loop><source src="' + url + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
+		});
+	} else {
+		// Check if GIF has been mirrored on Gfycat, then load Gfycat WebM mirror
+		$.getJSON( "https://gfycat.com/cajax/checkUrl/" + encodeURI(url), function(data) {
+			if (data.urlKnown) {
+				console.log("[Peek] GIF at " + url + " has been previously uploaded to Gfycat. Now loading the Gfycat of thsi GIF instead.");
+				$(object).tooltipster({
+					interactive: true,
+					delay: '0',
+					theme: 'tooltipster-peek',
+					content: $('<video controls loop><source src="' + data.webmUrl + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
+				});
+			} else {
+				// Load the original GIF
+				$(object).tooltipster({
+					interactive: true,
+					delay: '0',
+					theme: 'tooltipster-peek',
+					content: $('<img src="' + url + '"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
+				});
+			}
+		});
+	}
 }
 
 // F4Player
@@ -94,13 +151,14 @@ $(document).on('click', ".peeksettings", function() {
 });
 
 function reloadTooltips() {
-
 	// Video files
-
 	$("a[href$='.webm']").each(function() {
 		previewVideo($(this), "video/webm");
 	});
 	$("a[href$='.mp4']").each(function() {
+		previewVideo($(this), "video/mp4");
+	});
+	$("a[href$='.m4v']").each(function() {
 		previewVideo($(this), "video/mp4");
 	});
 	$("a[href$='.ogg']").each(function() {
@@ -109,33 +167,72 @@ function reloadTooltips() {
 	$("a[href$='.ogv']").each(function() {
 		previewVideo($(this), "video/ogg");
 	});
-
+	$("a[href$='.gifv']").each(function() {
+		if ( (window.location.href.indexOf("reddit.com") > -1) && ($("body").hasClass("res")) ) {
+			console.log("[Peek] Reddit Enhancement Suite extension detected, disabling GIFV preview.");
+		} else {
+			previewVideo($(this), "video/webm");
+		}
+	});
+	// GIF files
+	chrome.runtime.sendMessage({method: "getLocalStorage", key: "gifpreview"}, function(response) {
+		if (response.data === "on") {
+			$("a[href$='.gif']").each(function() {
+				if ( (window.location.href.indexOf("reddit.com") > -1) && ($("body").hasClass("res")) ) {
+					console.log("[Peek] Reddit Enhancement Suite extension detected, disabling GIF preview.");
+				} else {
+					previewGIF($(this));
+				}
+			});
+		}
+	});
+	// Other Documents
+	$("a[href$='.pdf']").each(function() {
+		previewDocs($(this));
+	});
+	$("a[href$='.rtf']").each(function() {
+		previewDocs($(this));
+	});
 	// Flash files
-
 	$("a[href$='.flv']").each(function() {
 		previewFlash($(this));
 	});
 	$("a[href$='.f4v']").each(function() {
 		previewFlash($(this));
 	});
-
 	// Audio files
-
 	$("a[href$='.mp3']").each(function() {
 		previewAudio($(this), "audio/mpeg");
+	});
+	$("a[href$='.m4a']").each(function() {
+		previewAudio($(this), "audio/mp4");
+	});
+	$("a[href$='.oga']").each(function() {
+		previewAudio($(this), "audio/ogg");
 	});
 	$("a[href$='.wav']").each(function() {
 		previewAudio($(this), "audio/wav");
 	});
-
 	// Google Docs links
-
 	$("a[href^='https://docs.google.com']").each(function() {
 		previewHostedDocs($(this));
 	});
-
+	// Gfycat links
+	$("a[href^='http://gfycat.com/']").each(function() {
+		if ( (window.location.href.indexOf("reddit.com") > -1) && ($("body").hasClass("res")) ) {
+			console.log("[Peek] Reddit Enhancement Suite extension detected, disabling Gfycat preview");
+		} else {
+			previewGfycat($(this));
+		}
+	});
+	$("a[href^='https://gfycat.com/']").each(function() {
+		if ( (window.location.href.indexOf("reddit.com") > -1) && ($("body").hasClass("res")) ) {
+			console.log("[Peek] Reddit Enhancement Suite extension detected, disabling Gfycat preview");
+		} else {
+			previewGfycat($(this));
+		}
+	});
 	// Office documents
-
 	chrome.runtime.sendMessage({method: "getLocalStorage", key: "docviewer"}, function(response) {
 		if (response.data === "google") {
 			$("a[href$='.doc']").each(function() {
@@ -177,16 +274,13 @@ function reloadTooltips() {
 			});
 		}
 	});
-
 	// Other Documents
-
 	$("a[href$='.pdf']").each(function() {
 		previewDocs($(this));
 	});
 	$("a[href$='.rtf']").each(function() {
 		previewDocs($(this));
 	});
-
 }
 
 // Initialize tooltips for initial page load

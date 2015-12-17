@@ -14,11 +14,17 @@ $(window).load(function() {
   	} else {
   		$("input[value='office']").prop("checked", true);
   	}
+    if (localStorage.getItem("gifpreview") === "on") {
+  		$("input[value='on']").prop("checked", true);
+  	} else {
+  		$("input[value='off']").prop("checked", true);
+  	}
   }
 });
 
 $(document).on('change', "input", function() {
   localStorage["docviewer"] = $("#docviewer input[type='radio']:checked").val();
+  localStorage["gifpreview"] = $("#gifpreview input[type='radio']:checked").val();
 });
 
 $(document).on('click', "input[value='Donate via Bitcoin']", function() {

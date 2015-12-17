@@ -20,7 +20,7 @@
 	background: #727272 !important;
 	color: #FFF !important;
 }
-.tooltipster-peek .tooltipster-content embed, .tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio {
+.tooltipster-peek .tooltipster-content embed, .tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio, .tooltipster-peek .tooltipster-content img {
 	border-radius: 2px 2px 0px 0px !important;
 	border: 0px !important;
 	max-width: 400px !important;
@@ -32,6 +32,10 @@
 }
 .tooltipster-peek .tooltipster-content audio {
 	width: 400px !important;
+}
+.tooltipster-peek .tooltipster-content #peekmessage {
+  width: 400px !important;
+  height: auto !important;
 }
 .tooltipster-peek .tooltipster-content .peeksettings {
 	background:url('chrome-extension://__MSG_@@extension_id__/img/gear.png') no-repeat !important;

@@ -1,9 +1,9 @@
 {
 "manifest_version": 2,
 	"name": "Peek",
-	"version": "1.0.1",
+	"version": "1.1",
 	"author": "Corbin Davenport",
-	"description": "Peek lets you preview dozens of document types inside your browser.",
+	"description": "Preview documents, videos, music and more before you download it.",
 	"homepage_url": "https://github.com/corbindavenport",
 	"options_page": "settings.html",
 	"permissions": [
