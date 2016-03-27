@@ -14,10 +14,18 @@ function findURL(url){
 	return url;
 }
 
+function log(string) {
+	chrome.runtime.sendMessage({method: "getLocalStorage", key: "console"}, function(response) {
+		if (response.data === "true") {
+				console.log("%c[Peek] " + string, "color: #4078c0");
+		}
+	});
+}
+
 // Google Docs viewer for files NOT on Google Docs
 function previewDocs(object) {
 	var url = findURL(object.attr("href"));
-	console.log("[Peek] Found supported document link: " + url);
+	log("Found supported document link: " + url);
 	$(object).tooltipster({
 		interactive: true,
 		delay: '0',
@@ -30,7 +38,7 @@ function previewDocs(object) {
 function previewHostedDocs(object) {
 	var url = findURL(object.attr("href"));
 	var docsid = url.substring(url.lastIndexOf("/d/")+3,url.lastIndexOf("/edit")); // Find ID of Google Docs file
-	console.log("[Peek] Found Google Docs link: " + url + "\n[Peek] ID of above Google Docs link identified as: " + docsid);
+	log("Found Google Docs link: " + url + "\n[Peek] ID of above Google Docs link identified as: " + docsid);
 	$(object).tooltipster({
 		interactive: true,
 		delay: '0',
@@ -42,7 +50,7 @@ function previewHostedDocs(object) {
 // Office Online viewer
 function previewOffice(object) {
 	var url = findURL(object.attr("href"));
-	console.log("[Peek] Found supported document link: " + url);
+	log("Found supported document link: " + url);
 	$(object).tooltipster({
 		interactive: true,
 		delay: '0',
@@ -58,7 +66,7 @@ function previewVideo(object, type) {
 		// Use WebM video for Imgur GIFV links
 		url = url.replace(".gifv", ".webm");
 	}
-	console.log("[Peek] Found supported video link: " + url);
+	log("Found supported video link: " + url);
 	$(object).tooltipster({
 		interactive: true,
 		delay: '0',
@@ -72,7 +80,7 @@ function previewGfycat(object, type) {
 	var url = findURL(object.attr("href"));
 	var re = /(?:http:|https:|)(?:\/\/|)(?:gfycat\.com\/(?:\w*\/)*)(\w+$)/gi;
 	var gfycat = (re.exec(url)[1]);
-	console.log("[Peek] Found supported Gfycat link: " + gfycat);
+	log("Found supported Gfycat link: " + gfycat);
 	$.getJSON( "https://gfycat.com/cajax/get/" + gfycat, function(data) {
 		$(object).tooltipster({
 			interactive: true,
@@ -83,47 +91,10 @@ function previewGfycat(object, type) {
 	});
 }
 
-// Preview GIFs
-function previewGIF(object) {
-	var url = findURL(object.attr("href"));
-	console.log("[Peek] Found supported GIF link: " + url);
-	// Check if GIF is hosted on Imgur, then load WebM version
-	if (url.indexOf("imgur.com") > -1) {
-		url = url.replace(".gif", ".webm");
-		$(object).tooltipster({
-			interactive: true,
-			delay: '0',
-			theme: 'tooltipster-peek',
-			content: $('<video controls loop><source src="' + url + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
-		});
-	} else {
-		// Check if GIF has been mirrored on Gfycat, then load Gfycat WebM mirror
-		$.getJSON( "https://gfycat.com/cajax/checkUrl/" + encodeURI(url), function(data) {
-			if (data.urlKnown) {
-				console.log("[Peek] GIF at " + url + " has been previously uploaded to Gfycat. Now loading the Gfycat of thsi GIF instead.");
-				$(object).tooltipster({
-					interactive: true,
-					delay: '0',
-					theme: 'tooltipster-peek',
-					content: $('<video controls loop><source src="' + data.webmUrl + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
-				});
-			} else {
-				// Load the original GIF
-				$(object).tooltipster({
-					interactive: true,
-					delay: '0',
-					theme: 'tooltipster-peek',
-					content: $('<img src="' + url + '"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peeksettings"></span></div>')
-				});
-			}
-		});
-	}
-}
-
 // F4Player
 function previewFlash(object) {
 	var url = findURL(object.attr("href"));
-	console.log("[Peek] Found supported Flash Player link: " + url);
+	log("Found supported Flash Player link: " + url);
 	$(object).tooltipster({
 		interactive: true,
 		delay: '0',
@@ -135,7 +106,7 @@ function previewFlash(object) {
 // HTML5 audio player
 function previewAudio(object, type) {
 	var url = findURL(object.attr("href"));
-	console.log("[Peek] Found supported audio link: " + url);
+	log("Found supported audio link: " + url);
 	$(object).tooltipster({
 		interactive: true,
 		delay: '0',
@@ -169,21 +140,9 @@ function reloadTooltips() {
 	});
 	$("a[href$='.gifv']").each(function() {
 		if ( (window.location.href.indexOf("reddit.com") > -1) && ($("body").hasClass("res")) ) {
-			console.log("[Peek] Reddit Enhancement Suite extension detected, disabling GIFV preview.");
+			log("Reddit Enhancement Suite extension detected, disabling GIFV preview.");
 		} else {
 			previewVideo($(this), "video/webm");
-		}
-	});
-	// GIF files
-	chrome.runtime.sendMessage({method: "getLocalStorage", key: "gifpreview"}, function(response) {
-		if (response.data === "on") {
-			$("a[href$='.gif']").each(function() {
-				if ( (window.location.href.indexOf("reddit.com") > -1) && ($("body").hasClass("res")) ) {
-					console.log("[Peek] Reddit Enhancement Suite extension detected, disabling GIF preview.");
-				} else {
-					previewGIF($(this));
-				}
-			});
 		}
 	});
 	// Other Documents
@@ -220,14 +179,14 @@ function reloadTooltips() {
 	// Gfycat links
 	$("a[href^='http://gfycat.com/']").each(function() {
 		if ( (window.location.href.indexOf("reddit.com") > -1) && ($("body").hasClass("res")) ) {
-			console.log("[Peek] Reddit Enhancement Suite extension detected, disabling Gfycat preview");
+			log("Reddit Enhancement Suite extension detected, disabling Gfycat preview");
 		} else {
 			previewGfycat($(this));
 		}
 	});
 	$("a[href^='https://gfycat.com/']").each(function() {
 		if ( (window.location.href.indexOf("reddit.com") > -1) && ($("body").hasClass("res")) ) {
-			console.log("[Peek] Reddit Enhancement Suite extension detected, disabling Gfycat preview");
+			log("Reddit Enhancement Suite extension detected, disabling Gfycat preview");
 		} else {
 			previewGfycat($(this));
 		}
@@ -284,14 +243,14 @@ function reloadTooltips() {
 }
 
 // Initialize tooltips for initial page load
-$( document ).ready(function() {
+$(document).ready(function() {
 	reloadTooltips();
 });
 
 // Initialize tooltips every time DOM is modified
 var observer = new MutationObserver(function(mutations) {
 	mutations.forEach(function(mutation) {
-		console.log("[Peek] DOM change detected, reinitializing previews");
+		log("DOM change detected, reinitializing previews");
 		reloadTooltips();
 	});
 });

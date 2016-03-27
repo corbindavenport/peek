@@ -12,11 +12,15 @@ Peek supports previews for the following file formats:
 * Flash video files (.flv, .f4v)
 * MP3 and WAV Audio
 
-In addition to direct file links, Peek also supports previewing links to public Google Docs files, Imgur GIFV links, and Gfycat links. Peek also has experimental support for previewing GIF images.
+In addition to direct file links, Peek also supports previewing links to public Google Docs files, Imgur GIFV links, and Gfycat links.
 
 _Peek icon from the [Moka](http://samuelhewitt.com/moka) icon pack. FLV playback supported by [F4Player](http://gokercebeci.com/dev/f4player)._
 
 ---------------------------------------------------------
+__New in Peek 1.2:__
+* Improved settings page
+* Bug fixes
+
 __New in Peek 1.1:__
 * Peek now supports Gfycat links and Imgur GIFV links, and previews both as video.
 * Peek now shows previews for .m4v, .m4a, and .oga files.

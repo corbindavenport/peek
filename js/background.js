@@ -14,8 +14,8 @@ chrome.runtime.onInstalled.addListener(function(details) {
 	if (localStorage.getItem("docviewer") === null || localStorage.getItem("docviewer") === "") {
 		localStorage["docviewer"] = "google";
 	}
-	if (localStorage.getItem("gifpreview") === null || localStorage.getItem("gifpreview") === "") {
-		localStorage["gifpreview"] = "off";
+	if (localStorage.getItem("console") === null || localStorage.getItem("console") === "") {
+		localStorage["console"] = "true";
 	}
 });
 

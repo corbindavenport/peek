@@ -19,6 +19,7 @@
 	border: 1px solid #727272 !important;
 	background: #727272 !important;
 	color: #FFF !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,.2) !important;
 }
 .tooltipster-peek .tooltipster-content embed, .tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio, .tooltipster-peek .tooltipster-content img {
 	border-radius: 2px 2px 0px 0px !important;

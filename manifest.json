@@ -1,7 +1,7 @@
 {
 "manifest_version": 2,
 	"name": "Peek",
-	"version": "1.1",
+	"version": "1.2",
 	"author": "Corbin Davenport",
 	"description": "Preview documents, videos, music and more before you download it.",
 	"homepage_url": "https://github.com/corbindavenport",
