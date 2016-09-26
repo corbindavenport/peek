@@ -6,7 +6,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
 */
 
-$(window).load(function() {
+$(window).on('load', function() {
   $("#bitcoin").hide();
   if ($("input[value='google']")) {
   	if (localStorage.getItem("docviewer") === "google") {
@@ -22,6 +22,9 @@ $(window).load(function() {
     if (localStorage.getItem("console") === "true") {
   		$("input[value='console']").prop("checked", true);
   	}
+    if (localStorage.getItem("previewlimit") === "true") {
+      $("input[value='previewlimit']").prop("checked", true);
+    }
   }
 });
 
@@ -31,6 +34,11 @@ $(document).on('change', "input", function() {
     localStorage["console"] = "true";
   } else {
     localStorage["console"] = "false";
+  }
+  if ($("#previewlimit input").is(":checked")) {
+    localStorage["previewlimit"] = "true";
+  } else {
+    localStorage["previewlimit"] = "false";
   }
 });
 

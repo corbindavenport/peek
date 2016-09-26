@@ -623,3 +623,8 @@ label {
 #disabled {
 	color: #FF0000;
 }
+
+.warning {
+	color: #F44336;
+	margin-left: 23px;
+}

@@ -1,11 +1,12 @@
 {
 "manifest_version": 2,
 	"name": "Peek",
-	"version": "1.2",
+	"version": "2.0",
 	"author": "Corbin Davenport",
-	"description": "Preview documents, videos, music and more before you download it.",
+	"description": "Preview documents, videos, music and more before you download them.",
 	"homepage_url": "https://github.com/corbindavenport",
 	"options_page": "settings.html",
+	"minimum_chrome_version": "47",
 	"permissions": [
 		"http://*/*",
 		"https://*/*"
@@ -21,10 +22,17 @@
 		"flv/*",
 		"settings.html"
 	],
+	"browser_action": {
+	  "default_icon": {
+		"19": "img/icon19.png",
+		"38": "img/icon38.png"
+	  },
+	  "default_title": "Peek hasn't loaded on this page yet."
+	},
 	"content_scripts": [
 		{
 		"matches": ["http://*/*", "https://*/*"],
-		"js": ["js/jquery-2.1.3.min.js", "js/jquery.tooltipster.min.js", "js/contentscript.js"],
+		"js": ["js/jquery-3.1.1.min.js", "js/jquery.tooltipster.min.js", "js/contentscript.js"],
 		"css": ["css/tooltipster.css", "css/tooltipster-peek.css"],
 		"run_at": "document_end"
 		}
