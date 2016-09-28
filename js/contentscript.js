@@ -245,7 +245,7 @@ $(document).on('click', ".peekpopup", function() {
 		var type = $(this).parent().parent().find("source").attr("type");
 		var windowhtml = window.open("", url, "width=500,height=60");
 		var doctitle;
-		windowhtml.document.write('<html><head><title>Peek Preview - ' + filename + '</title><style>html,body{margin:0!important;padding:0!important;background:#212121!important}video{width:100%!important;height:100%!important}video,audio{box-shadow:inset 0 0 0 1px #212121!important;width:100%!important;height:100%!important}audio{background:#212121!important}video::-webkit-media-controls-panel,audio::-webkit-media-controls-panel{border-radius:0!important;background:#212121!important;margin:0!important;position:absolute!important;bottom:0!important;left:0!important;right:0!important}video::-webkit-media-controls-play-button,audio::-webkit-media-controls-play-button{width:25px!important;height:25px!important;line-height:30px!important;margin-left:12px!important;margin-right:12px!important}video::-webkit-media-controls-mute-button,audio::-webkit-media-controls-mute-button{width:25px!important;height:25px!important;line-height:30px!important}video::-webkit-media-controls-fullscreen-button,audio::-webkit-media-controls-fullscreen-button{width:25px!important;height:25px!important;line-height:30px!important}video::-webkit-media-controls-timeline,video::-webkit-media-controls-volume-slider,audio::-webkit-media-controls-timeline,audio::-webkit-media-controls-volume-slider{height:2px!important}video::-webkit-slider-runnable-track,audio::-webkit-slider-runnable-track{background-color:#424242!important}video input[type="range" i]::-webkit-media-slider-thumb,audio input[type="range" i]::-webkit-media-slider-thumb{color:#737373!important}</style></head><body><audio controls><source src="' + url + '" type="' + type + '"></video></body></html>');
+		windowhtml.document.write('<html><head><title>Peek Preview - ' + filename + '</title><style>html,body{margin:0!important;padding:0!important;background:#212121!important}audio{width:100%!important;height:100%!important}video,audio{box-shadow:inset 0 0 0 1px #212121!important;width:100%!important;height:100%!important}video{background:url("' + preloader + '") no-repeat center #424242!important}</style></head><body><audio controls><source src="' + url + '" type="' + type + '"></video></body></html>');
 	} else {
 		alert("There was an error generating a popup.");
 	}
@@ -389,8 +389,8 @@ var observerConfig = {
 // Initialize tooltips for initial page load
 $(document).ready(function() {
 	reloadTooltips();
-	if (window.location.href.indexOf("google.com/search") != -1) {
-		// Fix for Google search results not working properly
+	if ((window.location.href.indexOf("google.com/search") != -1) && (navigator.userAgent.toLowerCase().indexOf('chrome') > -1)) {
+		// Fix for Google search results not working properly, but this doesn't work in Opera for some strange reason
 		window.addEventListener('message', function(e) {
 		    if (typeof e.data === 'object' && e.data.type === 'sr') {
 		    	rendered = [];
