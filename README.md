@@ -17,6 +17,11 @@ In addition to direct file links, Peek also supports previewing links to public 
 _FLV playback supported by [F4Player](http://gokercebeci.com/dev/f4player)._
 
 ---------------------------------------------------------
+__New in Peek 2.1:__
+* Better support for Google search results
+* Supports more Google Docs link formats
+* Bug fixes
+
 __New in Peek 2.0:__
 * Now allows previews to 'pop-out' into new windows
 * Toolbar icon now shows number of previews on the page

@@ -70,6 +70,10 @@ function previewHostedDocs(object) {
 			docsid = url.substring(url.lastIndexOf("/d/")+3,url.lastIndexOf("/edit")); // Most Google Docs files
 		} else if (url.indexOf("/open") >= 0) {
 			docsid = url.substring(url.lastIndexOf("/open?id=")+9); // Most Google Docs files
+		} else if (url.indexOf("/preview") >= 0) {
+			docsid = url.substring(url.lastIndexOf("/document/d/")+12,url.lastIndexOf("/preview")); // Docs preview links
+		} else if (url.indexOf("/viewer") >= 0) {
+			docsid = url.substring(url.lastIndexOf("srcid=")+6,url.lastIndexOf("&")); // Docs viewer links
 		} else {
 			docsid = url.substring(url.lastIndexOf("/d/")+3,url.lastIndexOf("/viewform")); // Forms
 		}
@@ -358,11 +362,6 @@ function reloadTooltips() {
 	});
 }
 
-// Initialize tooltips for initial page load
-$(document).ready(function() {
-	reloadTooltips();
-});
-
 // Initialize tooltips when URL changes (fix for Google search results)
 window.addEventListener("hashchange", function() {
 	console.log("onhashchange");
@@ -387,4 +386,19 @@ var observerConfig = {
 	childList: true
 };
 
-observer.observe(document, observerConfig);
+// Initialize tooltips for initial page load
+$(document).ready(function() {
+	reloadTooltips();
+	if (window.location.href.indexOf("google.com/search") != -1) {
+		// Fix for Google search results not working properly
+		window.addEventListener('message', function(e) {
+		    if (typeof e.data === 'object' && e.data.type === 'sr') {
+		    	rendered = [];
+		        reloadTooltips();
+		    }
+		});
+	} else {
+		// All other pages
+		observer.observe(document, observerConfig);
+	}
+});
