@@ -25,17 +25,36 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 });
 
+// Only allow previews of HTTPS files on HTTPS pages, but allow mixed content on HTTP pages
+function checkProtocol(url) {
+	if (window.location.protocol === "https:") {
+		if (url.includes("https:")) {
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		return true;
+	}
+}
+
 function findURL(url){
 	var img = document.createElement('img');
 	img.src = url; // Set string url
 	url = img.src; // Get qualified url
 	img.src = null; // No server request
-	if ((rendered.includes(url)) || (rendered.length >= previewlimit)) {
-		return null;
+	// Don't continue if checkProtocol returns false
+	if (checkProtocol(url)) {
+		// Don't continue if the link already has a tooltip, if Peek has reached the preview limit, or if the link is a page on Wikimedia
+		if ((rendered.includes(url)) || (rendered.length >= previewlimit) || (url.includes("commons.wikimedia.org/wiki/File:"))) {
+			return null;
+		} else {
+			rendered.push(url);
+			chrome.runtime.sendMessage({method: "changeIcon", key: rendered.length.toString()});
+			return url;
+		}
 	} else {
-		rendered.push(url);
-		chrome.runtime.sendMessage({method: "changeIcon", key: rendered.length.toString()});
-		return url;
+		log("Cannot generate a preview for " + url + " because it is not served over HTTPS.")
 	}
 }
 

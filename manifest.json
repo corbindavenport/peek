@@ -17,7 +17,7 @@
 	"web_accessible_resources": [
 		"js/*",
 		"css/*",
-		"font/*",
+		"fonts/*",
 		"img/*",
 		"flv/*",
 		"settings.html"
