@@ -1,52 +1,97 @@
 <!--
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+The MIT License (MIT)
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+Copyright (c) 2017 Corbin Davenport
 
-You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
-!-->
-<html>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Peek</title>
-<link rel="icon" type="image/png" href="img/icon16.png">
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/settings.js"></script>
-<link href="css/google.css" rel="stylesheet" type="text/css">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="img/icon16.png">
+	<title>Peek</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	<section id="wrapper" class="wrapper enabled">
-		<h1>Welcome to Peek 2.1!</h1>
-		<article>
-			<h2>What's New in 2.0?</h2>
-			<p>Now allows previews to 'pop-out' into new windows</p>
-			<p>Toolbar icon now shows number of previews on the page</p>
-			<p>Updated preview interface</p>
-			<p>Supports more Google Drive links</p>
-			<p>Improved performance</p>
-			<p>Changed minimum Chrome version to 47</p>
-			<p>Fixed bug where multiple popups were rendered for some files</p>
-			<p>Changed license to MIT</p>
-			<p><b>New in 2.1:</b> Better support for Google search results, Supports more Google Docs link formats, Bug fixes</p>
-		</article>
-		<article>
-			<h2>Getting Started</h2>
-			<p>Peek shows previews over file download links. Just hover your mouse over a link to a file, and the preview will appear.</p>
-			<p>Try <a href="http://www.google.com/search?as_q=sample&as_filetype=doc" target="_blank">clicking here</a> and hover over some results.</p>
-			<p>Peek supports PDF files, Word documents, Excel spreadsheets, PowerPoint presentations, HTML5 video (WebM, MP4, Ogg), Flash video files, and HTML5 audio (MP3, WAV).</p>
-		</article>
-		<article>
-			<h2>Donate</h2>
-			<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
-			<div id="bitcoin">
-				<p><b>Please send bitcoin to the following address:</b></p>
-				<p style="background:#ebebeb; padding:10px; font-family:Monaco,Menlo,Consolas,'Courier New',monospace; text-align:center; overflow-wrap:break-word !important;">1GSbhaUp8JSRepqQceHzrGhV1bPk9hcPuS</p>
+	<div class="jumbotron">
+		<div class="container">
+			<h1>Welcome to Peek<span class="version"></span>!</h1>
+			<p>You have been updated to the latest version of the Peek extension. This version fixes various bugs and adds some new features.</p>
+		</div>
+	</div>
+
+	<div class="container">
+		<!-- Example row of columns -->
+		<div class="row">
+			<div class="col-md-4">
+				<h2>Getting Started</h2>
+				<p>Peek shows previews over file download links. Just hover your mouse over a link to a file, and the preview will appear.</p>
+				<p>Try <a href="http://www.google.com/search?as_q=sample&as_filetype=doc" target="_blank">clicking here</a> and hover over some results.</p>
+				<p>You can click the full-screen button on the popup to open the preview in a new window.</p>
+				<p>To open Peek settings, click the settings gear on any popup, or click the Peek icon in the toolbar. You can also click the button below.</p>
+				<p><a class="btn btn-default" href="settings.html" role="button">Open Peek settings &raquo;</a></p>
 			</div>
-			<section id="settings-buttons" class="buttons" style="display: block;">
-				<input class="g-button g-button-submit" type="button" value="Donate via PayPal">
-				<input class="g-button g-button-submit" type="button" value="Donate via Bitcoin">
-			</section>
-		</article>
-	</section>
+			<div class="col-md-4">
+				<h2>Supported files</h2>
+				<p>Peek can create previews for the following file types:</p>
+				<p>
+					<ul>
+						<li>PDF and RTF files</li>
+						<li>Word documents (.doc, .docx)</li>
+						<li>Excel spreadsheets (.xls, .xlsx)</li>
+						<li>PowerPoint files (.ppt, .pptx)</li>
+						<li>WebM, MP4, GIFV, and OGG/OGV video</li>
+						<li>Flash video files* (.flv, .f4v)</li>
+						<li>MP3 and WAV Audio</li>
+					</ul>
+				</p>
+				<p><i>* Flash video can only be played if Flash player is enabled in your web browser.</i></p>
+		 </div>
+			<div class="col-md-4">
+				<h2>Donate</h2>
+				<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
+				<p><a class="btn btn-warning" href="settings.html" role="button">Donate via PayPal</a> <a class="btn btn-primary" href="#" role="button" data-toggle="modal" data-target=".bitcoin-modal">Donate via Bitcoin</a></p>
+				<p class="review-info"></p>
+				<h2>Having issues?</h2>
+				<p>If you find a bug, or have a suggestion for a new feature, please create an issue at <a href="https://github.com/corbindavenport/peek/issues" target="_blank">Peek GitHub repository</a>.</p>
+			</div>
+		</div>
+
+		<hr>
+
+		<footer>
+			<p>Peek uses code from <a href="https://jquery.com/" target="_blank">jQuery</a>, <a href="https://getbootstrap.com/" target="_blank">Boostrap</a>, and <a href="https://iamceege.github.io/tooltipster/" target="_blank">Tooltipster</a>. You can find Peek's source code <a href="https://github.com/corbindavenport/peek" target="_blank">on GitHub</a>, under the MIT license.</p>
+		</footer>
+	</div> <!-- /container -->
+
+<div class="modal fade bitcoin-modal" tabindex="-1" role="dialog" aria-labelledby="bitcoinModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Donate via Bitcoin</h4>
+      </div>
+      <div class="modal-body">
+        <p>Please send bitcoin to the following address:</p>
+        <p style="background:#ebebeb; padding:10px; font-family:Monaco,Menlo,Consolas,'Courier New',monospace; text-align:center; overflow-wrap:break-word !important;">1GSbhaUp8JSRepqQceHzrGhV1bPk9hcPuS</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/welcome.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

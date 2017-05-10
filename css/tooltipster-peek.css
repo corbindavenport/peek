@@ -1,6 +1,6 @@
 @font-face {
 	font-family: Roboto;
-	src: url('chrome-extension://__MSG_@@extension_id__/font/Roboto-Medium.ttf');
+	src: url('chrome-extension://__MSG_@@extension_id__/fonts/Roboto-Medium.ttf');
 }
 .tooltipster-peek video::-webkit-media-controls-fullscreen-button {
 	display: none;
