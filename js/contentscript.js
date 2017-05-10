@@ -159,20 +159,6 @@ function previewGiphy(object, type) {
 	}
 }
 
-// F4Player
-function previewFlash(object) {
-	var url = findURL(object.attr("href"));
-	if (url != null) {
-		log("Found supported Flash Player link: " + url);
-		$(object).tooltipster({
-			interactive: true,
-			delay: '0',
-			theme: 'tooltipster-peek',
-			content: $('<embed data-type="flash" data-url="' + url + '" type="application/x-shockwave-flash" src="http://gokercebeci.com/data/dev/f4player/player.swf?v1.3.5" class="flashplayer" flashvars="skin=http://gokercebeci.com/data/dev/f4player/skins/mySkin.swf&video=' + url + '" allowscriptaccess="always" allowfullscreen="false" bgcolor="#424242"/><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
-		});
-	}
-}
-
 // HTML5 audio player
 function previewAudio(object, type) {
 	var url = findURL(object.attr("href"));
@@ -275,13 +261,6 @@ function reloadTooltips() {
 			previewVideo($(this), "video/mp4");
 		}
 	});
-	// Flash files
-	$("a[href$='.flv']").each(function() {
-		previewFlash($(this));
-	});
-	$("a[href$='.f4v']").each(function() {
-		previewFlash($(this));
-	});
 	// Audio files
 	$("a[href$='.mp3']").each(function() {
 		previewAudio($(this), "audio/mpeg");
@@ -374,10 +353,10 @@ window.addEventListener("hashchange", function() {
 var observer = new MutationObserver(function(mutations) {
 	mutations.forEach(function(mutation) {
 		var newNodes = mutation.addedNodes; // DOM NodeList
-	    if( newNodes !== null ) { // If there are new nodes added
-	    	log("DOM change detected, reinitializing previews");
+			if( newNodes !== null ) { // If there are new nodes added
+				log("DOM change detected, reinitializing previews");
 			reloadTooltips();
-	    }
+			}
 	});
 });
 
@@ -392,10 +371,10 @@ $(document).ready(function() {
 	if ((window.location.href.indexOf("google.com/search") != -1) && (navigator.userAgent.toLowerCase().indexOf('chrome') > -1)) {
 		// Fix for Google search results not working properly, but this doesn't work in Opera for some strange reason
 		window.addEventListener('message', function(e) {
-		    if (typeof e.data === 'object' && e.data.type === 'sr') {
-		    	rendered = [];
-		        reloadTooltips();
-		    }
+				if (typeof e.data === 'object' && e.data.type === 'sr') {
+					rendered = [];
+						reloadTooltips();
+				}
 		});
 	} else {
 		// All other pages
