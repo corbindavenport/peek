@@ -18,7 +18,7 @@ __New in Peek 2.2:__
 * New design for welcome and settings pages
 * Previews are no longer created for HTTP content on HTTPS pages
 * Removed support for Flash video file previews
-* Updated jQuery library to latest version
+* Updated jQuery and Tooltipster libraries to latest version
 
 __New in Peek 2.1:__
 * Better support for Google search results
