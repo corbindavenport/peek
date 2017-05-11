@@ -74,7 +74,7 @@ function previewDocs(object) {
 		log("Found supported document link: " + url);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
 			content: $('<embed data-type="miscdocs" style="border: 0px; width: 400px; height: 300px;" src="https://docs.google.com/gview?url=' + url + '&embedded=true"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window" data-url="' + url + '"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
@@ -101,7 +101,7 @@ function previewHostedDocs(object) {
 			log("Found Google Docs link: " + url + "\n[Peek] ID of above Google Docs link identified as: " + docsid);
 			$(object).tooltipster({
 				interactive: true,
-				delay: '0',
+				delay: ['0', '500'],
 				theme: 'tooltipster-peek',
 				content: $('<embed data-type="googledocs" style="border: 0px; width: 400px; height: 300px;" src="https://docs.google.com/viewer?srcid=' + docsid + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window" data-url="' + url + '"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 			});
@@ -119,7 +119,7 @@ function previewOffice(object) {
 		log("Found supported document link: " + url);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
 			content: $('<embed data-type="officeviewer" style="border: 0px; width: 400px; height: 300px;" src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
@@ -137,9 +137,9 @@ function previewVideo(object, type) {
 		log("Found supported video link: " + url);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
-			content: $('<video data-type="html5video" controls><source src="' + url + '" type="' + type + '"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
+			content: $('<video data-type="html5video" controls controlsList="nodownload nofullscreen"><source src="' + url + '" type="' + type + '"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
 	}
 }
@@ -154,9 +154,9 @@ function previewGfycat(object, type) {
 		$.getJSON( "https://gfycat.com/cajax/get/" + gfycat, function(data) {
 			$(object).tooltipster({
 				interactive: true,
-				delay: '0',
+				delay: ['0', '500'],
 				theme: 'tooltipster-peek',
-				content: $('<video data-type="gfycat" data-gfyid="' + data.gfyItem.gfyName + '" controls loop id="' + gfycat + '" loop><source src="' + data.gfyItem.webmUrl + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
+				content: $('<video data-type="gfycat" data-gfyid="' + data.gfyItem.gfyName + '" controls controlsList="nodownload nofullscreen" loop id="' + gfycat + '" loop><source src="' + data.gfyItem.webmUrl + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 			});
 		});
 	}
@@ -172,9 +172,9 @@ function previewGiphy(object, type) {
 		log("Found supported Giphy link: " + giphyid);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
-			content: $('<embed data-type="giphy" style="border: 0px; width: 400px; height: 300px;" src="http://giphy.com/embed/' + giphyid + '"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
+			content: $('<embed data-type="giphy" style="border: 0px; width: 400px; height: 300px;" src="https://giphy.com/embed/' + giphyid + '"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
 	}
 }
@@ -186,9 +186,9 @@ function previewAudio(object, type) {
 		log("Found supported audio link: " + url);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
-			content: $('<audio data-type="html5audio" controls><source src="' + url + '" type="' + type + '"></audio><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
+			content: $('<audio data-type="html5audio" controls controlsList="nodownload nofullscreen"><source src="' + url + '" type="' + type + '"></audio><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
 	}
 }

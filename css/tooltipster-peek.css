@@ -2,46 +2,48 @@
 	font-family: Roboto;
 	src: url('chrome-extension://__MSG_@@extension_id__/fonts/Roboto-Medium.ttf');
 }
-.tooltipster-peek video::-webkit-media-controls-fullscreen-button {
-	display: none;
+.tooltipster-peek .tooltipster-box {
+	background: #565656;
+	color: #FFF;
+	padding: 0px;
+	border-radius: 2px;
+	max-height: auto !important;
 }
-.tooltipster-peek {
-	border-radius: 2px !important;
-	border: 1px solid #212121 !important;
-	background: #424242 !important;
-	color: #FFF !important;
-	box-shadow: 0 2px 10px rgba(0,0,0,.2) !important;
+.tooltipster-peek .tooltipster-content {
+	padding: 0px;
 }
 .tooltipster-peek .tooltipster-content embed, .tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio, .tooltipster-peek .tooltipster-content img {
-	border-radius: 2px 2px 0px 0px !important;
-	border: 0px !important;
-	max-width: 400px !important;
-	max-height: 350px !important;
-	background: url('chrome-extension://__MSG_@@extension_id__/img/preloader.gif') no-repeat center #424242 !important;
+	border-radius: 2px 2px 0px 0px;
+	border: 0px;
+	max-width: 400px;
+	max-height: 350px;
+	background: url('chrome-extension://__MSG_@@extension_id__/img/preloader.gif') no-repeat center #424242;
 }
-.tooltipster-peek .tooltipster-content .flashplayer {
-	width: 400px !important;
-	height: 225px !important;
+.tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio {
+	border-radius: 2px 2px 0px 0px;
+	border: 0px;
+	max-height: 150px;
+	width: 100%;
+	background: url('chrome-extension://__MSG_@@extension_id__/img/preloader.gif') no-repeat center #565656;
 }
 .tooltipster-peek .tooltipster-content audio {
-	width: 400px !important;
+	width: 400px;
 }
 .tooltipster-peek .tooltipster-content #peekmessage {
-	width: 400px !important;
-	height: auto !important;
+	width: 400px;
 }
 .tooltipster-peek .tooltipster-content .peeksettings, .tooltipster-peek .tooltipster-content .peekpopup {
-	background-position: center !important;
-	width: 14px !important;
-	height: 14px !important;
-	display: block !important;
-	cursor: pointer !important;
-	float: right !important;
+	background-position: center;
+	width: 14px;
+	height: 14px;
+	display: block;
+	cursor: pointer;
+	float: right;
 }
 .tooltipster-peek .tooltipster-content .peeksettings {
-	background:url('chrome-extension://__MSG_@@extension_id__/img/gear.png') no-repeat !important;
+	background:url('chrome-extension://__MSG_@@extension_id__/img/gear.png') no-repeat;
 }
 .tooltipster-peek .tooltipster-content .peekpopup {
-	background:url('chrome-extension://__MSG_@@extension_id__/img/popup.png') no-repeat !important;
-	margin-left: 10px !important;
+	background:url('chrome-extension://__MSG_@@extension_id__/img/popup.png') no-repeat;
+	margin-left: 10px;
 }

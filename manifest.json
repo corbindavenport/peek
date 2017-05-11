@@ -32,8 +32,8 @@
 	"content_scripts": [
 		{
 		"matches": ["http://*/*", "https://*/*"],
-		"js": ["js/jquery-3.2.1.min.js", "js/jquery.tooltipster.min.js", "js/contentscript.js"],
-		"css": ["css/tooltipster.css", "css/tooltipster-peek.css"],
+		"js": ["js/jquery-3.2.1.min.js", "js/tooltipster.bundle.min.js", "js/contentscript.js"],
+		"css": ["css/tooltipster.bundle.min.css", "css/tooltipster-peek.css"],
 		"run_at": "document_end"
 		}
 	],
