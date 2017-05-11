@@ -54,7 +54,8 @@ function findURL(url){
 			return url;
 		}
 	} else {
-		log("Cannot generate a preview for " + url + " because it is not served over HTTPS.")
+		log("Cannot generate a preview for " + url + " because it is not served over HTTPS.");
+		return null;
 	}
 }
 
