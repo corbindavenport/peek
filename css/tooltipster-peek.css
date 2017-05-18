@@ -12,13 +12,17 @@
 .tooltipster-peek .tooltipster-content {
 	padding: 0px !important;
 }
+.tooltipster-peek-warning .tooltipster-content {
+	padding: 5px !important;
+	max-width: 400px !important;
+}
 .tooltipster-peek .tooltipster-content embed, .tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio, .tooltipster-peek .tooltipster-content img {
 	border-radius: 2px 2px 0px 0px !important;
 	border: 0px !important;
 	max-width: 400px !important;
 	max-height: 350px !important;
 	padding: 0px !important;
-	background: #424242 !important;
+	background: url('chrome-extension://__MSG_@@extension_id__/img/preloader.gif') no-repeat center #424242 !important;
 }
 .tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio {
 	border-radius: 2px 2px 0px 0px !important;
@@ -29,6 +33,9 @@
 }
 .tooltipster-peek .tooltipster-content audio {
 	width: 300px !important;
+}
+.tooltipster-peek .tooltipster-content video {
+	background: url('chrome-extension://__MSG_@@extension_id__/img/preloader.gif') no-repeat center #424242 !important;
 }
 .tooltipster-peek .tooltipster-content #peekmessage {
 	min-width: 200px !important;

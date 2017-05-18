@@ -38,6 +38,14 @@ function checkProtocol(url) {
 	}
 }
 
+function log(string) {
+	chrome.runtime.sendMessage({method: "getLocalStorage", key: "console"}, function(response) {
+		if (response.data === "true") {
+			console.log("%c[Peek] " + string, "color: #4078c0");
+		}
+	});
+}
+
 function findURL(url){
 	var img = document.createElement('img');
 	img.src = url; // Set string url
@@ -55,22 +63,26 @@ function findURL(url){
 		}
 	} else {
 		log("Cannot generate a preview for " + url + " because it is not served over HTTPS.");
-		return null;
+		return "invalid";
 	}
 }
 
-function log(string) {
-	chrome.runtime.sendMessage({method: "getLocalStorage", key: "console"}, function(response) {
-		if (response.data === "true") {
-			console.log("%c[Peek] " + string, "color: #4078c0");
-		}
+// Show warning for HTTP previews on HTTPS sites
+function previewInvalidlink(object) {
+	$(object).tooltipster({
+		interactive: true,
+		delay: ['0', '0'],
+		theme: 'tooltipster-peek-warning',
+		content: 'Peek cannot preview this link because you are on a secure page, and this file is not served over a secure connection.'
 	});
 }
 
 // Google Docs viewer for files NOT on Google Docs (miscdocs)
 function previewDocs(object) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		log("Found supported document link: " + url);
 		$(object).tooltipster({
 			interactive: true,
