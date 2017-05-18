@@ -73,7 +73,7 @@ function previewInvalidlink(object) {
 		interactive: true,
 		delay: ['0', '0'],
 		theme: 'tooltipster-peek-warning',
-		content: 'Peek cannot preview this link because you are on a secure page, and this file is not served over a secure connection.'
+		content: 'Peek cannot preview this link because it is served over an insecure connection.'
 	});
 }
 
@@ -109,7 +109,9 @@ function previewHostedDocs(object) {
 		} else {
 			docsid = url.substring(url.lastIndexOf("/d/")+3,url.lastIndexOf("/viewform")); // Forms
 		}
-		if (docsid != "ht") { // Fix for bug where Google search results would generate preview for mis-matched Docs link
+		if (url === "invalid") {
+			previewInvalidlink(object);
+		} else if (docsid != "ht") { // Fix for bug where Google search results would generate preview for mis-matched Docs link
 			log("Found Google Docs link: " + url + "\n[Peek] ID of above Google Docs link identified as: " + docsid);
 			$(object).tooltipster({
 				interactive: true,
@@ -127,7 +129,9 @@ function previewHostedDocs(object) {
 // Office Online viewer
 function previewOffice(object) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		log("Found supported document link: " + url);
 		$(object).tooltipster({
 			interactive: true,
@@ -141,7 +145,9 @@ function previewOffice(object) {
 // HTML5 video player
 function previewVideo(object, type) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		if ((url.endsWith('.gifv')) && (url.indexOf("imgur.com") > -1)) {
 			// Use MP4 video for Imgur GIFV links
 			url = url.replace(".gifv", ".mp4");
@@ -159,7 +165,9 @@ function previewVideo(object, type) {
 // Gfycat links
 function previewGfycat(object, type) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		var re = /(?:http:|https:|)(?:\/\/|)(?:gfycat\.com\/(?:\w*\/)*)(\w+$)/gi;
 		var gfycat = (re.exec(url)[1]);
 		log("Found supported Gfycat link: " + gfycat);
@@ -177,7 +185,9 @@ function previewGfycat(object, type) {
 // Giphy links
 function previewGiphy(object, type) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		var re = /https?:\/\/(?|media\.giphy\.com\/media\/([^ \/\n]+)\/giphy\.gif|i\.giphy\.com\/([^ \/\n]+)\.gif|giphy\.com\/gifs\/(?:.*-)?([^ \/\n]+))/ig;
 		re = re.replace(/\(\d*\)|\/\(P\)\//g, "");
 		var giphyid = (re.exec(url)[1]);
@@ -194,7 +204,9 @@ function previewGiphy(object, type) {
 // HTML5 audio player
 function previewAudio(object, type) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		log("Found supported audio link: " + url);
 		$(object).tooltipster({
 			interactive: true,

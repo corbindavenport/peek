@@ -14,7 +14,7 @@
 }
 .tooltipster-peek-warning .tooltipster-content {
 	padding: 5px !important;
-	max-width: 400px !important;
+	max-width: 280px !important;
 }
 .tooltipster-peek .tooltipster-content embed, .tooltipster-peek .tooltipster-content video, .tooltipster-peek .tooltipster-content audio, .tooltipster-peek .tooltipster-content img {
 	border-radius: 2px 2px 0px 0px !important;
