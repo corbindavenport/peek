@@ -1,56 +1,119 @@
 <!--
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+The MIT License (MIT)
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+Copyright (c) 2017 Corbin Davenport
 
-You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
-!-->
-<html>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Peek</title>
-<link rel="icon" type="image/png" href="img/icon16.png">
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/settings.js"></script>
-<link href="css/google.css" rel="stylesheet" type="text/css">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="img/icon16.png">
+	<title>Peek</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body { padding-top: 70px; }
+	</style>
 </head>
 <body>
-	<section id="wrapper" class="wrapper enabled">
-		<h1>Peek - Settings</h1>
-		<article>
-			<section class="settings-card">
-			<h2>Documents</h2>
-			<p>You can change the viewer used to Word Documents, Excel Spreadsheets, and PowerPoint presentations. The default is Google Docs.</p>
-			<div id="docviewer">
-				<p><input type="radio" name="documents" value="google"><label for="google">Google Docs viewer</label></p>
-				<p><input type="radio" name="documents" value="office"><label for="office">Office Online viewer</label></p>
+	<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Peek settings</a>
+        </div>
+      </div>
+    </nav>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Document viewer</h2>
+				<p>You can change the viewer used to Word Documents, Excel Spreadsheets, and PowerPoint presentations. The default is Google Docs.</p>
+				<div id="docviewer">
+					<div class="radio">
+						<label>
+							<input type="radio" name="documents" value="google">
+							Google Docs viewer
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="documents" value="office">
+							Office Online viewer
+						</label>
+					</div>
+				</div>
+				<p>Note: This does not affect PDFs, RTFs, and links to Google Docs files.</p>
 			</div>
-			<p>Note: This does not affect PDFs, RTFs, and links to Google Docs files.</p>
-			</section>
-		</article>
-		<article>
-			<section class="settings-card">
-			<h2>Advanced Settings</h2>
-			<div id="console">
-				<p><input type="checkbox" name="console" value="console"><label for="console">Enable Peek messages in Chrome's developer console</label></p>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Advanced settings</h2>
+				<div class="alert alert-danger" role="alert"><b>Warning!</b> Changing these settings could result in performance problems or your browser crashing.</div>
+				<div class="checkbox" id="console">
+					<label>
+						<input type="checkbox" name="console" value="console">
+						Enable Peek messages in Chrome's developer console
+					</label>
+				</div>
+				<div class="checkbox" id="previewlimit">
+					<label>
+						<input type="checkbox" name="previewlimit" value="previewlimit">
+						Set limit on previews per page
+					</label>
+				</div>
 			</div>
-			<div id="previewlimit">
-				<p><input type="checkbox" name="previewlimit" value="previewlimit"><label for="previewlimit">Set limit on previews per page</label><br /><span class="warning">(disabling this could crash your browser on pages with many links)</span></p>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<h2>Getting Started</h2>
+				<p>Peek shows previews over file download links. Just hover your mouse over a link to a file, and the preview will appear.</p>
+				<p>Try <a href="http://www.google.com/search?as_q=sample&as_filetype=doc" target="_blank">clicking here</a> and hover over some results.</p>
+				<p>You can click the full-screen button on the popup to open the preview in a new window.</p>
+				<p>To open Peek settings, click the settings gear on any popup, or click the Peek icon in the toolbar.</p>
 			</div>
-			</section>
-		</article>
-		<article>
-			<h2>Donate</h2>
-			<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
-			<div id="bitcoin">
-				<p><b>Please send bitcoin to the following address:</b></p>
-				<p style="background:#ebebeb; padding:10px; font-family:Monaco,Menlo,Consolas,'Courier New',monospace; text-align:center; overflow-wrap:break-word !important;">1GSbhaUp8JSRepqQceHzrGhV1bPk9hcPuS</p>
+			<div class="col-md-6">
+				<h2>Donate</h2>
+				<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
+				<p><a class="btn btn-warning" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button">Donate via PayPal</a> <a class="btn btn-primary" href="#" role="button" data-toggle="modal" data-target=".bitcoin-modal">Donate via Bitcoin</a></p>
+				<p class="review-info"></p>
+				<h2>Having issues?</h2>
+				<p>If you find a bug, or have a suggestion for a new feature, please create an issue at <a href="https://github.com/corbindavenport/peek/issues" target="_blank">Peek GitHub repository</a>.</p>
 			</div>
-			<section id="settings-buttons" class="buttons" style="display: block;">
-				<input class="g-button g-button-submit" type="button" value="Donate via PayPal">
-				<input class="g-button g-button-submit" type="button" value="Donate via Bitcoin">
-			</section>
-		</article>
-	</section>
+		</div>
+
+		<hr>
+
+		<footer>
+			<p>Peek uses code from <a href="https://jquery.com/" target="_blank">jQuery</a>, <a href="https://getbootstrap.com/" target="_blank">Boostrap</a>, and <a href="https://iamceege.github.io/tooltipster/" target="_blank">Tooltipster</a>. You can find Peek's source code <a href="https://github.com/corbindavenport/peek" target="_blank">on GitHub</a>, under the MIT license.</p>
+		</footer>
+	</div> <!-- /container -->
+
+<div class="modal fade bitcoin-modal" tabindex="-1" role="dialog" aria-labelledby="bitcoinModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Donate via Bitcoin</h4>
+      </div>
+      <div class="modal-body">
+        <p>Please send bitcoin to the following address:</p>
+        <p style="background:#ebebeb; padding:10px; font-family:Monaco,Menlo,Consolas,'Courier New',monospace; text-align:center; overflow-wrap:break-word !important;">1GSbhaUp8JSRepqQceHzrGhV1bPk9hcPuS</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>

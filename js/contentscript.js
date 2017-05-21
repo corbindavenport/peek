@@ -1,9 +1,13 @@
 /*
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+The MIT License (MIT)
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+Copyright (c) 2017 Corbin Davenport
 
-You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 // Create array for already-rendered URLs on the page
@@ -25,17 +29,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 });
 
-function findURL(url){
-	var img = document.createElement('img');
-	img.src = url; // Set string url
-	url = img.src; // Get qualified url
-	img.src = null; // No server request
-	if ((rendered.includes(url)) || (rendered.length >= previewlimit)) {
-		return null;
+// Only allow previews of HTTPS files on HTTPS pages, but allow mixed content on HTTP pages
+function checkProtocol(url) {
+	if (window.location.protocol === "https:") {
+		if (url.includes("https:")) {
+			return true;
+		} else {
+			return false;
+		}
 	} else {
-		rendered.push(url);
-		chrome.runtime.sendMessage({method: "changeIcon", key: rendered.length.toString()});
-		return url;
+		return true;
 	}
 }
 
@@ -47,14 +50,47 @@ function log(string) {
 	});
 }
 
+function findURL(url){
+	var img = document.createElement('img');
+	img.src = url; // Set string url
+	url = img.src; // Get qualified url
+	img.src = null; // No server request
+	// Don't continue if checkProtocol returns false
+	if (checkProtocol(url)) {
+		// Don't continue if the link already has a tooltip, if Peek has reached the preview limit, or if the link is a page on Wikimedia
+		if ((rendered.includes(url)) || (rendered.length >= previewlimit) || (url.includes("commons.wikimedia.org/wiki/File:"))) {
+			return null;
+		} else {
+			rendered.push(url);
+			chrome.runtime.sendMessage({method: "changeIcon", key: rendered.length.toString()});
+			return url;
+		}
+	} else {
+		log("Cannot generate a preview for " + url + " because it is not served over HTTPS.");
+		return "invalid";
+	}
+}
+
+// Show warning for HTTP previews on HTTPS sites
+function previewInvalidlink(object) {
+	$(object).tooltipster({
+		interactive: true,
+		delay: ['0', '0'],
+		theme: 'tooltipster-peek-warning',
+		content: 'Peek cannot preview this link because it is served over an insecure connection.'
+	});
+}
+
 // Google Docs viewer for files NOT on Google Docs (miscdocs)
 function previewDocs(object) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		log("Found supported document link: " + url);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
 			content: $('<embed data-type="miscdocs" style="border: 0px; width: 400px; height: 300px;" src="https://docs.google.com/gview?url=' + url + '&embedded=true"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window" data-url="' + url + '"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
@@ -77,11 +113,13 @@ function previewHostedDocs(object) {
 		} else {
 			docsid = url.substring(url.lastIndexOf("/d/")+3,url.lastIndexOf("/viewform")); // Forms
 		}
-		if (docsid != "ht") { // Fix for bug where Google search results would generate preview for mis-matched Docs link
+		if (url === "invalid") {
+			previewInvalidlink(object);
+		} else if (docsid != "ht") { // Fix for bug where Google search results would generate preview for mis-matched Docs link
 			log("Found Google Docs link: " + url + "\n[Peek] ID of above Google Docs link identified as: " + docsid);
 			$(object).tooltipster({
 				interactive: true,
-				delay: '0',
+				delay: ['0', '500'],
 				theme: 'tooltipster-peek',
 				content: $('<embed data-type="googledocs" style="border: 0px; width: 400px; height: 300px;" src="https://docs.google.com/viewer?srcid=' + docsid + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window" data-url="' + url + '"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 			});
@@ -95,11 +133,13 @@ function previewHostedDocs(object) {
 // Office Online viewer
 function previewOffice(object) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		log("Found supported document link: " + url);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
 			content: $('<embed data-type="officeviewer" style="border: 0px; width: 400px; height: 300px;" src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
@@ -109,7 +149,9 @@ function previewOffice(object) {
 // HTML5 video player
 function previewVideo(object, type) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		if ((url.endsWith('.gifv')) && (url.indexOf("imgur.com") > -1)) {
 			// Use MP4 video for Imgur GIFV links
 			url = url.replace(".gifv", ".mp4");
@@ -117,9 +159,9 @@ function previewVideo(object, type) {
 		log("Found supported video link: " + url);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
-			content: $('<video data-type="html5video" controls><source src="' + url + '" type="' + type + '"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
+			content: $('<video data-type="html5video" controls controlsList="nodownload nofullscreen"><source src="' + url + '" type="' + type + '"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
 	}
 }
@@ -127,16 +169,18 @@ function previewVideo(object, type) {
 // Gfycat links
 function previewGfycat(object, type) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		var re = /(?:http:|https:|)(?:\/\/|)(?:gfycat\.com\/(?:\w*\/)*)(\w+$)/gi;
 		var gfycat = (re.exec(url)[1]);
 		log("Found supported Gfycat link: " + gfycat);
 		$.getJSON( "https://gfycat.com/cajax/get/" + gfycat, function(data) {
 			$(object).tooltipster({
 				interactive: true,
-				delay: '0',
+				delay: ['0', '500'],
 				theme: 'tooltipster-peek',
-				content: $('<video data-type="gfycat" data-gfyid="' + data.gfyItem.gfyName + '" controls loop id="' + gfycat + '" loop><source src="' + data.gfyItem.webmUrl + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
+				content: $('<video data-type="gfycat" data-gfyid="' + data.gfyItem.gfyName + '" controls controlsList="nodownload nofullscreen" loop id="' + gfycat + '" loop><source src="' + data.gfyItem.webmUrl + '" type="video/webm"></video><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 			});
 		});
 	}
@@ -145,30 +189,18 @@ function previewGfycat(object, type) {
 // Giphy links
 function previewGiphy(object, type) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		var re = /https?:\/\/(?|media\.giphy\.com\/media\/([^ \/\n]+)\/giphy\.gif|i\.giphy\.com\/([^ \/\n]+)\.gif|giphy\.com\/gifs\/(?:.*-)?([^ \/\n]+))/ig;
 		re = re.replace(/\(\d*\)|\/\(P\)\//g, "");
 		var giphyid = (re.exec(url)[1]);
 		log("Found supported Giphy link: " + giphyid);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
-			content: $('<embed data-type="giphy" style="border: 0px; width: 400px; height: 300px;" src="http://giphy.com/embed/' + giphyid + '"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
-		});
-	}
-}
-
-// F4Player
-function previewFlash(object) {
-	var url = findURL(object.attr("href"));
-	if (url != null) {
-		log("Found supported Flash Player link: " + url);
-		$(object).tooltipster({
-			interactive: true,
-			delay: '0',
-			theme: 'tooltipster-peek',
-			content: $('<embed data-type="flash" data-url="' + url + '" type="application/x-shockwave-flash" src="http://gokercebeci.com/data/dev/f4player/player.swf?v1.3.5" class="flashplayer" flashvars="skin=http://gokercebeci.com/data/dev/f4player/skins/mySkin.swf&video=' + url + '" allowscriptaccess="always" allowfullscreen="false" bgcolor="#424242"/><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
+			content: $('<embed data-type="giphy" style="border: 0px; width: 400px; height: 300px;" src="https://giphy.com/embed/' + giphyid + '"><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
 	}
 }
@@ -176,13 +208,15 @@ function previewFlash(object) {
 // HTML5 audio player
 function previewAudio(object, type) {
 	var url = findURL(object.attr("href"));
-	if (url != null) {
+	if (url === "invalid") {
+		previewInvalidlink(object);
+	} else if (url != null) {
 		log("Found supported audio link: " + url);
 		$(object).tooltipster({
 			interactive: true,
-			delay: '0',
+			delay: ['0', '500'],
 			theme: 'tooltipster-peek',
-			content: $('<audio data-type="html5audio" controls><source src="' + url + '" type="' + type + '"></audio><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
+			content: $('<audio data-type="html5audio" controls controlsList="nodownload nofullscreen"><source src="' + url + '" type="' + type + '"></audio><div style="font-family: Roboto !important; font-size: 14px !important; text-align: left !important; line-height: 14px !important; color: #FFF !important; padding: 4px !important; margin-top: 3px !important; max-width: 400px !important;">Powered by Peek<span class="peekpopup" title="Preview this document in a new window"></span><span class="peeksettings" title="Open Peek extension settings"></span></div>')
 		});
 	}
 }
@@ -274,13 +308,6 @@ function reloadTooltips() {
 		} else {
 			previewVideo($(this), "video/mp4");
 		}
-	});
-	// Flash files
-	$("a[href$='.flv']").each(function() {
-		previewFlash($(this));
-	});
-	$("a[href$='.f4v']").each(function() {
-		previewFlash($(this));
 	});
 	// Audio files
 	$("a[href$='.mp3']").each(function() {
@@ -374,10 +401,10 @@ window.addEventListener("hashchange", function() {
 var observer = new MutationObserver(function(mutations) {
 	mutations.forEach(function(mutation) {
 		var newNodes = mutation.addedNodes; // DOM NodeList
-	    if( newNodes !== null ) { // If there are new nodes added
-	    	log("DOM change detected, reinitializing previews");
+			if( newNodes !== null ) { // If there are new nodes added
+				log("DOM change detected, reinitializing previews");
 			reloadTooltips();
-	    }
+			}
 	});
 });
 
@@ -392,10 +419,10 @@ $(document).ready(function() {
 	if ((window.location.href.indexOf("google.com/search") != -1) && (navigator.userAgent.toLowerCase().indexOf('chrome') > -1)) {
 		// Fix for Google search results not working properly, but this doesn't work in Opera for some strange reason
 		window.addEventListener('message', function(e) {
-		    if (typeof e.data === 'object' && e.data.type === 'sr') {
-		    	rendered = [];
-		        reloadTooltips();
-		    }
+				if (typeof e.data === 'object' && e.data.type === 'sr') {
+					rendered = [];
+						reloadTooltips();
+				}
 		});
 	} else {
 		// All other pages

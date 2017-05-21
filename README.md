@@ -9,40 +9,16 @@ Peek supports previews for the following file formats:
 * Excel Documents (.xls, .xlsx)
 * PowerPoint Presentations (.ppt, .pptx)
 * WebM, MP4, GIFV, and OGG/OGV Video
-* Flash video files (.flv, .f4v)
 * MP3 and WAV Audio
 
 In addition to direct file links, Peek also supports previewing links to public Google Docs files, Imgur GIFV links, and Gfycat links.
 
-_FLV playback supported by [F4Player](http://gokercebeci.com/dev/f4player)._
-
 ---------------------------------------------------------
-__New in Peek 2.1:__
-* Better support for Google search results
-* Supports more Google Docs link formats
-* Bug fixes
-
-__New in Peek 2.0:__
-* Now allows previews to 'pop-out' into new windows
-* Toolbar icon now shows number of previews on the page
-* Updated preview interface
-* Supports more Google Drive links
-* Improved performance
-* Changed minimum Chrome version to 47
-* Fixed bug where multiple popups were rendered for some files
-* Changed license to MIT
-
-__New in Peek 1.2:__
-* Improved settings page
-* Bug fixes
-
-__New in Peek 1.1:__
-* Peek now supports Gfycat links and Imgur GIFV links, and previews both as video.
-* Peek now shows previews for .m4v, .m4a, and .oga files.
-* Fixes for Google Docs links not working.
-
-__New in Peek 1.0:__
-* Initial release
+__New in Peek 2.2:__
+* New design for welcome and settings pages
+* Previews are no longer created for HTTP content on HTTPS pages
+* Removed support for Flash video file previews
+* Updated jQuery and Tooltipster libraries to latest version
 
 ---------------------------------------------------------
 
