@@ -1,6 +1,6 @@
 @font-face {
-	font-family: Roboto !important;
-	src: url('chrome-extension://__MSG_@@extension_id__/fonts/Roboto-Medium.ttf') !important;
+	font-family: Roboto;
+	src: url('chrome-extension://__MSG_@@extension_id__/fonts/Roboto-Medium.ttf');
 }
 .tooltipster-peek .tooltipster-box {
 	background: #565656 !important;
@@ -8,6 +8,8 @@
 	padding: 0px !important;
 	border-radius: 2px !important;
 	max-height: auto !important;
+	font-family: Roboto !important;
+	font-size: 14px !important;
 }
 .tooltipster-peek .tooltipster-content {
 	padding: 0px !important;
