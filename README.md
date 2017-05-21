@@ -20,33 +20,6 @@ __New in Peek 2.2:__
 * Removed support for Flash video file previews
 * Updated jQuery and Tooltipster libraries to latest version
 
-__New in Peek 2.1:__
-* Better support for Google search results
-* Supports more Google Docs link formats
-* Bug fixes
-
-__New in Peek 2.0:__
-* Now allows previews to 'pop-out' into new windows
-* Toolbar icon now shows number of previews on the page
-* Updated preview interface
-* Supports more Google Drive links
-* Improved performance
-* Changed minimum Chrome version to 47
-* Fixed bug where multiple popups were rendered for some files
-* Changed license to MIT
-
-__New in Peek 1.2:__
-* Improved settings page
-* Bug fixes
-
-__New in Peek 1.1:__
-* Peek now supports Gfycat links and Imgur GIFV links, and previews both as video.
-* Peek now shows previews for .m4v, .m4a, and .oga files.
-* Fixes for Google Docs links not working.
-
-__New in Peek 1.0:__
-* Initial release
-
 ---------------------------------------------------------
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
