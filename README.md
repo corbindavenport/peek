@@ -13,8 +13,12 @@ Peek supports previews for the following file formats:
 
 In addition to direct file links, Peek also supports previewing links to public Google Docs files, Imgur GIFV links, and Gfycat links.
 
+[![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Opera](https://corbin.io/img/opera-button.png)](https://addons.opera.com/en/extensions/details/peek/)
+
 ---------------------------------------------------------
+
 __New in Peek 2.2:__
+
 * New design for welcome and settings pages
 * Previews are no longer created for HTTP content on HTTPS pages
 * Removed support for Flash video file previews
