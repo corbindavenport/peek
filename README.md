@@ -17,12 +17,11 @@ In addition to direct file links, Peek also supports previewing links to public 
 
 ---------------------------------------------------------
 
-__New in Peek 2.2:__
+__New in Peek 2.2.1:__
 
-* New design for welcome and settings pages
-* Previews are no longer created for HTTP content on HTTPS pages
-* Removed support for Flash video file previews
-* Updated jQuery and Tooltipster libraries to latest version
+- Added Patreon link
+- Updated jQuery dependency to latest version
+- Minor bug fixes
 
 ---------------------------------------------------------
 
