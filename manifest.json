@@ -1,7 +1,7 @@
 {
 "manifest_version": 2,
 	"name": "Peek",
-	"version": "2.2",
+	"version": "2.2.1",
 	"author": "Corbin Davenport",
 	"description": "Preview documents, videos, music and more before you download them.",
 	"homepage_url": "https://github.com/corbindavenport",
@@ -32,7 +32,7 @@
 	"content_scripts": [
 		{
 		"matches": ["http://*/*", "https://*/*"],
-		"js": ["js/jquery-3.2.1.min.js", "js/tooltipster.bundle.min.js", "js/contentscript.js"],
+		"js": ["js/jquery-3.3.1.min.js", "js/tooltipster.bundle.min.js", "js/contentscript.js"],
 		"css": ["css/tooltipster.bundle.min.css", "css/tooltipster-peek.css"],
 		"run_at": "document_end"
 		}
