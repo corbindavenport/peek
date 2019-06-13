@@ -1,15 +1,15 @@
 {
 "manifest_version": 2,
 	"name": "Peek",
-	"version": "2.2.1",
+	"version": "3.0",
 	"author": "Corbin Davenport",
-	"description": "Preview documents, videos, music and more before you download them.",
-	"homepage_url": "https://github.com/corbindavenport",
+	"description": "Preview documents, videos, music and more with a mouse hover.",
+	"homepage_url": "https://github.com/corbindavenport/peek",
 	"options_page": "settings.html",
-	"minimum_chrome_version": "47",
 	"permissions": [
 		"http://*/*",
-		"https://*/*"
+		"https://*/*",
+		"storage"
 	],
 	"background": {
 		"scripts": ["js/background.js"]
@@ -17,9 +17,7 @@
 	"web_accessible_resources": [
 		"js/*",
 		"css/*",
-		"fonts/*",
 		"img/*",
-		"flv/*",
 		"settings.html"
 	],
 	"browser_action": {
@@ -32,8 +30,8 @@
 	"content_scripts": [
 		{
 		"matches": ["http://*/*", "https://*/*"],
-		"js": ["js/jquery-3.3.1.min.js", "js/tooltipster.bundle.min.js", "js/contentscript.js"],
-		"css": ["css/tooltipster.bundle.min.css", "css/tooltipster-peek.css"],
+		"js": ["js/popper.min.js", "js/purify.js", "js/contentscript.js"],
+		"css": ["css/peek.css"],
 		"run_at": "document_end"
 		}
 	],
