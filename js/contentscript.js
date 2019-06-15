@@ -6,17 +6,14 @@ chrome.runtime.sendMessage({ method: 'resetIcon', key: '' })
 
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-
   if (request.method == 'getPreviews') {
     sendResponse({ data: renderedPreviews.length.toString() })
   }
-
 })
 
+// Function for logging info
 function log(string) {
-
- console.log("%c[Peek] " + string, "color: #4078c0")
-
+  console.log("%c[Peek] " + string, "color: #4078c0")
 }
 
 // Prevent mixed protocol alerts in Chrome
@@ -35,6 +32,16 @@ function checkProtocol(url) {
 
 // Find the full path of a given URL
 function processURL(url) {
+  // Regex to parse Internet Archive URLs: https://regex101.com/r/4F12w7/3
+  var regex = /(?:web\.archive\.org\/web\/)(\d*)(\/)(.*)/
+  if (url.includes('//web.archive.org/')) {
+    // Get date
+    var date = regex.exec(url)[1]
+    // Get original URL
+    var originalURL = regex.exec(url)[3]
+    // Append '_id' to the end of the date, so the Internet Archive returns the original file and not an HTML file
+    url = 'https://web.archive.org/web/' + date + 'id_/' + originalURL
+  }
   var img = document.createElement('img')
   img.src = url
   url = img.src
@@ -57,7 +64,11 @@ function processURL(url) {
 
 // Show preview for invalid URL/mixed content warning
 function createErrorPreview(object) {
-  // TODO: Make this an actual preview
+  tippy(object, {
+    content: 'Peek cannot preview this link because it is served over an insecure connection.',
+    arrow: true,
+    delay: [500, 500]
+  })
 }
 
 function previewVideo(object) {
@@ -68,7 +79,21 @@ function previewVideo(object) {
     createErrorPreview(object)
   } else {
     log('Found video link: ' + url)
-    // TODO
+    // Create video player
+    var player = '<video controls muted controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video>'
+    // Create popup
+    tippy(object, {
+      content: player,
+      interactive: true,
+      arrow: true,
+      theme: 'peek',
+      delay: [500, 500],
+      onShow: function(instance) {
+        // Play the video after the popup appears
+        videoEl = instance.popper.querySelector('video')
+        videoEl.play()
+      }
+    })
   }
 }
 
@@ -80,7 +105,16 @@ function previewAudio(object) {
     createErrorPreview(object)
   } else {
     log('Found audio link: ' + url)
-    // TODO
+    // Create audio player
+    var player = '<audio controls controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video>'
+    // Create popup
+    tippy(object, {
+      content: player,
+      interactive: true,
+      arrow: true,
+      theme: 'peek',
+      delay: [500, 500]
+    })
   }
 }
 
@@ -104,7 +138,16 @@ function previewPDF(object) {
     createErrorPreview(object)
   } else {
     log('Found PDF link: ' + url)
-    // TODO
+    // Render the PDF with browser's own viewer
+    var viewer = '<embed src="' + url + '">'
+    // Create popup
+    tippy(object, {
+      content: viewer,
+      interactive: true,
+      arrow: true,
+      theme: 'peek',
+      delay: [500, 500]
+    })
   }
 }
 
@@ -116,7 +159,35 @@ function previewGoogleDocs(object) {
     createErrorPreview(object)
   } else {
     log('Found Google Docs link: ' + url)
-    // TODO
+    // Find the file ID
+    var docsid;
+		if (url.indexOf("/edit") >= 0) {
+			docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/edit")); // Most Google Docs files
+		} else if (url.indexOf("/open") >= 0) {
+			docsid = url.substring(url.lastIndexOf("/open?id=") + 9); // Most Google Docs files
+		} else if (url.indexOf("/preview") >= 0) {
+			docsid = url.substring(url.lastIndexOf("/document/d/") + 12, url.lastIndexOf("/preview")); // Docs preview links
+		} else if (url.indexOf("/viewer") >= 0) {
+			docsid = url.substring(url.lastIndexOf("srcid=") + 6, url.lastIndexOf("&")); // Docs viewer links
+		} else {
+			docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/viewform")); // Forms
+    }
+    // Render the popup
+    if (docsid != 'ht') { // Fix for bug where Google search results would generate preview for mis-matched Docs link
+			// Create embed
+      var viewer = '<embed src="https://docs.google.com/viewer?srcid=' + docsid + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true">'
+      // Create popup
+      tippy(object, {
+        content: viewer,
+        interactive: true,
+        arrow: true,
+        theme: 'peek',
+        delay: [500, 500]
+      })
+		} else {
+			renderedPreviews.splice(renderedPreviews.indexOf(url), 1)
+			chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() })
+		}
   }
 }
 

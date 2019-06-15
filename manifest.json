@@ -30,7 +30,7 @@
 	"content_scripts": [
 		{
 		"matches": ["http://*/*", "https://*/*"],
-		"js": ["js/popper.min.js", "js/purify.js", "js/contentscript.js"],
+		"js": ["js/popper.min.js", "js/tippy.min.js", "js/purify.js", "js/contentscript.js"],
 		"css": ["css/peek.css"],
 		"run_at": "document_end"
 		}

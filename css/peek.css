@@ -1,0 +1,26 @@
+.peek-theme {
+    padding: .25rem .25rem 0 .25rem !important;
+    font-size: 2rem !important;
+}
+
+.peek-theme video, .peek-theme audio {
+    border-radius: .25rem !important;
+}
+
+.peek-theme video {
+    max-width: 350px !important;
+    max-height: 350px !important;
+}
+
+.peek-theme audio {
+    width: 300px !important;
+}
+
+.peek-theme video:focus, .peek-theme audio:focus {
+    outline: 0 !important;
+}
+
+.peek-theme embed {
+    width: 350px;
+    height: 350px;
+}

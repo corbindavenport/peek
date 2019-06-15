@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(function (details) {
 
-  chrome.storage.local.get({
+  chrome.storage.sync.get({
     // Set variables if they do not exist
     docViewer: 'google',
     version: '0'
@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
       // Open welcome page
       chrome.tabs.create({ 'url': chrome.extension.getURL('welcome.html') })
       // Set version number
-      chrome.storage.local.set({
+      chrome.storage.sync.set({
         version: chrome.runtime.getManifest().version
       })
     }
@@ -18,14 +18,14 @@ chrome.runtime.onInstalled.addListener(function (details) {
     // Transfer data from Peek 2.x
     if (localStorage.getItem('docviewer') != null) {
       if (localStorage.getItem('docviewer') === 'google') {
-        chrome.storage.local.set({
+        chrome.storage.sync.set({
           docViewer: 'google'
         }, function () {
           // Delete old setting
           localStorage.removeItem('docviewer')
         })
       } else if (localStorage.getItem('docviewer') === 'office') {
-        chrome.storage.local.set({
+        chrome.storage.sync.set({
           docViewer: 'office'
         }, function () {
           // Delete old setting
