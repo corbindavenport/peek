@@ -53,8 +53,8 @@ function processURL(url) {
   }
   // Don't continue if checkProtocol returns false
   if (checkProtocol(url)) {
-    // Don't continue if the link already has a tooltip, or if the link is a page on Wikimedia
-    if ((renderedPreviews.includes(url)) || (url.includes('commons.wikimedia.org/wiki/File:'))) {
+    // Don't continue if the link already has a tooltip, or if the link is a wiki page
+    if ((renderedPreviews.includes(url)) || (url.includes('/wiki/File:'))) {
       return null
     } else {
       renderedPreviews.push(url)
@@ -82,6 +82,9 @@ function previewVideo(object) {
   if (url === 'invalid') {
     // Show error message
     createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
   } else {
     log('Found video link: ' + url)
     // Allow playback of Imgur GIFV links
@@ -112,6 +115,9 @@ function previewAudio(object) {
   if (url === 'invalid') {
     // Show error message
     createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
   } else {
     log('Found audio link: ' + url)
     // Create audio player
@@ -127,28 +133,53 @@ function previewAudio(object) {
   }
 }
 
-function previewDocument(object) {
+function previewOfficeDocument(object) {
   var url = DOMPurify.sanitize(object.getAttribute('href'))
   url = processURL(url)
   if (url === 'invalid') {
     // Show error message
     createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
+  } else {
+    log('Found Office document link: ' + url)
+    // TODO
+  }
+}
+
+function previewMiscDocument(object) {
+  var url = DOMPurify.sanitize(object.getAttribute('href'))
+  url = processURL(url)
+  if (url === 'invalid') {
+    // Show error message
+    createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
   } else {
     log('Found document link: ' + url)
     // TODO
   }
 }
 
-function previewPDF(object) {
+function previewDocument(object) {
   var url = DOMPurify.sanitize(object.getAttribute('href'))
   url = processURL(url)
   if (url === 'invalid') {
     // Show error message
     createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
   } else {
-    log('Found PDF link: ' + url)
-    // Render the PDF with browser's own viewer
-    var viewer = '<embed src="' + url + '#toolbar=0">'
+    log('Found document link: ' + url)
+    // Render file with the browser's own viewer
+    if (url.toLowerCase().endsWith('.pdf') || url.toLowerCase().endsWith('.txt')) {
+      var viewer = '<embed src="' + url + '#toolbar=0">'
+    } else {
+      var viewer = '<img src="' + url + '">'
+    }
     // Create popup
     tippy(object, {
       content: viewer,
@@ -166,6 +197,9 @@ function previewGoogleDocs(object) {
   if (url === 'invalid') {
     // Show error message
     createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
   } else {
     log('Found Google Docs link: ' + url)
     // Find the file ID
@@ -203,54 +237,131 @@ function previewGoogleDocs(object) {
 // Detect links for previews
 function loadDOM() {
 
-  // Video links
+  // Video files
   var videoLinks = [
     'a[href$=".webm"]',
+    'a[href$=".WEBM"]',
     'a[href$=".mp4"]',
+    'a[href$=".MP4"]',
     'a[href$=".m4v"]',
+    'a[href$=".M4V"]',
     'a[href$=".ogg"]',
+    'a[href$=".OGG"]',
     'a[href$=".ogv"]',
+    'a[href$=".OGV"]',
     'a[href$=".gifv"]',
+    'a[href$=".GIFV"]',
   ]
 
-  // Audio links
+  // Audio files
   var audioLinks = [
     'a[href$=".mp3"]',
+    'a[href$=".MP3"]',
     'a[href$=".m4a"]',
+    'a[href$=".M4A"]',
     'a[href$=".oga"]',
+    'a[href$=".OGA"]',
     'a[href$=".wav"]',
+    'a[href$=".WAV"]'
   ]
 
-  // Document links
-  var docLinks = [
+  // Documents that have to be rendered by the Docs/Office viewer
+  var officeLinks = [
     'a[href$=".doc"]',
+    'a[href$=".DOC"]',
     'a[href$=".docx"]',
+    'a[href$=".DOCX"]',
     'a[href$=".xls"]',
+    'a[href$=".XLS"]',
     'a[href$=".xlsx"]',
+    'a[href$=".XLSX"]',
     'a[href$=".ppt"]',
+    'a[href$=".PPT"]',
     'a[href$=".pptx"]',
+    'a[href$=".PPTX"]',
     'a[href$=".rtf"]',
+    'a[href$=".RTF"]'
   ]
 
-  // PDF links
-  var pdfLinks = ['a[href$=".pdf"]']
+  // Documents and images that can be rendered by the browser
+  var docLinks = [
+    'a[href$=".pdf"]',
+    'a[href$=".PDF"]',
+    'a[href$=".txt"]',
+    'a[href$=".TXT"]',
+    'a[href$=".jpeg"]',
+    'a[href$=".JPEG"]',
+    'a[href$=".jpg"]',
+    'a[href$=".JPG"]',
+    'a[href$=".png"]',
+    'a[href$=".PNG"]',
+    'a[href$=".apng"]',
+    'a[href$=".APNG"]',
+    'a[href$=".svg"]',
+    'a[href$=".SVG"]',
+    'a[href$=".gif"]',
+    'a[href$=".GIF"]',
+    'a[href$=".ico"]',
+    'a[href$=".ICO"]',
+    'a[href$=".bmp"]',
+    'a[href$=".BMP"]'
+  ]
 
   // Google Docs links
-  var googleLinks = ['a[href^="https://docs.google.com/d"],a[href^="https://drive.google.com/open"]']
+  var googleLinks = [
+    'a[href^="https://docs.google.com/d"]',
+    'a[href^="https://drive.google.com/open"]'
+  ]
+
+  // Files that can only be renderd by Google Docs viewer
+  // Source: https://gist.github.com/tzmartin/1cf85dc3d975f94cfddc04bc0dd399be#google-docs-viewer
+  var miscLinks = [
+    'a[href$=".pages"]',
+    'a[href$=".PAGES"]',
+    'a[href$=".ai"]',
+    'a[href$=".AI"]',
+    'a[href$=".psd"]',
+    'a[href$=".PSD"]',
+    'a[href$=".tiff"]',
+    'a[href$=".TIFF"]',
+    'a[href$=".dxf"]',
+    'a[href$=".DXF"]',
+    'a[href$=".eps"]',
+    'a[href$=".EPS"]',
+    'a[href$=".ps"]',
+    'a[href$=".PS"]',
+    'a[href$=".ttf"]',
+    'a[href$=".TTF"]',
+    'a[href$=".xps"]',
+    'a[href$=".XPS"]',
+    'a[href$=".zip"]',
+    'a[href$=".ZIP"]',
+    'a[href$=".rar"]',
+    'a[href$=".RAR"]',
+  ]
 
   // Generate previews
+
   document.querySelectorAll(videoLinks.toString()).forEach(function (link) {
     previewVideo(link)
   })
+
   document.querySelectorAll(audioLinks.toString()).forEach(function (link) {
     previewAudio(link)
   })
+
+  document.querySelectorAll(officeLinks.toString()).forEach(function (link) {
+    previewOfficeDocument(link)
+  })
+
   document.querySelectorAll(docLinks.toString()).forEach(function (link) {
     previewDocument(link)
   })
-  document.querySelectorAll(pdfLinks.toString()).forEach(function (link) {
-    previewPDF(link)
+
+  document.querySelectorAll(miscLinks.toString()).forEach(function (link) {
+    previewMiscDocument(link)
   })
+
   document.querySelectorAll(googleLinks.toString()).forEach(function (link) {
     previewGoogleDocs(link)
   })

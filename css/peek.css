@@ -2,13 +2,15 @@
     padding: .30rem .30rem 0 .30rem !important;
 }
 
-.peek-theme video, .peek-theme audio {
+.peek-theme video, .peek-theme audio, .peek-theme img {
     border-radius: .25rem !important;
 }
 
-.peek-theme video {
+.peek-theme video, .peek-theme img {
     max-width: 350px !important;
     max-height: 350px !important;
+    min-width: 100px !important;
+    min-height: 100px !important;
 }
 
 .peek-theme audio {
@@ -22,4 +24,5 @@
 .peek-theme embed {
     width: 350px;
     height: 350px;
+    background: #FFFFFF !important;
 }
