@@ -34,6 +34,7 @@ function checkProtocol(url) {
 function processURL(url) {
   // Regex to parse Internet Archive URLs: https://regex101.com/r/4F12w7/3
   var regex = /(?:web\.archive\.org\/web\/)(\d*)(\/)(.*)/
+  // Fix Internet Archive links
   if (url.includes('//web.archive.org/')) {
     // Get date
     var date = regex.exec(url)[1]
@@ -46,6 +47,10 @@ function processURL(url) {
   img.src = url
   url = img.src
   img.src = null
+  // Fix Imgur links
+  if ((url.includes('http://')) && (url.includes('imgur.com'))) {
+    url = url.replace('http://', 'https://')
+  }
   // Don't continue if checkProtocol returns false
   if (checkProtocol(url)) {
     // Don't continue if the link already has a tooltip, or if the link is a page on Wikimedia
@@ -79,6 +84,10 @@ function previewVideo(object) {
     createErrorPreview(object)
   } else {
     log('Found video link: ' + url)
+    // Allow playback of Imgur GIFV links
+    if ((url.endsWith('.gifv')) && (url.includes("imgur.com"))) {
+			url = url.replace(".gifv", ".mp4");
+		}
     // Create video player
     var player = '<video controls muted controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video>'
     // Create popup
@@ -201,6 +210,7 @@ function loadDOM() {
     'a[href$=".m4v"]',
     'a[href$=".ogg"]',
     'a[href$=".ogv"]',
+    'a[href$=".gifv"]',
   ]
 
   // Audio links
