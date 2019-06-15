@@ -139,7 +139,7 @@ function previewPDF(object) {
   } else {
     log('Found PDF link: ' + url)
     // Render the PDF with browser's own viewer
-    var viewer = '<embed src="' + url + '">'
+    var viewer = '<embed src="' + url + '#toolbar=0">'
     // Create popup
     tippy(object, {
       content: viewer,
