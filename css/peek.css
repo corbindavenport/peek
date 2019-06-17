@@ -1,5 +1,7 @@
 .peek-theme {
-    padding: .30rem .30rem 0 .30rem !important;
+    padding: .30rem !important;
+    width: fit-content !important;
+    height: fit-content !important;
 }
 
 .peek-theme video, .peek-theme audio, .peek-theme img {
@@ -7,8 +9,8 @@
 }
 
 .peek-theme video, .peek-theme img {
-    max-width: 350px !important;
-    max-height: 350px !important;
+    max-width: 320px !important;
+    max-height: 320px !important;
     min-width: 100px !important;
     min-height: 100px !important;
 }
@@ -22,7 +24,7 @@
 }
 
 .peek-theme embed {
-    width: 350px;
-    height: 350px;
+    width: 320px;
+    height: 320px;
     background: #FFFFFF !important;
 }

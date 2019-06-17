@@ -1,6 +1,9 @@
 // Create array for rendered URLs on the page
 var renderedPreviews = []
 
+// Create global doc viewer setting
+var docViewer
+
 // Reset badge icon
 chrome.runtime.sendMessage({ method: 'resetIcon', key: '' })
 
@@ -134,6 +137,7 @@ function previewAudio(object) {
 }
 
 function previewOfficeDocument(object) {
+  console.log(docViewer)
   var url = DOMPurify.sanitize(object.getAttribute('href'))
   url = processURL(url)
   if (url === 'invalid') {
@@ -144,7 +148,19 @@ function previewOfficeDocument(object) {
     return
   } else {
     log('Found Office document link: ' + url)
-    // TODO
+    if (docViewer === 'google') {
+      var viewer = '<embed src="https://docs.google.com/gview?url=' + encodeURI(url) + '&embedded=true">'
+    } else if (docViewer === 'office') {
+      var viewer = '<embed src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '">'
+    }
+    // Create popup
+    tippy(object, {
+      content: viewer,
+      interactive: true,
+      arrow: true,
+      theme: 'peek',
+      delay: [500, 500]
+    })
   }
 }
 
@@ -159,7 +175,14 @@ function previewMiscDocument(object) {
     return
   } else {
     log('Found document link: ' + url)
-    // TODO
+    var viewer = '<embed src="https://drive.google.com/viewerng/viewer?url=' + encodeURI(url) + '&embedded=true">'
+    tippy(object, {
+      content: viewer,
+      interactive: true,
+      arrow: true,
+      theme: 'peek',
+      delay: [500, 500]
+    })
   }
 }
 
@@ -369,4 +392,9 @@ function loadDOM() {
 }
 
 // Initialize Peek on page load
-loadDOM()
+chrome.storage.sync.get({
+  docViewer: 'google'
+}, function(data) {
+  docViewer = data.docViewer
+  loadDOM()
+})
