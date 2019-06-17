@@ -137,7 +137,6 @@ function previewAudio(object) {
 }
 
 function previewOfficeDocument(object) {
-  console.log(docViewer)
   var url = DOMPurify.sanitize(object.getAttribute('href'))
   url = processURL(url)
   if (url === 'invalid') {
@@ -154,28 +153,6 @@ function previewOfficeDocument(object) {
       var viewer = '<embed src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '">'
     }
     // Create popup
-    tippy(object, {
-      content: viewer,
-      interactive: true,
-      arrow: true,
-      theme: 'peek',
-      delay: [500, 500]
-    })
-  }
-}
-
-function previewMiscDocument(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else {
-    log('Found document link: ' + url)
-    var viewer = '<embed src="https://drive.google.com/viewerng/viewer?url=' + encodeURI(url) + '&embedded=true">'
     tippy(object, {
       content: viewer,
       interactive: true,
@@ -254,6 +231,35 @@ function previewGoogleDocs(object) {
 			renderedPreviews.splice(renderedPreviews.indexOf(url), 1)
 			chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() })
 		}
+  }
+}
+
+function previewiCloud(object) {
+  var url = DOMPurify.sanitize(object.getAttribute('href'))
+  url = processURL(url)
+  if (url === 'invalid') {
+    // Show error message
+    createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
+  } else {
+    log('Found iCloud link: ' + url)
+    // Regex to parse iCloud link: https://regex101.com/r/IM4eoX/1
+    var regex = /(?:(pages|numbers|keynote))(?:\/)(.*)(?:\#|\/)/
+    // Get app name ("numbers", "keynote", etc.)
+    var app = regex.exec(url)[1]
+    // Get file ID
+    var id = regex.exec(url)[2]
+    var viewer = '<embed src="https://www.icloud.com/' + app + '/' + id + '?embed=true">'
+    // Create popup
+    tippy(object, {
+      content: viewer,
+      interactive: true,
+      arrow: true,
+      theme: 'peek',
+      delay: [500, 500]
+    })
   }
 }
 
@@ -336,31 +342,11 @@ function loadDOM() {
     'a[href^="https://drive.google.com/open"]'
   ]
 
-  // Files that can only be renderd by Google Docs viewer
-  // Source: https://gist.github.com/tzmartin/1cf85dc3d975f94cfddc04bc0dd399be#google-docs-viewer
-  var miscLinks = [
-    'a[href$=".pages"]',
-    'a[href$=".PAGES"]',
-    'a[href$=".ai"]',
-    'a[href$=".AI"]',
-    'a[href$=".psd"]',
-    'a[href$=".PSD"]',
-    'a[href$=".tiff"]',
-    'a[href$=".TIFF"]',
-    'a[href$=".dxf"]',
-    'a[href$=".DXF"]',
-    'a[href$=".eps"]',
-    'a[href$=".EPS"]',
-    'a[href$=".ps"]',
-    'a[href$=".PS"]',
-    'a[href$=".ttf"]',
-    'a[href$=".TTF"]',
-    'a[href$=".xps"]',
-    'a[href$=".XPS"]',
-    'a[href$=".zip"]',
-    'a[href$=".ZIP"]',
-    'a[href$=".rar"]',
-    'a[href$=".RAR"]',
+  // iCloud links (Apple only allows Keynote files to be embedded right now)
+  var appleLinks = [
+    //'a[href^="https://www.icloud.com/pages/"]',
+    //'a[href^="https://www.icloud.com/numbers/"]',
+    'a[href^="https://www.icloud.com/keynote/"]',
   ]
 
   // Generate previews
@@ -381,12 +367,12 @@ function loadDOM() {
     previewDocument(link)
   })
 
-  document.querySelectorAll(miscLinks.toString()).forEach(function (link) {
-    previewMiscDocument(link)
-  })
-
   document.querySelectorAll(googleLinks.toString()).forEach(function (link) {
     previewGoogleDocs(link)
+  })
+
+  document.querySelectorAll(appleLinks.toString()).forEach(function (link) {
+    previewiCloud(link)
   })
 
 }
