@@ -1,27 +1,31 @@
 Peek
 ================
-Peek is a browser extension that lets you preview dozens of types of documents before you download them. Just hover over a file's link, and Peek will display an interactive preview of the file instantly. Peek also allows you to expand a preview to a new browser window for easier viewing.
+Peek is a browser extension that lets you preview dozens of types of documents before you download them. Just hover over a file's link, and Peek will display an interactive preview of the file instantly.
 
-Peek supports previews for the following file formats:
+Peek can create previews for the following file formats:
 
-* PDF and RTF Files
+* PDF, TXT, RTF documents
 * Word Documents (.doc, .docx)
 * Excel Documents (.xls, .xlsx)
 * PowerPoint Presentations (.ppt, .pptx)
 * WebM, MP4, GIFV, and OGG/OGV Video
 * MP3 and WAV Audio
+* JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images
 
-In addition to direct file links, Peek also supports previewing links to public Google Docs files, Imgur GIFV links, and Gfycat links.
+Peek can also show documents hosted on Google Docs and Apple iCloud. However, iCloud support is limited to Keynote files, as Apple doesn't allow other documents to be embedded.
 
 [![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Opera](https://corbin.io/img/opera-button.png)](https://addons.opera.com/en/extensions/details/peek/)
 
 ---------------------------------------------------------
 
-__New in Peek 2.2.1:__
+__New in Peek 3.0:__
 
-- Added Patreon link
-- Updated jQuery dependency to latest version
-- Minor bug fixes
+- Rewritten codebase using [Tippy.js](https://atomiks.github.io/tippyjs/) for popups
+- Added previews for JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images
+- Added previews for plain text (.txt) files
+- Improved PDF previews on Chrome
+- Added previews for iCloud links (currently limited to Keynote files)
+- Removed previews for Gfycat and Giphy links
 
 ---------------------------------------------------------
 

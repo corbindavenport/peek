@@ -5,7 +5,10 @@
 	"author": "Corbin Davenport",
 	"description": "Preview documents, videos, music and more with a mouse hover.",
 	"homepage_url": "https://github.com/corbindavenport/peek",
-	"options_page": "settings.html",
+	"options_ui": {
+		"page": "settings.html",
+		"open_in_tab": true
+	},
 	"permissions": [
 		"http://*/*",
 		"https://*/*",
@@ -14,12 +17,6 @@
 	"background": {
 		"scripts": ["js/background.js"]
 	},
-	"web_accessible_resources": [
-		"js/*",
-		"css/*",
-		"img/*",
-		"settings.html"
-	],
 	"browser_action": {
 	  "default_icon": {
 		"19": "img/icon19.png",
