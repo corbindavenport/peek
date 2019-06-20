@@ -22,7 +22,7 @@
 		"19": "img/icon19.png",
 		"38": "img/icon38.png"
 	  },
-	  "default_title": "Peek hasn't loaded on this page yet."
+	  "default_title": "Peek hasn't loaded in this tab. Try refreshing the page."
 	},
 	"content_scripts": [
 		{

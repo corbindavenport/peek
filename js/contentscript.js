@@ -92,18 +92,14 @@ function previewVideo(object) {
     log('Found video link: ' + url)
     // Allow playback of Imgur GIFV links
     if ((url.endsWith('.gifv')) && (url.includes("imgur.com"))) {
-			url = url.replace(".gifv", ".mp4");
-		}
+      url = url.replace(".gifv", ".mp4");
+    }
     // Create video player
     var player = '<video controls muted controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video>'
     // Create popup
     tippy(object, {
       content: player,
-      interactive: true,
-      arrow: true,
-      theme: 'peek',
-      delay: [500, 500],
-      onShow: function(instance) {
+      onShow: function (instance) {
         // Play the video after the popup appears
         videoEl = instance.popper.querySelector('video')
         videoEl.play()
@@ -127,11 +123,7 @@ function previewAudio(object) {
     var player = '<audio controls controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video>'
     // Create popup
     tippy(object, {
-      content: player,
-      interactive: true,
-      arrow: true,
-      theme: 'peek',
-      delay: [500, 500]
+      content: player
     })
   }
 }
@@ -154,11 +146,7 @@ function previewOfficeDocument(object) {
     }
     // Create popup
     tippy(object, {
-      content: viewer,
-      interactive: true,
-      arrow: true,
-      theme: 'peek',
-      delay: [500, 500]
+      content: viewer
     })
   }
 }
@@ -175,18 +163,21 @@ function previewDocument(object) {
   } else {
     log('Found document link: ' + url)
     // Render file with the browser's own viewer
-    if (url.toLowerCase().endsWith('.pdf') || url.toLowerCase().endsWith('.txt')) {
-      var viewer = '<embed src="' + url + '#toolbar=0">'
+    if (url.toLowerCase().endsWith('.pdf')) {
+      // Set options for PDF viewer
+      if (navigator.userAgent.includes('Firefox')) {
+        var viewer = '<embed src="' + url + '#zoom=page-width">'
+      } else {
+        var viewer = '<embed src="' + url + '#toolbar=0">'
+      }
+    } else if (url.toLowerCase().endsWith('.txt')) {
+      var viewer = '<embed src="' + url + '">'
     } else {
       var viewer = '<img src="' + url + '">'
     }
     // Create popup
     tippy(object, {
-      content: viewer,
-      interactive: true,
-      arrow: true,
-      theme: 'peek',
-      delay: [500, 500]
+      content: viewer
     })
   }
 }
@@ -204,33 +195,29 @@ function previewGoogleDocs(object) {
     log('Found Google Docs link: ' + url)
     // Find the file ID
     var docsid;
-		if (url.indexOf("/edit") >= 0) {
-			docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/edit")); // Most Google Docs files
-		} else if (url.indexOf("/open") >= 0) {
-			docsid = url.substring(url.lastIndexOf("/open?id=") + 9); // Most Google Docs files
-		} else if (url.indexOf("/preview") >= 0) {
-			docsid = url.substring(url.lastIndexOf("/document/d/") + 12, url.lastIndexOf("/preview")); // Docs preview links
-		} else if (url.indexOf("/viewer") >= 0) {
-			docsid = url.substring(url.lastIndexOf("srcid=") + 6, url.lastIndexOf("&")); // Docs viewer links
-		} else {
-			docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/viewform")); // Forms
+    if (url.indexOf("/edit") >= 0) {
+      docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/edit")); // Most Google Docs files
+    } else if (url.indexOf("/open") >= 0) {
+      docsid = url.substring(url.lastIndexOf("/open?id=") + 9); // Most Google Docs files
+    } else if (url.indexOf("/preview") >= 0) {
+      docsid = url.substring(url.lastIndexOf("/document/d/") + 12, url.lastIndexOf("/preview")); // Docs preview links
+    } else if (url.indexOf("/viewer") >= 0) {
+      docsid = url.substring(url.lastIndexOf("srcid=") + 6, url.lastIndexOf("&")); // Docs viewer links
+    } else {
+      docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/viewform")); // Forms
     }
     // Render the popup
     if (docsid != 'ht') { // Fix for bug where Google search results would generate preview for mis-matched Docs link
-			// Create embed
+      // Create embed
       var viewer = '<embed src="https://docs.google.com/viewer?srcid=' + docsid + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true">'
       // Create popup
       tippy(object, {
-        content: viewer,
-        interactive: true,
-        arrow: true,
-        theme: 'peek',
-        delay: [500, 500]
+        content: viewer
       })
-		} else {
-			renderedPreviews.splice(renderedPreviews.indexOf(url), 1)
-			chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() })
-		}
+    } else {
+      renderedPreviews.splice(renderedPreviews.indexOf(url), 1)
+      chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() })
+    }
   }
 }
 
@@ -254,11 +241,7 @@ function previewiCloud(object) {
     var viewer = '<embed src="https://www.icloud.com/' + app + '/' + id + '?embed=true">'
     // Create popup
     tippy(object, {
-      content: viewer,
-      interactive: true,
-      arrow: true,
-      theme: 'peek',
-      delay: [500, 500]
+      content: viewer
     })
   }
 }
@@ -380,7 +363,23 @@ function loadDOM() {
 // Initialize Peek on page load
 chrome.storage.sync.get({
   docViewer: 'google'
-}, function(data) {
+}, function (data) {
+  // Read preference for document viewer from settings
   docViewer = data.docViewer
+  // Always render previews below link on Firefox, otherwise the positioning is off
+  if (navigator.userAgent.includes('Firefox')) {
+    var placementSetting = 'bottom'
+  } else {
+    var placementSetting = 'top'
+  }
+  // Set defaults for previews
+  tippy.setDefaults({
+    arrow: true,
+    delay: [500, 500],
+    interactive: true,
+    placement: placementSetting,
+    theme: 'peek'
+  })
+  // Initialize previews
   loadDOM()
 })

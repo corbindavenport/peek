@@ -37,8 +37,11 @@ chrome.runtime.onInstalled.addListener(function (details) {
   })
 })
 
+// Open settings page when the Peek toolbar button is clicked
 chrome.browserAction.onClicked.addListener(function () {
-  window.open(chrome.extension.getURL('settings.html'))
+  chrome.tabs.create({
+    url:chrome.extension.getURL('settings.html')
+  })
 })
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -61,14 +64,20 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.tabs.onActivated.addListener(function (tabId, changeInfo, tab) {
   // Check number of previews from contentscript.js whenever tab changes
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, { method: 'getPreviews' }, function (response) {
-      if ((response == undefined) || (response.data == 0)) {
-        chrome.browserAction.setBadgeText({ text: '' })
-        chrome.browserAction.setTitle({ title: 'No previews on this page.\n\nClick the icon to open Peek settings.' })
-      } else {
-        chrome.browserAction.setBadgeText({ text: response.data })
-        chrome.browserAction.setTitle({ title: 'Peek has rendered ' + response.data + ' previews on this page.\n\nClick the icon to open Peek settings.' })
-      }
-    })
+    try {
+      chrome.tabs.sendMessage(tabs[0].id, { method: 'getPreviews' }, function (response) {
+        if ((response == undefined) || (response.data == 0)) {
+          chrome.browserAction.setBadgeText({ text: '' })
+          chrome.browserAction.setTitle({ title: 'No previews on this page.\n\nClick the icon to open Peek settings.' })
+        } else {
+          chrome.browserAction.setBadgeText({ text: response.data })
+          chrome.browserAction.setTitle({ title: 'Peek has rendered ' + response.data + ' previews on this page.\n\nClick the icon to open Peek settings.' })
+        }
+      })
+    } catch {
+      // Silently fail if communication can't be established with the content script
+      chrome.browserAction.setBadgeText({ text: '' })
+      chrome.browserAction.setTitle({ title: "Peek hasn't loaded in this tab. Try refreshing the page." })
+    }
   })
 })
