@@ -19,6 +19,14 @@ function log(string) {
   console.log("%c[Peek] " + string, "color: #4078c0")
 }
 
+// Function for adding 'Powered by Peek' label to popup HTML
+function addToolbar(html) {
+  // Get settings gear icon
+  var toolbar = '<div class="peek-info-banner">Powered by Peek</div>'
+  html += toolbar
+  return html
+}
+
 // Prevent mixed protocol alerts in Chrome
 function checkProtocol(url) {
   if (url.includes('https:')) {
@@ -96,6 +104,8 @@ function previewVideo(object) {
     }
     // Create video player
     var player = '<video controls muted controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video>'
+    // Add toolbar
+    player = addToolbar(player)
     // Create popup
     tippy(object, {
       content: player,
@@ -120,7 +130,9 @@ function previewAudio(object) {
   } else {
     log('Found audio link: ' + url)
     // Create audio player
-    var player = '<audio controls controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video>'
+    var player = '<audio controls controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></audio>'
+    // Add toolbar
+    player = addToolbar(player)
     // Create popup
     tippy(object, {
       content: player
@@ -144,6 +156,8 @@ function previewOfficeDocument(object) {
     } else if (docViewer === 'office') {
       var viewer = '<embed src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '">'
     }
+    // Add toolbar
+    viewer = addToolbar(viewer)
     // Create popup
     tippy(object, {
       content: viewer
@@ -175,6 +189,8 @@ function previewDocument(object) {
     } else {
       var viewer = '<img src="' + url + '">'
     }
+    // Add toolbar
+    viewer = addToolbar(viewer)
     // Create popup
     tippy(object, {
       content: viewer
@@ -196,20 +212,22 @@ function previewGoogleDocs(object) {
     // Find the file ID
     var docsid;
     if (url.indexOf("/edit") >= 0) {
-      docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/edit")); // Most Google Docs files
+      docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/edit")) // Most Google Docs files
     } else if (url.indexOf("/open") >= 0) {
-      docsid = url.substring(url.lastIndexOf("/open?id=") + 9); // Most Google Docs files
+      docsid = url.substring(url.lastIndexOf("/open?id=") + 9) // Most Google Docs files
     } else if (url.indexOf("/preview") >= 0) {
-      docsid = url.substring(url.lastIndexOf("/document/d/") + 12, url.lastIndexOf("/preview")); // Docs preview links
+      docsid = url.substring(url.lastIndexOf("/document/d/") + 12, url.lastIndexOf("/preview")) // Docs preview links
     } else if (url.indexOf("/viewer") >= 0) {
-      docsid = url.substring(url.lastIndexOf("srcid=") + 6, url.lastIndexOf("&")); // Docs viewer links
+      docsid = url.substring(url.lastIndexOf("srcid=") + 6, url.lastIndexOf("&")) // Docs viewer links
     } else {
-      docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/viewform")); // Forms
+      docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/viewform")) // Forms
     }
     // Render the popup
     if (docsid != 'ht') { // Fix for bug where Google search results would generate preview for mis-matched Docs link
       // Create embed
       var viewer = '<embed src="https://docs.google.com/viewer?srcid=' + docsid + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true">'
+      // Add toolbar
+      viewer = addToolbar(viewer)
       // Create popup
       tippy(object, {
         content: viewer
@@ -239,6 +257,8 @@ function previewiCloud(object) {
     // Get file ID
     var id = regex.exec(url)[2]
     var viewer = '<embed src="https://www.icloud.com/' + app + '/' + id + '?embed=true">'
+    // Add toolbar
+    viewer = addToolbar(viewer)
     // Create popup
     tippy(object, {
       content: viewer

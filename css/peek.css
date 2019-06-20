@@ -10,7 +10,7 @@
 
 .peek-theme video, .peek-theme img {
     max-width: 320px !important;
-    max-height: 320px !important;
+    max-height: 280px !important;
     min-width: 100px !important;
     min-height: 100px !important;
 }
@@ -25,6 +25,17 @@
 
 .peek-theme embed {
     width: 320px;
-    height: 320px;
+    height: 280px;
     background: #FFFFFF !important;
+}
+
+.peek-theme .peek-info-banner {
+    display: block !important;
+    text-align: left !important;
+    margin-top: 4px !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", "Arial", sans-serif !important;
+    font-weight: normal !important;
+    font-size: 12px !important;
 }

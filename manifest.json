@@ -3,7 +3,7 @@
 	"name": "Peek",
 	"version": "3.0",
 	"author": "Corbin Davenport",
-	"description": "Preview documents, videos, music and more with a mouse hover.",
+	"description": "Preview documents, videos, music, and more with a mouse hover.",
 	"homepage_url": "https://github.com/corbindavenport/peek",
 	"options_ui": {
 		"page": "settings.html",
@@ -13,6 +13,10 @@
 		"http://*/*",
 		"https://*/*",
 		"storage"
+	],
+	"web_accessible_resources": [
+		"img/*",
+		"settings.html"
 	],
 	"background": {
 		"scripts": ["js/background.js"]
