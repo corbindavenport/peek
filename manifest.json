@@ -14,10 +14,6 @@
 		"https://*/*",
 		"storage"
 	],
-	"web_accessible_resources": [
-		"img/*",
-		"settings.html"
-	],
 	"background": {
 		"scripts": ["js/background.js"]
 	},
