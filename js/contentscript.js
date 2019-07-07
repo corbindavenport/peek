@@ -347,7 +347,12 @@ function loadDOM() {
 
   // Google Docs links
   var googleLinks = [
-    'a[href^="https://docs.google.com/d"]',
+    'a[href^="https://docs.google.com/d/"]',
+    'a[href^="https://docs.google.com/document/d/"]',
+    'a[href^="https://docs.google.com/presentation/d/"]',
+    'a[href^="https://docs.google.com/spreadsheets/d/"]',
+    'a[href^="https://docs.google.com/drawings/d/"]',
+    'a[href^="https://docs.google.com/forms/d/"]',
     'a[href^="https://drive.google.com/open"]'
   ]
 
