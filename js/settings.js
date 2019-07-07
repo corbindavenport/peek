@@ -1,34 +1,17 @@
-// Read settings from localStorage
-if (localStorage.getItem("docviewer") === "google") {
-  $("input[value='google']").prop("checked", true);
-} else {
-  $("input[value='office']").prop("checked", true);
-}
-if (localStorage.getItem("gifpreview") === "on") {
-  $("input[value='on']").prop("checked", true);
-} else {
-  $("input[value='off']").prop("checked", true);
-}
-if (localStorage.getItem("console") === "true") {
-  $("input[value='console']").prop("checked", true);
-}
-if (localStorage.getItem("previewlimit") === "true") {
-  $("input[value='previewlimit']").prop("checked", true);
-}
+// Read settings from storage
+chrome.storage.sync.get({
+  docViewer: 'google'
+}, function (data) {
+  document.querySelector('#docviewer input[value="' + data.docViewer + '"]').checked = true
+})
 
 // Save settings after any input change
-$(document).on('change', "input", function () {
-  localStorage["docviewer"] = $("#docviewer input[type='radio']:checked").val();
-  if ($("#console input").is(":checked")) {
-    localStorage["console"] = "true";
-  } else {
-    localStorage["console"] = "false";
-  }
-  if ($("#previewlimit input").is(":checked")) {
-    localStorage["previewlimit"] = "true";
-  } else {
-    localStorage["previewlimit"] = "false";
-  }
+document.querySelectorAll('input').forEach(function(el) {
+  el.addEventListener('change', function() {
+    chrome.storage.sync.set({
+      docViewer: document.querySelector('#docviewer input:checked').value
+    })
+  })
 })
 
 // Show instructions for leaving a review based on the browser being used

@@ -1,0 +1,40 @@
+.peek-theme {
+    padding: .30rem !important;
+    width: fit-content !important;
+    height: fit-content !important;
+}
+
+.peek-theme video, .peek-theme audio, .peek-theme img {
+    border-radius: .25rem !important;
+}
+
+.peek-theme video, .peek-theme img {
+    max-width: 320px !important;
+    max-height: 280px !important;
+    min-width: 100px !important;
+    min-height: 100px !important;
+}
+
+.peek-theme audio {
+    width: 300px !important;
+}
+
+.peek-theme video:focus, .peek-theme audio:focus {
+    outline: 0 !important;
+}
+
+.peek-theme embed {
+    width: 320px;
+    height: 280px;
+    background: #FFFFFF !important;
+}
+
+.peek-theme .peek-info-banner {
+    display: block !important;
+    text-align: left !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", "Arial", sans-serif !important;
+    font-weight: normal !important;
+    font-size: 12px !important;
+}
