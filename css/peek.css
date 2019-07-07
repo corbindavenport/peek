@@ -32,7 +32,6 @@
 .peek-theme .peek-info-banner {
     display: block !important;
     text-align: left !important;
-    margin-top: 4px !important;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
     "Droid Sans", "Helvetica Neue", "Arial", sans-serif !important;

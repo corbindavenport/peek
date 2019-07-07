@@ -32,7 +32,7 @@ function checkProtocol(url) {
   if (url.includes('https:')) {
     // HTTPS link on HTTP and HTTPS pages
     return true
-  } else if (url.includes('http:') && window.location.protocol === 'http:') {
+  } else if (url.startsWith('http:') && window.location.protocol === 'http:') {
     // HTTP link on HTTP page
     return true
   } else {
@@ -43,6 +43,10 @@ function checkProtocol(url) {
 
 // Find the full path of a given URL
 function processURL(url) {
+  // Fix relative URLs
+  if (url.startsWith('/')) {
+    url = window.location.protocol + "//" + window.location.host + url
+  }
   // Regex to parse Internet Archive URLs: https://regex101.com/r/4F12w7/3
   var regex = /(?:web\.archive\.org\/web\/)(\d*)(\/)(.*)/
   // Fix Internet Archive links
@@ -54,10 +58,6 @@ function processURL(url) {
     // Append '_id' to the end of the date, so the Internet Archive returns the original file and not an HTML file
     url = 'https://web.archive.org/web/' + date + 'id_/' + originalURL
   }
-  var img = document.createElement('img')
-  img.src = url
-  url = img.src
-  img.src = null
   // Fix Imgur links
   if ((url.includes('http://')) && (url.includes('imgur.com'))) {
     url = url.replace('http://', 'https://')
@@ -68,12 +68,18 @@ function processURL(url) {
     if ((renderedPreviews.includes(url)) || (url.includes('/wiki/File:'))) {
       return null
     } else {
+      // Get full URL
+      var img = document.createElement('img')
+      img.src = url
+      url = img.src
+      img.src = null
+      // Update toolbar icon and return URL
       renderedPreviews.push(url)
       chrome.runtime.sendMessage({ method: "changeIcon", key: renderedPreviews.length.toString() })
       return url
     }
   } else {
-    log('Cannot generate a preview for ' + url + ' because it is not served over HTTPS.')
+    log('Cannot generate a preview for ' + url + ' because it is not served over HTTPS, or it is an invalid URL.')
     return 'invalid'
   }
 }
