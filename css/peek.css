@@ -1,35 +1,46 @@
-.peek-theme {
-    padding: .30rem !important;
+.tippy-tooltip.peek-theme {
+    padding: 0 !important;
     width: fit-content !important;
     height: fit-content !important;
+    border-radius: 4px !important;
 }
 
-.peek-theme video, .peek-theme audio, .peek-theme img {
-    border-radius: .25rem !important;
+.tippy-tooltip.peek-theme .tippy-content {
+    padding: .30rem !important;
 }
 
-.peek-theme video, .peek-theme img {
+.tippy-tooltip.peek-theme video, .tippy-tooltip.peek-theme audio, .tippy-tooltip.peek-theme img .tippy-tooltip.peek-theme embed {
+    border-radius: 4px !important;
+}
+
+.tippy-tooltip.peek-theme video, .tippy-tooltip.peek-theme img {
     max-width: 320px !important;
     max-height: 280px !important;
     min-width: 100px !important;
     min-height: 100px !important;
 }
 
-.peek-theme audio {
+.tippy-tooltip.peek-theme audio {
     width: 300px !important;
 }
 
-.peek-theme video:focus, .peek-theme audio:focus {
+.tippy-tooltip.peek-theme video:focus, .tippy-tooltip.peek-theme audio:focus {
     outline: 0 !important;
 }
 
-.peek-theme embed {
+.tippy-tooltip.peek-theme embed {
     width: 320px;
     height: 280px;
     background: #FFFFFF !important;
 }
 
-.peek-theme .peek-info-banner {
+/* Show fun loading icon on embedded documents because they can take a long time to load */
+
+.tippy-tooltip.peek-theme embed[src^="https://docs.google.com/"], .tippy-tooltip.peek-theme embed[src^="https://www.icloud.com/"], .tippy-tooltip.peek-theme embed[src^="https://view.officeapps.live.com/"] {
+    background: #FFFFFF url('chrome-extension://__MSG_@@extension_id__/img/preloader.gif') no-repeat center center !important;
+}
+
+.tippy-tooltip.peek-theme .peek-info-banner {
     display: block !important;
     text-align: left !important;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -37,4 +48,5 @@
     "Droid Sans", "Helvetica Neue", "Arial", sans-serif !important;
     font-weight: normal !important;
     font-size: 12px !important;
+    margin-top: 5px !important;
 }

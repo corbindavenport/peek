@@ -404,7 +404,7 @@ chrome.storage.sync.get({
     var placementSetting = 'top'
   }
   // Set defaults for previews
-  tippy.setDefaults({
+  tippy.setDefaultProps({
     arrow: true,
     delay: [500, 500],
     interactive: true,

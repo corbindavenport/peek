@@ -1,7 +1,7 @@
 {
-"manifest_version": 2,
+	"manifest_version": 2,
 	"name": "Peek",
-	"version": "3.0",
+	"version": "3.1",
 	"author": "Corbin Davenport",
 	"description": "Preview documents, videos, music, and more with a mouse hover.",
 	"homepage_url": "https://github.com/corbindavenport/peek",
@@ -9,33 +9,48 @@
 		"page": "settings.html",
 		"open_in_tab": true
 	},
+	"web_accessible_resources": [
+		"img/preloader.gif"
+	],
 	"permissions": [
 		"http://*/*",
 		"https://*/*",
 		"storage"
 	],
 	"background": {
-		"scripts": ["js/background.js"]
+		"scripts": [
+			"js/background.js"
+		]
 	},
 	"browser_action": {
-	  "default_icon": {
-		"19": "img/icon19.png",
-		"38": "img/icon38.png"
-	  },
-	  "default_title": "Peek hasn't loaded in this tab. Try refreshing the page."
+		"default_icon": {
+			"19": "img/icon19.png",
+			"38": "img/icon38.png"
+		},
+		"default_title": "Peek hasn't loaded in this tab. Try refreshing the page."
 	},
 	"content_scripts": [
 		{
-		"matches": ["http://*/*", "https://*/*"],
-		"js": ["js/popper.min.js", "js/tippy.min.js", "js/purify.js", "js/contentscript.js"],
-		"css": ["css/peek.css"],
-		"run_at": "document_end"
+			"matches": [
+				"http://*/*",
+				"https://*/*"
+			],
+			"js": [
+				"js/popper.min.js",
+				"js/tippy-bundle.iife.min.js",
+				"js/purify.min.js",
+				"js/contentscript.js"
+			],
+			"css": [
+				"css/peek.css"
+			],
+			"run_at": "document_end"
 		}
 	],
-	"icons":{
-		"16":"img/icon16.png",
-		"32":"img/icon32.png",
-		"48":"img/icon48.png",
-		"128":"img/icon128.png"
+	"icons": {
+		"16": "img/icon16.png",
+		"32": "img/icon32.png",
+		"48": "img/icon48.png",
+		"128": "img/icon128.png"
 	}
 }
