@@ -14,7 +14,7 @@ Peek can create previews for the following file formats:
 
 Peek can also show documents hosted on Google Docs and Apple iCloud. However, iCloud support is limited to Keynote files, as Apple doesn't allow other documents to be embedded.
 
-[![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Opera](https://corbin.io/img/opera-button.png)](https://addons.opera.com/en/extensions/details/peek/)
+[![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Firefox](https://corbin.io/img/firefox-button.png)](https://addons.mozilla.org/en-US/firefox/addon/peek-preview/) [![Download for Opera](https://corbin.io/img/opera-button.png)](https://addons.opera.com/en/extensions/details/peek/)
 
 ---------------------------------------------------------
 
