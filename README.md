@@ -2,7 +2,7 @@ Peek
 ================
 Peek is a browser extension that lets you preview dozens of types of documents before you download them. Just hover over a file's link, and Peek will display an interactive preview of the file instantly.
 
-Peek can create previews for the following file formats:
+Supported file types:
 
 * PDF, TXT, RTF documents
 * Word Documents (.doc, .docx)
@@ -12,7 +12,11 @@ Peek can create previews for the following file formats:
 * MP3 and WAV Audio
 * JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images
 
-Peek can also show documents hosted on Google Docs and Apple iCloud. However, iCloud support is limited to Keynote files, as Apple doesn't allow other documents to be embedded.
+Supported websites:
+
+- Google Docs
+- Apple iCloud (Keynote only)
+- YouTube
 
 [![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Firefox](https://corbin.io/img/firefox-button.png)](https://addons.mozilla.org/en-US/firefox/addon/peek-preview/) [![Download for Opera](https://corbin.io/img/opera-button.png)](https://addons.opera.com/en/extensions/details/peek/)
 

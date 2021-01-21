@@ -211,8 +211,8 @@ function previewGoogleDocs(object) {
   } else {
     console.log('Found Google Docs link: ' + url)
     // Regex to find the document ID: https://regex101.com/r/1DciHc/2
-    var docRegEx = new RegExp(/(?:(\/d\/)|(\/open\?id=)|(srcid=))(?<docsId>.*?)(?:(\/)|(\&)|($))/gm)
-    var docId = docRegEx.exec(url)['groups']['docsId']
+    var regex = /(?:(\/d\/)|(\/open\?id=)|(srcid=))(?<docsId>.*?)(?:(\/)|(\&)|($))/
+    var docId = regex.exec(url)['groups']['docsId']
     // Render the popup
     if (docId) {
       // Create embed
@@ -241,12 +241,10 @@ function previewiCloud(object) {
     return
   } else {
     console.log('Found iCloud link: ' + url)
-    // Regex to parse iCloud link: https://regex101.com/r/IM4eoX/1
-    var regex = /(?:(pages|numbers|keynote))(?:\/)(.*)(?:\#|\/)/
-    // Get app name ("numbers", "keynote", etc.)
-    var app = regex.exec(url)[1]
-    // Get file ID
-    var id = regex.exec(url)[2]
+    // Regex to parse iCloud links: https://regex101.com/r/IM4eoX/2
+    var regex = /(?:(?<type>pages|numbers|keynote))(?:\/)(?<fileId>.*?)(?:\#|\/|$)/
+    var app = regex.exec(url)['groups']['type']
+    var id = regex.exec(url)['groups']['fileId']
     var viewer = '<embed src="https://www.icloud.com/' + app + '/' + id + '?embed=true">'
     // Add toolbar
     viewer = addToolbar(viewer)
@@ -254,6 +252,37 @@ function previewiCloud(object) {
     tippy(object, {
       content: viewer
     })
+  }
+}
+
+function previewWebVideo(object) {
+  var url = DOMPurify.sanitize(object.getAttribute('href'))
+  url = processURL(url)
+  if (url === 'invalid') {
+    // Show error message
+    createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
+  } else if (url.includes('youtube.com/') || url.includes('youtu.be/')) {
+    console.log('Found YouTube link: ' + url)
+    // Regex to find the video ID: https://regex101.com/r/qFx13n/1
+    var regex = /(?:(v?\=)|(youtu.be\/))(?<videoId>.*?)(&|$)/
+    var videoId = regex.exec(url)['groups']['videoId']
+    // Render the popup
+    if (videoId) {
+      // Create embed
+      var viewer = '<embed class="video-embed" src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0">'
+      // Add toolbar
+      viewer = addToolbar(viewer)
+      // Create popup
+      tippy(object, {
+        content: viewer
+      })
+    } else {
+      renderedPreviews.splice(renderedPreviews.indexOf(url), 1)
+      chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() })
+    }
   }
 }
 
@@ -348,6 +377,12 @@ function loadDOM() {
     'a[href^="https://www.icloud.com/keynote/"]',
   ]
 
+  // Video links
+  var webVideoLinks = [
+    'a[href^="https://www.youtube.com/watch?v="]',
+    'a[href^="https://youtu.be/oEkCCHNvel4"]',
+  ]
+
   // Generate previews
 
   document.querySelectorAll(videoLinks.toString()).forEach(function (link) {
@@ -372,6 +407,10 @@ function loadDOM() {
 
   document.querySelectorAll(appleLinks.toString()).forEach(function (link) {
     previewiCloud(link)
+  })
+
+  document.querySelectorAll(webVideoLinks.toString()).forEach(function (link) {
+    previewWebVideo(link)
   })
 
 }

@@ -34,6 +34,11 @@
     background: #FFFFFF !important;
 }
 
+.tippy-box[data-theme~='peek'] .video-embed {
+    width: 320px;
+    height: 180px;
+}
+
 .tippy-box[data-theme~='peek'] .peek-info-banner {
     display: block !important;
     text-align: left !important;
