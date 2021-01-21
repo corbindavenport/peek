@@ -39,7 +39,7 @@
 				"js/popper.min.js",
 				"js/tippy-bundle.umd.min.js",
 				"js/purify.js",
-				"js/contentscript.js"
+				"js/peek.js"
 			],
 			"css": [
 				"css/peek.css"

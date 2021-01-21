@@ -14,11 +14,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 })
 
-// Function for logging info
-function log(string) {
-  console.log("%c[Peek] " + string, "color: #4078c0")
-}
-
 // Function for adding 'Powered by Peek' label to popup HTML
 function addToolbar(html) {
   // Get settings gear icon
@@ -79,7 +74,7 @@ function processURL(url) {
       return url
     }
   } else {
-    log('Cannot generate a preview for ' + url + ' because it is not served over HTTPS, or it is an invalid URL.')
+    console.log('Cannot generate a preview for ' + url + ' because it is not served over HTTPS, or it is an invalid URL.')
     return 'invalid'
   }
 }
@@ -103,7 +98,7 @@ function previewVideo(object) {
     // If the URL is null or otherwise invalid, silently fail
     return
   } else {
-    log('Found video link: ' + url)
+    console.log('Found video link: ' + url)
     // Allow playback of Imgur GIFV links
     if ((url.endsWith('.gifv')) && (url.includes("imgur.com"))) {
       url = url.replace(".gifv", ".mp4");
@@ -134,7 +129,7 @@ function previewAudio(object) {
     // If the URL is null or otherwise invalid, silently fail
     return
   } else {
-    log('Found audio link: ' + url)
+    console.log('Found audio link: ' + url)
     // Create audio player
     var player = '<audio controls controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></audio>'
     // Add toolbar
@@ -156,7 +151,7 @@ function previewOfficeDocument(object) {
     // If the URL is null or otherwise invalid, silently fail
     return
   } else {
-    log('Found Office document link: ' + url)
+    console.log('Found Office document link: ' + url)
     if (docViewer === 'google') {
       var viewer = '<embed src="https://docs.google.com/gview?url=' + encodeURI(url) + '&embedded=true">'
     } else if (docViewer === 'office') {
@@ -181,7 +176,7 @@ function previewDocument(object) {
     // If the URL is null or otherwise invalid, silently fail
     return
   } else {
-    log('Found document link: ' + url)
+    console.log('Found document link: ' + url)
     // Render file with the browser's own viewer
     if (url.toLowerCase().endsWith('.pdf')) {
       // Set options for PDF viewer
@@ -214,24 +209,14 @@ function previewGoogleDocs(object) {
     // If the URL is null or otherwise invalid, silently fail
     return
   } else {
-    log('Found Google Docs link: ' + url)
-    // Find the file ID
-    var docsid;
-    if (url.indexOf("/edit") >= 0) {
-      docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/edit")) // Most Google Docs files
-    } else if (url.indexOf("/open") >= 0) {
-      docsid = url.substring(url.lastIndexOf("/open?id=") + 9) // Most Google Docs files
-    } else if (url.indexOf("/preview") >= 0) {
-      docsid = url.substring(url.lastIndexOf("/document/d/") + 12, url.lastIndexOf("/preview")) // Docs preview links
-    } else if (url.indexOf("/viewer") >= 0) {
-      docsid = url.substring(url.lastIndexOf("srcid=") + 6, url.lastIndexOf("&")) // Docs viewer links
-    } else {
-      docsid = url.substring(url.lastIndexOf("/d/") + 3, url.lastIndexOf("/viewform")) // Forms
-    }
+    console.log('Found Google Docs link: ' + url)
+    // Regex to find the document ID: https://regex101.com/r/1DciHc/2
+    var docRegEx = new RegExp(/(?:(\/d\/)|(\/open\?id=)|(srcid=))(?<docsId>.*?)(?:(\/)|(\&)|($))/gm)
+    var docId = docRegEx.exec(url)['groups']['docsId']
     // Render the popup
-    if (docsid != 'ht') { // Fix for bug where Google search results would generate preview for mis-matched Docs link
+    if (docId) {
       // Create embed
-      var viewer = '<embed src="https://docs.google.com/viewer?srcid=' + docsid + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true">'
+      var viewer = '<embed src="https://docs.google.com/viewer?srcid=' + docId + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true">'
       // Add toolbar
       viewer = addToolbar(viewer)
       // Create popup
@@ -255,7 +240,7 @@ function previewiCloud(object) {
     // If the URL is null or otherwise invalid, silently fail
     return
   } else {
-    log('Found iCloud link: ' + url)
+    console.log('Found iCloud link: ' + url)
     // Regex to parse iCloud link: https://regex101.com/r/IM4eoX/1
     var regex = /(?:(pages|numbers|keynote))(?:\/)(.*)(?:\#|\/)/
     // Get app name ("numbers", "keynote", etc.)
