@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Peek",
-	"version": "3.1",
+	"version": "4.0",
 	"author": "Corbin Davenport",
 	"description": "Preview documents, videos, music, and more with a mouse hover.",
 	"homepage_url": "https://github.com/corbindavenport/peek",
@@ -37,8 +37,8 @@
 			],
 			"js": [
 				"js/popper.min.js",
-				"js/tippy-bundle.iife.min.js",
-				"js/purify.min.js",
+				"js/tippy-bundle.umd.min.js",
+				"js/purify.js",
 				"js/contentscript.js"
 			],
 			"css": [

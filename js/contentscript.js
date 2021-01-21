@@ -406,9 +406,12 @@ chrome.storage.sync.get({
   // Set defaults for previews
   tippy.setDefaultProps({
     arrow: true,
+    allowHTML: true,
     delay: [500, 500],
     interactive: true,
     placement: placementSetting,
+    maxWidth: 600,
+    maxHeight: 600,
     theme: 'peek'
   })
   // Initialize previews
