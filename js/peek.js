@@ -272,7 +272,7 @@ function previewWebVideo(object) {
     // Render the popup
     if (videoId) {
       // Create embed
-      var viewer = '<embed class="video-embed" src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0">'
+      var viewer = '<embed class="video-embed" src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1">'
       // Add toolbar
       viewer = addToolbar(viewer)
       // Create popup
@@ -282,6 +282,50 @@ function previewWebVideo(object) {
     } else {
       renderedPreviews.splice(renderedPreviews.indexOf(url), 1)
       chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() })
+    }
+  }
+}
+
+function previewReddit(object) {
+  var url = DOMPurify.sanitize(object.getAttribute('href'))
+  url = processURL(url)
+  if (url === 'invalid') {
+    // Show error message
+    createErrorPreview(object)
+  } else if (!url) {
+    // If the URL is null or otherwise invalid, silently fail
+    return
+  } else if (url.includes('redd.it/') || url.includes('/comments/')) {
+    console.log('Found Reddit link: ' + url)
+    // Regex to parse Reddit links: https://regex101.com/r/nVmy7L/1
+    var regex = /(?:(comments\/)|(redd.it\/))(?<postID>.*?)(?:\/|&|$)/
+    var postID = regex.exec(url)['groups']['postID']
+    if (postID) {
+      // Create popup
+      tippy(object, {
+        content: 'Loading preview...',
+        maxWidth: 300,
+        onShow(instance) {
+          // Make network request only after popup is called
+          console.log('https://api.reddit.com/api/info/?id=t3_' + postID)
+          fetch('https://api.reddit.com/api/info/?id=t3_' + postID).then(function (response) {
+            response.json().then(function (data) {
+              if (data.data.children[0].data) {
+                console.log('Received response from Reddit:', data.data.children[0].data)
+                // Replace popup content with info from Reddit
+                var post = data.data.children[0].data
+                var content = '<b>' + post.title + '</b><br>Posted on ' + post.subreddit_name_prefixed + ' by ' + post.author
+                content = addToolbar(content)
+                instance.setContent(content)
+              }
+            })
+          }).catch(function (err) {
+            console.error('Error with Reddit API:', err)
+          })
+        }
+      })
+    } else {
+      console.error('Could not find Reddit post ID in URL:', url)
     }
   }
 }
@@ -383,6 +427,12 @@ function loadDOM() {
     'a[href^="https://youtu.be/oEkCCHNvel4"]',
   ]
 
+  // Reddit links
+  var redditLinks = [
+    'a[href^="https://www.reddit.com/r/"]',
+    'a[href^="https://redd.it/"]'
+  ]
+
   // Generate previews
 
   document.querySelectorAll(videoLinks.toString()).forEach(function (link) {
@@ -411,6 +461,10 @@ function loadDOM() {
 
   document.querySelectorAll(webVideoLinks.toString()).forEach(function (link) {
     previewWebVideo(link)
+  })
+
+  document.querySelectorAll(redditLinks.toString()).forEach(function (link) {
+    previewReddit(link)
   })
 
 }

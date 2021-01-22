@@ -17,19 +17,15 @@ Supported websites:
 - Google Docs
 - Apple iCloud (Keynote only)
 - YouTube
+- Reddit (posts only)
 
 [![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Firefox](https://corbin.io/img/firefox-button.png)](https://addons.mozilla.org/en-US/firefox/addon/peek-preview/) [![Download for Opera](https://corbin.io/img/opera-button.png)](https://addons.opera.com/en/extensions/details/peek/)
 
 ---------------------------------------------------------
 
-__New in Peek 3.0:__
+__New in Peek 4.0:__
 
-- Rewritten codebase using [Tippy.js](https://atomiks.github.io/tippyjs/) for popups
-- Added previews for JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images
-- Added previews for plain text (.txt) files
-- Improved PDF previews on Chrome
-- Added previews for iCloud links (currently limited to Keynote files)
-- Removed previews for Gfycat and Giphy links
+- Added previews for YouTube and Reddit
 
 ---------------------------------------------------------
 
