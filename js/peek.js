@@ -22,17 +22,14 @@ function addToolbar(html) {
   return html
 }
 
-// Prevent mixed protocol alerts in Chrome
+// Prevent mixed protocol warnings
 function checkProtocol(url) {
-  if (url.includes('https:')) {
-    // HTTPS link on HTTP and HTTPS pages
-    return true
-  } else if (url.startsWith('http:') && window.location.protocol === 'http:') {
-    // HTTP link on HTTP page
-    return true
-  } else {
-    // Insecure mixed protocol
+  if (url.startsWith('http:') && window.location.protocol === 'https:') {
+    // HTTP link on HTTPS page
     return false
+  } else {
+    // HTTPS link on HTTP page, HTTPS on HTTPS, etc.
+    return true
   }
 }
 
@@ -52,10 +49,6 @@ function processURL(url) {
     var originalURL = regex.exec(url)[3]
     // Append '_id' to the end of the date, so the Internet Archive returns the original file and not an HTML file
     url = 'https://web.archive.org/web/' + date + 'id_/' + originalURL
-  }
-  // Fix Imgur links
-  if ((url.includes('http://')) && (url.includes('imgur.com'))) {
-    url = url.replace('http://', 'https://')
   }
   // Don't continue if checkProtocol returns false
   if (checkProtocol(url)) {

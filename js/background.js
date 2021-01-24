@@ -15,25 +15,6 @@ chrome.runtime.onInstalled.addListener(function (details) {
       })
     }
 
-    // Transfer data from Peek 2.x
-    if (localStorage.getItem('docviewer') != null) {
-      if (localStorage.getItem('docviewer') === 'google') {
-        chrome.storage.sync.set({
-          docViewer: 'google'
-        }, function () {
-          // Delete old setting
-          localStorage.removeItem('docviewer')
-        })
-      } else if (localStorage.getItem('docviewer') === 'office') {
-        chrome.storage.sync.set({
-          docViewer: 'office'
-        }, function () {
-          // Delete old setting
-          localStorage.removeItem('docviewer')
-        })
-      }
-    }
-
   })
 })
 
