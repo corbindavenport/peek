@@ -1,15 +1,22 @@
 // Read settings from storage
 chrome.storage.sync.get({
-  docViewer: 'google'
+  docViewer: 'google',
+  previewSize: 400,
 }, function (data) {
-  document.querySelector('#docviewer input[value="' + data.docViewer + '"]').checked = true
+  // Document viewer
+  document.querySelector('#doc-viewer').value = data.docViewer
+  // Preview size
+  document.querySelector('#preview-size').value = data.previewSize
 })
 
 // Save settings after any input change
-document.querySelectorAll('input').forEach(function(el) {
+document.querySelectorAll('input,select').forEach(function(el) {
   el.addEventListener('change', function() {
     chrome.storage.sync.set({
-      docViewer: document.querySelector('#docviewer input:checked').value
+      // Document viewer
+      docViewer: document.querySelector('#doc-viewer').value,
+      // Preview size
+      previewSize: document.querySelector('#preview-size').value
     })
   })
 })

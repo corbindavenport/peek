@@ -13,71 +13,62 @@
 <body>
 	<div class="jumbotron">
 		<div class="container">
-			<h1>Peek extension settings</h1>
+			<h1>Peek settings</h1>
 		</div>
 	</div>
 
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h2>Document viewer</h2>
-				<p>Peek uses an external viewer to display Microsoft Word (.doc, docx), Excel (.xls, .xlsx), and
-					PowerPoint (.ppt, .pptx) files. You can use the Google Docs or Microsoft Office Online viewer.</p>
-				<div id="docviewer">
-					<div class="radio">
-						<label>
-							<input type="radio" name="documents" value="google">
-							Google Docs
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="documents" value="office">
-							Microsoft Office Online
-						</label>
+				<p>Here you can change all the options for Peek. Your changes are automatically saved.</p>
+				<!-- Document viewer -->
+				<div class="form-group row">
+					<label for="doc-viewer" class="col-sm-2 col-form-label">Document viewer</label>
+					<div class="col-sm-10">
+						<select class="form-control" id="doc-viewer">
+							<option value="google">Google Docs</option>
+							<option value="office">Microsoft Office Online</option>
+						</select>
+						<small class="form-text text-muted">This is what Peek uses to display Microsoft Word (.doc, docx), Excel (.xls, .xlsx), and PowerPoint (.ppt, .pptx) files. <b>Default is Google Docs.</b></small>
 					</div>
 				</div>
-				<p>Note: This does not affect PDFs, RTFs, and other document types.</p>
+				<!-- Preview size -->
+				<div class="form-group row">
+					<label for="preview-size" class="col-sm-2 col-form-label">Preview size</label>
+					<div class="col-sm-10">
+						<input class="form-control" type="number" id="preview-size" placeholder="Enter a number">
+						<small class="form-text text-muted">This changes the size of previews, in pixels. Setting a number larger than your browser window can break the preview. <b>Default is 400.</b></small>
+					</div>
+				</div>
 			</div>
+
+			<hr>
+
+			<div class="row">
+				<div class="col-md-6">
+					<h3>Donate</h3>
+					<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
+					<p><a class="btn btn-success" href="https://www.patreon.com/corbindavenport" target="_blank" role="button" style="width: 100%">Donate via Patreon</a></p>
+					<p><a class="btn btn-success" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button" style="width: 100%">Donate via PayPal</a></p>
+					<p class="review-info"></p>
+				</div>
+				<div class="col-md-6">
+					<h3>Having issues?</h3>
+					<p>If you find a bug, or have a suggestion for a new feature, please <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">join the Discord server</a> or <a href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on the Peek GitHub repository</a>.</p>
+			</div>
+				</div>
+			</div>
+
+			<hr>
+
+			<footer>
+				<p>Peek uses code from <a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify</a>, <a href="https://popper.js.org/" target="_blank">Popper.js</a>, <a href="https://atomiks.github.io/tippyjs/" target="_blank">Tippy.js</a>, and <a href="https://getbootstrap.com/" target="_blank">Boostrap</a>. You can find Peek's source code <a href="https://github.com/corbindavenport/peek" target="_blank">on GitHub</a>, under the GPL license.
+				</p>
+			</footer>
+
 		</div>
 
-		<hr>
-
-		<div class="row">
-			<div class="col-md-6">
-				<h2>Donate</h2>
-				<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
-				<p><a class="btn btn-success" href="https://www.patreon.com/corbindavenport" target="_blank"
-						role="button" style="width: 100%">Donate via Patreon</a></p>
-				<p><a class="btn btn-success"
-						href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"
-						target="_blank" role="button" style="width: 100%">Donate via PayPal</a></p>
-				<p class="review-info"></p>
-			</div>
-			<div class="col-md-6">
-				<h2>Having issues?</h2>
-				<p>If you find a bug, or have a suggestion for a new feature, please <a
-						href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on the
-						Peek GitHub repository</a> or <a
-						href="mailto:peek@fire.fundersclub.com?subject=Peek%20Bug%20Report">submit an issue via
-						email</a>.</p>
-			</div>
-		</div>
-
-		<hr>
-
-		<footer>
-			<p>Peek uses code from <a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify</a>, <a
-					href="https://popper.js.org/" target="_blank">Popper.js</a>, <a
-					href="https://atomiks.github.io/tippyjs/" target="_blank">Tippy.js</a>, and <a
-					href="https://getbootstrap.com/" target="_blank">Boostrap</a>. You can find Peek's source code <a
-					href="https://github.com/corbindavenport/peek" target="_blank">on GitHub</a>, under the GPL license.
-			</p>
-		</footer>
-
-	</div>
-
-	<script src="js/settings.js"></script>
+		<script src="js/settings.js"></script>
 
 </body>
 

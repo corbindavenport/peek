@@ -97,7 +97,7 @@ function previewVideo(object) {
       url = url.replace(".gifv", ".mp4");
     }
     // Create video player
-    var player = '<video controls muted controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video>'
+    var player = '<div class="video-embed-container"><video controls muted controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video></div>'
     // Add toolbar
     player = addToolbar(player)
     // Create popup
@@ -265,7 +265,7 @@ function previewWebVideo(object) {
     // Render the popup
     if (videoId) {
       // Create embed
-      var viewer = '<embed class="video-embed" src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1">'
+      var viewer = '<div class="video-embed-container"><embed src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1"></div>'
       // Add toolbar
       viewer = addToolbar(viewer)
       // Create popup
@@ -297,7 +297,7 @@ function previewReddit(object) {
       // Create popup
       tippy(object, {
         content: 'Loading preview...',
-        maxWidth: 300,
+        maxWidth: 400,
         onShow(instance) {
           // Make network request only after popup is called
           console.log('https://api.reddit.com/api/info/?id=t3_' + postID)
@@ -464,7 +464,8 @@ function loadDOM() {
 
 // Initialize Peek on page load
 chrome.storage.sync.get({
-  docViewer: 'google'
+  docViewer: 'google',
+  previewSize: 400,
 }, function (data) {
   // Read preference for document viewer from settings
   docViewer = data.docViewer
@@ -481,10 +482,14 @@ chrome.storage.sync.get({
     delay: [500, 500],
     interactive: true,
     placement: placementSetting,
-    maxWidth: 600,
-    maxHeight: 600,
+    maxWidth: data.previewSize,
+    maxHeight: data.previewSize,
     theme: 'peek'
   })
+  // Set width through injecting CSS code because Tippy doesn't have a property for it
+  var customCSS = document.createElement('style')
+  customCSS.innerHTML = ".tippy-box[data-theme~='peek'] {width: " + data.previewSize + "px !important;} .tippy-box[data-theme~='peek'] embed {height: " + (data.previewSize - 80) + "px;}"
+  document.body.appendChild(customCSS)
   // Initialize previews
   loadDOM()
 })

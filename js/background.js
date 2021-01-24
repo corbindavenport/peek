@@ -1,8 +1,6 @@
 chrome.runtime.onInstalled.addListener(function (details) {
-
+  // Show welcome page after an update
   chrome.storage.sync.get({
-    // Set variables if they do not exist
-    docViewer: 'google',
     version: '0'
   }, function (data) {
     // Show welcome page after an update
