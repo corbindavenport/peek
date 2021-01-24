@@ -9,9 +9,6 @@
 		"page": "settings.html",
 		"open_in_tab": true
 	},
-	"web_accessible_resources": [
-		"img/preloader.gif"
-	],
 	"permissions": [
 		"http://*/*",
 		"https://*/*",

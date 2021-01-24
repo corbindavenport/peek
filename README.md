@@ -19,7 +19,7 @@ Supported websites:
 - YouTube
 - Reddit (posts only)
 
-[![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Firefox](https://corbin.io/img/firefox-button.png)](https://addons.mozilla.org/en-US/firefox/addon/peek-preview/) [![Download for Opera](https://corbin.io/img/opera-button.png)](https://addons.opera.com/en/extensions/details/peek/)
+[![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Firefox](https://corbin.io/img/firefox-button.png)](https://addons.mozilla.org/en-US/firefox/addon/peek-preview/)
 
 ---------------------------------------------------------
 
