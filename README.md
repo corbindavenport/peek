@@ -8,6 +8,7 @@ Supported file types:
 * Word Documents (.doc, .docx)
 * Excel Documents (.xls, .xlsx)
 * PowerPoint Presentations (.ppt, .pptx)
+* OpenDocument (.odt, .ods, .odp)
 * WebM, MP4, GIFV, and OGG/OGV Video
 * MP3 and WAV Audio
 * JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images

@@ -145,7 +145,17 @@ function previewOfficeDocument(object) {
     return
   } else {
     console.log('Found Office document link: ' + url)
-    if (docViewer === 'google') {
+    // Check for files that can only be opened by MS Office viewer
+    var ifOfficeOnly = (
+      // OpenDocument files
+      url.toLowerCase().endsWith('odt') ||
+      url.toLowerCase().endsWith('ods') ||
+      url.toLowerCase().endsWith('odp')
+    )
+    // Generate viewer based on format/user settings
+    if (ifOfficeOnly) {
+      var viewer = '<embed src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '">'
+    } else if (docViewer === 'google') {
       var viewer = '<embed src="https://docs.google.com/gview?url=' + encodeURI(url) + '&embedded=true">'
     } else if (docViewer === 'office') {
       var viewer = '<embed src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '">'
@@ -369,7 +379,13 @@ function loadDOM() {
     'a[href$=".pptx"]',
     'a[href$=".PPTX"]',
     'a[href$=".rtf"]',
-    'a[href$=".RTF"]'
+    'a[href$=".RTF"]',
+    'a[href$=".odt"]',
+    'a[href$=".ODT"]',
+    'a[href$=".ods"]',
+    'a[href$=".ODS"]',
+    'a[href$=".odp"]',
+    'a[href$=".ODP"]'
   ]
 
   // Documents and images that can be rendered by the browser
