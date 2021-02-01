@@ -338,78 +338,48 @@ function loadDOM() {
 
   // Video files
   var videoLinks = [
-    'a[href$=".webm"]',
-    'a[href$=".WEBM"]',
-    'a[href$=".mp4"]',
-    'a[href$=".MP4"]',
-    'a[href$=".m4v"]',
-    'a[href$=".M4V"]',
-    'a[href$=".ogg"]',
-    'a[href$=".OGG"]',
-    'a[href$=".ogv"]',
-    'a[href$=".OGV"]',
-    'a[href$=".gifv"]',
-    'a[href$=".GIFV"]',
+    'a[href$=".webm" i]',
+    'a[href$=".mp4" i]',
+    'a[href$=".m4v" i]',
+    'a[href$=".ogg" i]',
+    'a[href$=".ogv" i]',
+    'a[href$=".gifv" i]',
   ]
 
   // Audio files
   var audioLinks = [
-    'a[href$=".mp3"]',
-    'a[href$=".MP3"]',
-    'a[href$=".m4a"]',
-    'a[href$=".M4A"]',
-    'a[href$=".oga"]',
-    'a[href$=".OGA"]',
-    'a[href$=".wav"]',
-    'a[href$=".WAV"]'
+    'a[href$=".mp3" i]',
+    'a[href$=".m4a" i]',
+    'a[href$=".oga" i]',
+    'a[href$=".wav" i]',
   ]
 
   // Documents that have to be rendered by the Docs/Office viewer
   var officeLinks = [
-    'a[href$=".doc"]',
-    'a[href$=".DOC"]',
-    'a[href$=".docx"]',
-    'a[href$=".DOCX"]',
-    'a[href$=".xls"]',
-    'a[href$=".XLS"]',
-    'a[href$=".xlsx"]',
-    'a[href$=".XLSX"]',
-    'a[href$=".ppt"]',
-    'a[href$=".PPT"]',
-    'a[href$=".pptx"]',
-    'a[href$=".PPTX"]',
-    'a[href$=".rtf"]',
-    'a[href$=".RTF"]',
-    'a[href$=".odt"]',
-    'a[href$=".ODT"]',
-    'a[href$=".ods"]',
-    'a[href$=".ODS"]',
-    'a[href$=".odp"]',
-    'a[href$=".ODP"]'
+    'a[href$=".doc" i]',
+    'a[href$=".docx" i]',
+    'a[href$=".xls" i]',
+    'a[href$=".xlsx" i]',
+    'a[href$=".ppt" i]',
+    'a[href$=".pptx" i]',
+    'a[href$=".rtf" i]',
+    'a[href$=".odt" i]',
+    'a[href$=".ods" i]',
+    'a[href$=".odp" i]',
   ]
 
   // Documents and images that can be rendered by the browser
   var docLinks = [
-    'a[href$=".pdf"]',
-    'a[href$=".PDF"]',
-    'a[href$=".txt"]',
-    'a[href$=".TXT"]',
-    'a[href$=".jpeg"]',
-    'a[href$=".JPEG"]',
-    'a[href$=".jpg"]',
-    'a[href$=".JPG"]',
-    'a[href$=".png"]',
-    'a[href$=".PNG"]',
-    'a[href$=".apng"]',
-    'a[href$=".APNG"]',
-    'a[href$=".svg"]',
-    'a[href$=".SVG"]',
-    'a[href$=".gif"]',
-    'a[href$=".GIF"]',
-    'a[href$=".ico"]',
-    'a[href$=".ICO"]',
-    'a[href$=".bmp"]',
-    'a[href$=".BMP"]'
+    'a[href$=".pdf" i]',
+    'a[href$=".txt" i]',
+    'a[href$=".jpeg" i]',
+    'a[href$=".jpg" i]',
+    'a[href$=".png" i]',
+    'a[href$=".apng" i]',
+    'a[href$=".svg" i]',
+    'a[href$=".gif" i]',
+    'a[href$=".ico" i]',
+    'a[href$=".bmp" i]',
   ]
 
   // Google Docs links
