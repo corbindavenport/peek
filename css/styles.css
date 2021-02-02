@@ -1,0 +1,8 @@
+.jumbotron .container {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/img/icon128.png');
+    background-size: 80px;
+    background-repeat: no-repeat;
+    background-position: 0 center;
+    padding-left: 120px;
+    min-height: 80px;
+}
