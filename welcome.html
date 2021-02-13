@@ -15,7 +15,7 @@
 	<div class="jumbotron">
 		<div class="container">
 			<h1>Welcome to Peek <span class="version"></span>!</h1>
-			<p>You have been updated to the latest version of the Peek extension, nicknamed 'Warp'. This update adds support for OpenOffice documents, YouTube and Reddit links, and fixes a ton of bugs.</p>
+			<p>You have been updated to the latest version of Peek. This update adds a new logo, support for YouTube and Reddit links, customizable popup sizing, and OpenDocument support. It also fixes some bugs.</p>
 		</div>
 	</div>
 
@@ -37,7 +37,8 @@
 				<h2>Supported files</h2>
 				<p>Peek can create previews for the following file types:</p>
 				<p>
-				<ul>
+				<ul style="padding: inherit">
+					<li>YouTube, Google Docs, and Reddit links</li>
 					<li>PDF, TXT, RTF documents</li>
 					<li>Word documents (.doc, .docx)</li>
 					<li>Excel spreadsheets (.xls, .xlsx)</li>
@@ -45,19 +46,16 @@
 					<li>WebM, MP4, GIFV, GIFV, and OGG/OGV video</li>
 					<li>MP3 and WAV Audio</li>
 					<li>JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images</li>
+					<li>OpenDocument files</li>
 				</ul>
 				</p>
-				<p>Peek can also show documents hosted on Google Docs and Apple iCloud. However, iCloud support is limited to Keynote files, as Apple doesn't allow other documents to be embedded.</p>
 			</div>
 			<div class="col-md-4">
 				<h2>Donate</h2>
 				<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
-				<p><a class="btn btn-success" href="https://www.patreon.com/corbindavenport" target="_blank" role="button" style="width: 100%">Donate via Patreon</a></p>
-				<p><a class="btn btn-success" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button" style="width: 100%">Donate via PayPal</a></p>
-				<p class="review-info"></p>
-				<h2>Having issues?</h2>
-				<p>If you find a bug, or have a suggestion for a new feature, please <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">join the Discord server</a> or <a href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on the
-						Peek GitHub repository</a>.</p>
+				<p><button type="button" class="btn btn-block btn-primary link-btn" data-url='https://www.patreon.com/corbindavenport'>Donate via Patreon</button></p>
+				<p><button type="button" class="btn btn-block btn-primary link-btn" data-url="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">Donate via PayPal</button></p>
+				<p id="peek-credits">Loading supporters...</p>
 			</div>
 		</div>
 

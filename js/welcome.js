@@ -1,11 +1,24 @@
 // Add version number to welcome page
 document.querySelector(".version").innerHTML = chrome.runtime.getManifest().version
 
-// Show instructions for leaving a review based on the browser being used
-var useragent = navigator.userAgent
-var review = document.querySelector('.review-info')
-if (useragent.includes("Firefox")) {
-	review.innerHTML = 'Leaving a review on the <a href="https://addons.mozilla.org/en-US/firefox/addon/peek-preview/" target="_blank">Firefox add-ons site</a> is also greatly appreciated!'
-} else if (useragent.includes("Chrome")) {
-	review.innerHTML = 'Leaving a review on the <a href="https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk" target="_blank">Chrome Web Store</a> is also greatly appreciated!'
-}
+// Link buttons
+document.querySelectorAll('.link-btn').forEach(function (el) {
+	el.addEventListener('click', function () {
+		chrome.tabs.create({ url: el.getAttribute('data-url') })
+	})
+})
+
+// Show credits
+fetch('https://corbin.io/supporters.json').then(function (response) {
+	response.json().then(function (data) {
+		var creditsList = 'Diamond supporters: '
+		for (var i = 0; i < data['supporters'].length; i++) {
+			creditsList += data['supporters'][i] + ', '
+		}
+		creditsList = creditsList.substring(0, creditsList.length - 2)
+		document.getElementById('peek-credits').innerText = creditsList
+	})
+})
+.catch(function (err) {
+	document.getElementById('peek-credits').innerText = 'There was an error fetching Peek supporters.'
+})
