@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="img/icon16.png">
-	<title>Peek</title>
+	<title>Peek Settings</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
 </head>
@@ -20,6 +20,15 @@
 	</div>
 
 	<div class="container">
+
+		<div class="row">
+			<div class="col-12">
+				<b>Having issues?</b> If you find a bug, or have a suggestion for a new feature, <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">join the Discord server</a> or <a href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on the Peek GitHub repository</a>.
+			</div>
+		</div>
+
+		<hr>
+
 		<div class="row">
 			<div class="col-md-12">
 				<!-- Document viewer -->
@@ -42,34 +51,30 @@
 					</div>
 				</div>
 			</div>
-
-			<hr>
-
-			<div class="row">
-				<div class="col-md-6">
-					<h3>Donate</h3>
-					<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
-					<p><a class="btn btn-success" href="https://www.patreon.com/corbindavenport" target="_blank" role="button" style="width: 100%">Donate via Patreon</a></p>
-					<p><a class="btn btn-success" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank" role="button" style="width: 100%">Donate via PayPal</a></p>
-					<p class="review-info"></p>
-				</div>
-				<div class="col-md-6">
-					<h3>Having issues?</h3>
-					<p>If you find a bug, or have a suggestion for a new feature, please <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">join the Discord server</a> or <a href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on the Peek GitHub repository</a>.</p>
-			</div>
-				</div>
-			</div>
-
-			<hr>
-
-			<footer>
-				<p>Peek uses code from <a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify</a>, <a href="https://popper.js.org/" target="_blank">Popper.js</a>, <a href="https://atomiks.github.io/tippyjs/" target="_blank">Tippy.js</a>, and <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>. You can find Peek's source code <a href="https://github.com/corbindavenport/peek" target="_blank">on GitHub</a>, under the GPL license.
-				</p>
-			</footer>
-
 		</div>
 
-		<script src="js/settings.js"></script>
+		<div class="row">
+			<div class="col-12">
+				<div class="alert alert-info" role="alert">
+					<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
+					<p>
+						<div class="row">
+							<div class="col-6">
+								<button type="button" class="btn btn-block btn-primary link-btn" data-url='https://www.patreon.com/corbindavenport'>Donate via Patreon</button>
+							</div>
+							<div class="col-6">
+								<button type="button" class="btn btn-block btn-primary link-btn" data-url="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">Donate via PayPal</button>
+							</div>
+						</div>
+					</p>
+					<p id="peek-credits">Loading supporters...</p>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	<script src="js/settings.js"></script>
 
 </body>
 

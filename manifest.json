@@ -24,7 +24,7 @@
 			"32": "img/icon32.png",
 			"48": "img/icon48.png"
 		},
-		"default_title": "Peek hasn't loaded in this tab. Try refreshing the page."
+		"default_title": "Peek settings"
 	},
 	"content_scripts": [
 		{
