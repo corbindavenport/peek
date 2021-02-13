@@ -474,7 +474,7 @@ chrome.storage.sync.get({
   })
   // Set width through injecting CSS code because Tippy doesn't have a property for it
   var customCSS = document.createElement('style')
-  customCSS.innerHTML = ".tippy-box[data-theme~='peek'] {width: " + data.previewSize + "px !important;} .tippy-box[data-theme~='peek'] embed {height: " + (data.previewSize - 80) + "px;}"
+  customCSS.innerHTML = ".tippy-box[data-theme~='peek'] {width: " + data.previewSize + "px !important;} .tippy-box[data-theme~='peek'] embed {height: " + (data.previewSize - 80) + "px !important;}"
   document.body.appendChild(customCSS)
   // Initialize previews
   loadDOM()
