@@ -8,26 +8,24 @@
 	<link rel="icon" type="image/png" href="img/icon16.png">
 	<title>Peek</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="welcome">
 	<div class="jumbotron">
 		<div class="container">
-			<h1>Welcome to Peek <span class="version"></span> Warp!</h1>
-			<p>You have been updated to the latest version of the Peek extension, nicknamed 'Warp'. This update
-				significantly improves performance, removes the maximum limit for previews, adds support for more file
-				types, fixes lots of bugs, and more.</p>
+			<h1>Welcome to Peek <span class="version"></span>!</h1>
+			<p>You have been updated to the latest version of Peek. This update adds a new logo, support for YouTube and Reddit links, customizable popup sizing, and OpenDocument support. It also fixes some bugs.</p>
 		</div>
 	</div>
 
 	<div class="container">
+		<div class="alert alert-primary"><b>New!</b> Join the <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">Discord server</a> or to discuss new features, report bugs, or just chat with the developers!</div>
 		<div class="row">
 			<div class="col-md-4">
 				<h2>Getting Started</h2>
-				<p>Peek shows previews over file download links. Just hover your mouse over a link to a file, and the
-					preview will appear.</p>
-				<p>Try <a href="https://www.google.com/search?q=sample+filetype%3Adoc+inurl%3Ahttps"
-						target="_blank">clicking here</a> and hover over some results.</p>
+				<p>Peek shows previews over file download links. Just hover your mouse over a link to a file, and the preview will appear.</p>
+				<p>Try <a href="https://www.google.com/search?q=sample+filetype%3Adoc+inurl%3Ahttps" target="_blank">clicking here</a> and hover over some results.</p>
 				<p>To open Peek settings, click the Peek icon in the toolbar. You can also click the button below.</p>
 				<p>
 					<a href="settings.html">
@@ -39,44 +37,32 @@
 				<h2>Supported files</h2>
 				<p>Peek can create previews for the following file types:</p>
 				<p>
-					<ul>
-						<li>PDF, TXT, RTF documents</li>
-						<li>Word documents (.doc, .docx)</li>
-						<li>Excel spreadsheets (.xls, .xlsx)</li>
-						<li>PowerPoint files (.ppt, .pptx)</li>
-						<li>WebM, MP4, GIFV, GIFV, and OGG/OGV video</li>
-						<li>MP3 and WAV Audio</li>
-						<li>JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images</li>
-					</ul>
+				<ul style="padding: inherit">
+					<li>YouTube, Google Docs, and Reddit links</li>
+					<li>PDF, TXT, RTF documents</li>
+					<li>Word documents (.doc, .docx)</li>
+					<li>Excel spreadsheets (.xls, .xlsx)</li>
+					<li>PowerPoint files (.ppt, .pptx)</li>
+					<li>WebM, MP4, GIFV, GIFV, and OGG/OGV video</li>
+					<li>MP3 and WAV Audio</li>
+					<li>JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images</li>
+					<li>OpenDocument files</li>
+				</ul>
 				</p>
-				<p>Peek can also show documents hosted on Google Docs and Apple iCloud. However, iCloud support is limited to Keynote files, as Apple doesn't allow other documents to be embedded.</p>
 			</div>
 			<div class="col-md-4">
 				<h2>Donate</h2>
 				<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
-				<p><a class="btn btn-success" href="https://www.patreon.com/corbindavenport" target="_blank"
-						role="button" style="width: 100%">Donate via Patreon</a></p>
-				<p><a class="btn btn-success"
-						href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"
-						target="_blank" role="button" style="width: 100%">Donate via PayPal</a></p>
-				<p class="review-info"></p>
-				<h2>Having issues?</h2>
-				<p>If you find a bug, or have a suggestion for a new feature, please <a
-						href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on the
-						Peek GitHub repository</a> or <a
-						href="mailto:peek@fire.fundersclub.com?subject=Peek%20Bug%20Report">submit an issue via
-						email</a>.</p>
+				<p><button type="button" class="btn btn-block btn-primary link-btn" data-url='https://www.patreon.com/corbindavenport'>Donate via Patreon</button></p>
+				<p><button type="button" class="btn btn-block btn-primary link-btn" data-url="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">Donate via PayPal</button></p>
+				<p id="peek-credits">Loading supporters...</p>
 			</div>
 		</div>
 
 		<hr>
 
 		<footer>
-			<p>Peek uses code from <a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify</a>, <a
-					href="https://popper.js.org/" target="_blank">Popper.js</a>, <a
-					href="https://atomiks.github.io/tippyjs/" target="_blank">Tippy.js</a>, and <a
-					href="https://getbootstrap.com/" target="_blank">Boostrap</a>. You can find Peek's source code <a
-					href="https://github.com/corbindavenport/peek" target="_blank">on GitHub</a>, under the GPL license.
+			<p>Peek uses code from <a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify</a>, <a href="https://popper.js.org/" target="_blank">Popper.js</a>, <a href="https://atomiks.github.io/tippyjs/" target="_blank">Tippy.js</a>, and <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>. You can find Peek's source code <a href="https://github.com/corbindavenport/peek" target="_blank">on GitHub</a>, under the GPL license.
 			</p>
 		</footer>
 	</div>

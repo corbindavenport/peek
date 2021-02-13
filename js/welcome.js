@@ -1,13 +1,24 @@
 // Add version number to welcome page
-document.querySelector(".version").innerHTML = chrome.runtime.getManifest().version;
+document.querySelector(".version").innerHTML = chrome.runtime.getManifest().version
 
-// Show instructions for leaving a review based on the browser being used
-var useragent = navigator.userAgent;
+// Link buttons
+document.querySelectorAll('.link-btn').forEach(function (el) {
+	el.addEventListener('click', function () {
+		chrome.tabs.create({ url: el.getAttribute('data-url') })
+	})
+})
 
-// Opera has to be checked before Chrome, because Opera has both "Chrome" and "OPR" in the user agent string
-var review = document.querySelector('.review-info')
-if (useragent.includes("OPR")) {
-	review.innerHTML = 'Leaving a review on the <a href="https://addons.opera.com/en/extensions/details/peek/" target="_blank">Opera add-ons site</a> is also greatly appreciated!'
-} else if (useragent.includes("Chrome")) {
-	review.innerHTML = 'Leaving a review on the <a href="https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk" target="_blank">Chrome Web Store</a> is also greatly appreciated!'
-}
+// Show credits
+fetch('https://corbin.io/supporters.json').then(function (response) {
+	response.json().then(function (data) {
+		var creditsList = 'Diamond supporters: '
+		for (var i = 0; i < data['supporters'].length; i++) {
+			creditsList += data['supporters'][i] + ', '
+		}
+		creditsList = creditsList.substring(0, creditsList.length - 2)
+		document.getElementById('peek-credits').innerText = creditsList
+	})
+})
+.catch(function (err) {
+	document.getElementById('peek-credits').innerText = 'There was an error fetching Peek supporters.'
+})

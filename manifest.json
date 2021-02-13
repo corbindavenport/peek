@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Peek",
-	"version": "3.1",
+	"version": "4.0",
 	"author": "Corbin Davenport",
 	"description": "Preview documents, videos, music, and more with a mouse hover.",
 	"homepage_url": "https://github.com/corbindavenport/peek",
@@ -9,9 +9,6 @@
 		"page": "settings.html",
 		"open_in_tab": true
 	},
-	"web_accessible_resources": [
-		"img/preloader.gif"
-	],
 	"permissions": [
 		"http://*/*",
 		"https://*/*",
@@ -24,10 +21,10 @@
 	},
 	"browser_action": {
 		"default_icon": {
-			"19": "img/icon19.png",
-			"38": "img/icon38.png"
+			"32": "img/icon32.png",
+			"48": "img/icon48.png"
 		},
-		"default_title": "Peek hasn't loaded in this tab. Try refreshing the page."
+		"default_title": "Peek settings"
 	},
 	"content_scripts": [
 		{
@@ -37,9 +34,9 @@
 			],
 			"js": [
 				"js/popper.min.js",
-				"js/tippy-bundle.iife.min.js",
-				"js/purify.min.js",
-				"js/contentscript.js"
+				"js/tippy-bundle.umd.min.js",
+				"js/purify.js",
+				"js/peek.js"
 			],
 			"css": [
 				"css/peek.css"
