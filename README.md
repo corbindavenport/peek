@@ -26,7 +26,11 @@ Supported websites:
 
 __New in Peek 4.0:__
 
-- Added previews for YouTube and Reddit
+- New logo by [Mason Conrad](https://twitter.com/MasNConrad)
+- YouTube and Reddit links are now supported
+- OpenDocument files (.odt, .ods, .odp) now supported
+- New setting for changing size of popup previews
+- Cleaned up code
 
 ---------------------------------------------------------
 
