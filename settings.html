@@ -7,71 +7,63 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="img/icon16.png">
 	<title>Peek Settings</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet">
+	<link href="css/bootstrap.css" rel="stylesheet">
 </head>
 
-<body class="settings">
-	<div class="jumbotron">
-		<div class="container">
-			<h1>Peek settings</h1>
-			<p>Here you can change all the options for Peek. Your changes are automatically saved.</p>
-		</div>
-	</div>
-
-	<div class="container">
-
-		<div class="row">
-			<div class="col-12">
-				<b>Having issues?</b> If you find a bug, or have a suggestion for a new feature, <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">join the Discord server</a> or <a href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on the Peek GitHub repository</a>.
+<body>
+	<!-- Header -->
+	<div class="container-fluid bg-light mb-5">
+		<div class="container bg-light py-5">
+			<div class="row">
+				<div class="col-9">
+					<h1 class="display-5 fw-bold">Peek Settings</h1>
+					<p>Here you can change all the options for Peek. Your changes are automatically saved.</p>
+				</div>
 			</div>
 		</div>
-
-		<hr>
-
+	</div>
+	<!-- Main container -->
+	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<!-- Main settings -->
+			<div class="col-md-8">
 				<!-- Document viewer -->
-				<div class="form-group row">
-					<label for="doc-viewer" class="col-sm-2 col-form-label">Document viewer</label>
-					<div class="col-sm-10">
-						<select class="form-control" id="doc-viewer">
-							<option value="google">Google Docs</option>
-							<option value="office">Microsoft Office Online</option>
-						</select>
-						<small class="form-text text-muted">This is what Peek uses to display Microsoft Word (.doc, docx), Excel (.xls, .xlsx), and PowerPoint (.ppt, .pptx) files. <b>Default is Google Docs.</b></small>
+				<div class="mb-3">
+					<label for="doc-viewer" class="form-label">Document Viewer</label>
+					<select id="doc-viewer" class="form-select" aria-labelledby="documentHelpBlock">
+						<option value="google">Google Docs</option>
+						<option value="office">Microsoft Office Online</option>
+					</select>
+					<div id="documentHelpBlock" class="form-text text-muted">
+						This is what Peek uses to display Microsoft Word (.doc, docx), Excel (.xls, .xlsx), and PowerPoint (.ppt, .pptx) files. The default is Google Docs.
 					</div>
 				</div>
 				<!-- Preview size -->
-				<div class="form-group row">
-					<label for="preview-size" class="col-sm-2 col-form-label">Preview size</label>
-					<div class="col-sm-10">
-						<input class="form-control" type="number" id="preview-size" placeholder="Enter a number">
-						<small class="form-text text-muted">This changes the size of previews, in pixels. Setting a number larger than your browser window can break the preview. <b>Default is 400.</b></small>
+				<div class="mb-3">
+					<label for="preview-size" class="form-label">Preview Size</label>
+					<input type="number" class="form-control" id="preview-size" placeholder="400">
+					<div id="sizeHelpBlock" class="form-text text-muted">
+						This changes the size of previews, in pixels. Setting a number larger than your browser window can break the preview. The default is 400.
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-12">
-				<div class="alert alert-info" role="alert">
-					<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
-					<p>
-						<div class="row">
-							<div class="col-6">
-								<button type="button" class="btn btn-block btn-primary link-btn" data-url='https://www.patreon.com/corbindavenport'>Donate via Patreon</button>
-							</div>
-							<div class="col-6">
-								<button type="button" class="btn btn-block btn-primary link-btn" data-url="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">Donate via PayPal</button>
-							</div>
-						</div>
-					</p>
-					<p id="peek-credits">Loading supporters...</p>
-				</div>
+			<!-- Donation -->
+			<div class="col-md-4">
+				<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
+				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
+					<button type="button" class="btn btn-success w-100 mb-3">Donate via PayPal</button>
+				</a>
+				<a href="https://cash.app/$corbdav" target="_blank">
+					<button type="button" class="btn btn-success w-100 mb-3">Donate via Cash App</button>
+				</a>
+				<p>Peek is developed by <a href="https://corbin.io/?utm_source=Peek%20Extension">Corbin Davenport</a>.</p>
 			</div>
 		</div>
-		
+		<!-- Footer -->
+		<div class="row">
+			<div class="bg-light rounded-3 pt-3 pb-3 mt-5 mb-5">
+				Peek uses code from <a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify</a>, <a href="https://popper.js.org/" target="_blank">Popper.js</a>, <a href="https://atomiks.github.io/tippyjs/" target="_blank">Tippy.js</a>, and <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>. You can find Peek's source code <a href="https://github.com/corbindavenport/peek" target="_blank">on GitHub</a>, under the GPL license.</div>
+		</div>
 	</div>
 
 	<script src="js/settings.js"></script>
