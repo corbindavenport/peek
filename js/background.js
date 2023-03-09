@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
     // Show welcome page after an update
     if (data.version != chrome.runtime.getManifest().version) {
       // Open welcome page
-      chrome.tabs.create({ 'url': chrome.extension.getURL('welcome.html') })
+      chrome.tabs.create({ 'url': chrome.runtime.getURL('welcome.html') })
       // Set version number
       chrome.storage.sync.set({
         version: chrome.runtime.getManifest().version
@@ -17,21 +17,19 @@ chrome.runtime.onInstalled.addListener(function (details) {
 })
 
 // Open settings page when the Peek toolbar button is clicked
-chrome.browserAction.onClicked.addListener(function () {
-  chrome.tabs.create({
-    url: chrome.extension.getURL('settings.html')
-  })
+chrome.action.onClicked.addListener(function () {
+  chrome.runtime.openOptionsPage()
 })
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'changeIcon') {
     if ((request == undefined) || (request.key == 0)) {
-      chrome.browserAction.setBadgeText({ text: '' })
+      chrome.action.setBadgeText({ text: '' })
     } else {
-      chrome.browserAction.setBadgeText({ text: request.key })
+      chrome.action.setBadgeText({ text: request.key })
     }
   } else if (request.method == 'resetIcon') {
-    chrome.browserAction.setBadgeText({ text: '' })
+    chrome.action.setBadgeText({ text: '' })
   } else {
     sendResponse({})
   }
@@ -43,14 +41,14 @@ chrome.tabs.onActivated.addListener(function (tabId, changeInfo, tab) {
     try {
       chrome.tabs.sendMessage(tabs[0].id, { method: 'getPreviews' }, function (response) {
         if ((response == undefined) || (response.data == 0)) {
-          chrome.browserAction.setBadgeText({ text: '' })
+          chrome.action.setBadgeText({ text: '' })
         } else {
-          chrome.browserAction.setBadgeText({ text: response.data })
+          chrome.action.setBadgeText({ text: response.data })
         }
       })
     } catch {
       // Silently fail if communication can't be established with the content script
-      chrome.browserAction.setBadgeText({ text: '' })
+      chrome.action.setBadgeText({ text: '' })
     }
   })
 })
