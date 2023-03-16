@@ -10,9 +10,57 @@ chrome.runtime.sendMessage({ method: 'resetIcon', key: '' })
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getPreviews') {
-    sendResponse({ data: renderedPreviews.length.toString() })
+    sendResponse({ data: renderedPreviews.length })
   }
 })
+
+// Unified function for generating previews
+function initPreview(inputObject, previewType) {
+  // Get the full original URL
+  let inputUrl = DOMPurify.sanitize(inputObject.getAttribute('href'));
+  let realUrl = new URL(inputUrl, document.location.href);
+  // Exit early if the URL isn't valid
+  // TODO: Show error visual error message
+  if (!realUrl.href) {
+    console.error('Cannot generate a preview for ' + url + ' because it is an invalid URL.');
+    return;
+  } else if (realUrl.href.startsWith('http:') && (window.location.protocol === 'https')) {
+    console.error('Cannot generate a preview for ' + url + ' because it is not served over HTTPS.');
+    return;
+  }
+  // Create main container element
+  let popupEl = document.createElement('div');
+  popupEl.dataset.peekType = previewType;
+  // Add preview
+  if (previewType === 'ms-office') {
+    // Microsoft Office documents
+    console.log('Found Office document link:', realUrl)
+    let popupFrame = document.createElement('iframe');
+    // Open Document Format files can only be opened with Microsoft's viewer, so override user preference
+    var ifOfficeOnly = (
+      realUrl.href.toLowerCase().endsWith('odt') ||
+      realUrl.href.toLowerCase().endsWith('ods') ||
+      realUrl.href.toLowerCase().endsWith('odp')
+    )
+    if (ifOfficeOnly || docViewer === 'office') {
+      popupFrame.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(realUrl.href);
+    } else if (docViewer === 'google') {
+      popupFrame.src = 'https://docs.google.com/gview?url=' + encodeURI(realUrl.href) + '&embedded=true';
+    }
+    popupEl.append(popupFrame);
+  }
+  // Add toolbar
+  // TODO: Add buttons to right side
+  let toolbarEl = document.createElement('div');
+  toolbarEl.className = 'peek-toolbar'
+  toolbarEl.innerText = 'Powered by Peek';
+  popupEl.append(toolbarEl);
+  // Create popup
+  tippy(inputObject, {
+    content: popupEl,
+    theme: 'peek-unified'
+  })
+};
 
 // Function for adding 'Powered by Peek' label to popup HTML
 function addToolbar(html) {
@@ -130,41 +178,6 @@ function previewAudio(object) {
     // Create popup
     tippy(object, {
       content: player
-    })
-  }
-}
-
-function previewOfficeDocument(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else {
-    console.log('Found Office document link: ' + url)
-    // Check for files that can only be opened by MS Office viewer
-    var ifOfficeOnly = (
-      // OpenDocument files
-      url.toLowerCase().endsWith('odt') ||
-      url.toLowerCase().endsWith('ods') ||
-      url.toLowerCase().endsWith('odp')
-    )
-    // Generate viewer based on format/user settings
-    if (ifOfficeOnly) {
-      var viewer = '<embed src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '">'
-    } else if (docViewer === 'google') {
-      var viewer = '<embed src="https://docs.google.com/gview?url=' + encodeURI(url) + '&embedded=true">'
-    } else if (docViewer === 'office') {
-      var viewer = '<embed src="https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(url) + '">'
-    }
-    // Add toolbar
-    viewer = addToolbar(viewer)
-    // Create popup
-    tippy(object, {
-      content: viewer
     })
   }
 }
@@ -423,7 +436,7 @@ function loadDOM() {
   })
 
   document.querySelectorAll(officeLinks.toString()).forEach(function (link) {
-    previewOfficeDocument(link)
+    initPreview(link, 'ms-office')
   })
 
   document.querySelectorAll(docLinks.toString()).forEach(function (link) {

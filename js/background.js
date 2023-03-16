@@ -29,6 +29,7 @@ chrome.tabs.onActivated.addListener((tab) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     try {
       chrome.tabs.sendMessage(tabs[0].id, { method: 'getPreviews' }, (response) => {
+        console.log(response)
         if (!response || response.data === 0) {
           chrome.action.setBadgeText({ text: '' });
         } else {

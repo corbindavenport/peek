@@ -9,16 +9,21 @@
     padding: .30rem !important;
 }
 
-.tippy-box[data-theme~='peek'] video, .tippy-box[data-theme~='peek'] audio, .tippy-box[data-theme~='peek'] img .tippy-box[data-theme~='peek'] embed {
+.tippy-box[data-theme~='peek'] video,
+.tippy-box[data-theme~='peek'] audio,
+.tippy-box[data-theme~='peek'] img .tippy-box[data-theme~='peek'] embed {
     border-radius: 4px !important;
 }
 
-.tippy-box[data-theme~='peek'] img, .tippy-box[data-theme~='peek'] audio, .tippy-box[data-theme~='peek'] embed {
+.tippy-box[data-theme~='peek'] img,
+.tippy-box[data-theme~='peek'] audio,
+.tippy-box[data-theme~='peek'] embed {
     width: 100%;
     height: auto;
 }
 
-.tippy-box[data-theme~='peek'] video:focus, .tippy-box[data-theme~='peek'] audio:focus {
+.tippy-box[data-theme~='peek'] video:focus,
+.tippy-box[data-theme~='peek'] audio:focus {
     outline: 0 !important;
 }
 
@@ -29,7 +34,7 @@
 .tippy-box[data-theme~='peek'] .video-embed-container {
     overflow: hidden;
     position: relative;
-    width:100%;
+    width: 100%;
 }
 
 .tippy-box[data-theme~='peek'] .video-embed-container::after {
@@ -54,3 +59,57 @@
     font-size: 12px !important;
     margin-top: 5px !important;
 }
+
+/* Unified Peek */
+
+.tippy-box[data-theme="peek-unified"] {
+    user-select: none !important;
+    background: #e9ecef !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .tippy-content {
+    margin: 0 !important;
+    padding: 5px !important;
+    border: 2px solid #dee2e6 !important;
+    font-size: 100% !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+    vertical-align: baseline !important;
+    line-height: 1 !important;
+    text-align: initial !important;
+}
+
+.tippy-box[data-theme="peek-unified"] iframe {
+    height: 300px !important;
+    width: 100% !important;
+    border: 0 !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .peek-toolbar {
+    color: rgb(33, 37, 41) !important;
+    padding-top: 5px !important;
+    padding-bottom: 3px !important;
+}
+
+.tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] .tippy-content, .tippy-box[data-theme="peek-unified"] iframe {
+    border-radius: 10px !important;
+}
+
+.tippy-box[data-theme~="peek-unified"][data-placement^="top"]>.tippy-arrow::before {
+    border-top-color: #dee2e6 !important;
+}
+
+.tippy-box[data-theme~="peek-unified"][data-placement^="bottom"]>.tippy-arrow::before {
+    border-bottom-color: #dee2e6 !important;
+}
+
+.tippy-box[data-theme~="peek-unified"][data-placement^="left"]>.tippy-arrow::before {
+    border-left-color: #dee2e6 !important;
+}
+
+.tippy-box[data-theme~="tomato"][data-placement^="right"]>.tippy-arrow::before {
+    border-right-color: #dee2e6 !important;
+}
+
+/* Unified Peek in Dark Mode */
+
+/* TODO */
