@@ -62,9 +62,12 @@
 
 /* Unified Peek */
 
+.tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] iframe, .tippy-box[data-theme="peek-unified"] video {
+    background: #e9ecef !important;
+}
+
 .tippy-box[data-theme="peek-unified"] {
     user-select: none !important;
-    background: #e9ecef !important;
     box-shadow: 0 3px 10px #eaeaea !important;
 }
 
@@ -83,7 +86,15 @@
     height: 300px !important;
     width: 100% !important;
     border: 0 !important;
-    background: #e9ecef !important;
+}
+
+.tippy-box[data-theme="peek-unified"] video {
+    width: 100% !important;
+    min-width: 300px !important;
+    max-width: 350px !important;
+    height: auto !important;
+    min-height: 50px !important;
+    max-height: 500px !important;
 }
 
 .tippy-box[data-theme="peek-unified"] .peek-toolbar {
@@ -92,7 +103,7 @@
     padding-bottom: 6px !important;
 }
 
-.tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] .tippy-content, .tippy-box[data-theme="peek-unified"] iframe {
+.tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] .tippy-content, .tippy-box[data-theme="peek-unified"] iframe, .tippy-box[data-theme="peek-unified"] video {
     border-radius: 10px !important;
 }
 
@@ -116,7 +127,7 @@
 
 @media (prefers-color-scheme: dark) {
 
-    .tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] iframe {
+    .tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] iframe, .tippy-box[data-theme="peek-unified"] video {
         background: #212529 !important;
     }
 

@@ -28,7 +28,10 @@ function initPreview(inputObject, previewType) {
     console.error('Cannot generate a preview for ' + url + ' because it is not served over HTTPS.');
     return;
   }
-  // Create main container element
+  // Create main container element and Tippy instance
+  let tippyTooltip = tippy(inputObject, {
+    theme: 'peek-unified'
+  });
   let popupEl = document.createElement('div');
   popupEl.dataset.peekType = previewType;
   // Add preview
@@ -49,6 +52,25 @@ function initPreview(inputObject, previewType) {
       popupFrame.src = 'https://docs.google.com/gview?url=' + encodeURI(realUrl.href) + '&embedded=true';
     }
     popupEl.append(popupFrame);
+  } else if (previewType === 'video') {
+    // HTML5 Video
+    console.log('Found video link:', realUrl);
+    let popupVideo = document.createElement('video');
+    // Set video properties
+    popupVideo.controls = true;
+    popupVideo.muted = true;
+    popupVideo.disablePictureInPicture = true;
+    popupVideo.setAttribute('controlsList', 'nodownload nofullscreen');
+    popupVideo.src = realUrl.href;
+    // Add video to tooltip and play it on activation
+    popupEl.append(popupVideo);
+    tippyTooltip.setProps({
+      onShow: function () {
+        popupVideo.play();
+      }
+    });
+  } else {
+    popupEl.innerText = 'There was an error rendering this preview.';
   }
   // Add toolbar
   // TODO: Add buttons to right side
@@ -56,11 +78,8 @@ function initPreview(inputObject, previewType) {
   toolbarEl.className = 'peek-toolbar'
   toolbarEl.innerText = 'Powered by Peek';
   popupEl.prepend(toolbarEl);
-  // Create popup
-  tippy(inputObject, {
-    content: popupEl,
-    theme: 'peek-unified'
-  })
+  // Add content to tooltip
+  tippyTooltip.setContent(popupEl);
 };
 
 // Function for adding 'Powered by Peek' label to popup HTML
@@ -128,37 +147,6 @@ function createErrorPreview(object) {
     arrow: true,
     delay: [500, 500]
   })
-}
-
-function previewVideo(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else {
-    console.log('Found video link: ' + url)
-    // Allow playback of Imgur GIFV links
-    if ((url.endsWith('.gifv')) && (url.includes("imgur.com"))) {
-      url = url.replace(".gifv", ".mp4");
-    }
-    // Create video player
-    var player = '<div class="video-embed-container"><video controls muted controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></video></div>'
-    // Add toolbar
-    player = addToolbar(player)
-    // Create popup
-    tippy(object, {
-      content: player,
-      onShow: function (instance) {
-        // Play the video after the popup appears
-        videoEl = instance.popper.querySelector('video')
-        videoEl.play()
-      }
-    })
-  }
 }
 
 function previewAudio(object) {
@@ -429,7 +417,7 @@ function loadDOM() {
   // Generate previews
 
   document.querySelectorAll(videoLinks.toString()).forEach(function (link) {
-    previewVideo(link)
+    initPreview(link, 'video')
   })
 
   document.querySelectorAll(audioLinks.toString()).forEach(function (link) {
