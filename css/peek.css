@@ -88,6 +88,11 @@
     border: 0 !important;
 }
 
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe {
+    width: 350px !important;
+    height: 197px !important;
+}
+
 .tippy-box[data-theme="peek-unified"] video {
     width: 100% !important;
     min-width: 300px !important;

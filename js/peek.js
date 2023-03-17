@@ -69,6 +69,17 @@ function initPreview(inputObject, previewType) {
         popupVideo.play();
       }
     });
+  } else if (previewType === 'youtube') {
+    // YouTube video
+    console.log('Found YouTube video link:', realUrl)
+    let popupFrame = document.createElement('iframe');
+    popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+    // Use to find the video ID: https://regex101.com/r/qFx13n/1
+    let regex = /(?:(v?\=)|(youtu.be\/))(?<videoId>.*?)(&|$)/
+    let videoId = regex.exec(realUrl.href)['groups']['videoId']
+    popupFrame.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1';
+    // Add video to tooltip
+    popupEl.append(popupFrame);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
@@ -441,7 +452,7 @@ function loadDOM() {
   })
 
   document.querySelectorAll(webVideoLinks.toString()).forEach(function (link) {
-    previewWebVideo(link)
+    initPreview(link, 'youtube')
   })
 
   document.querySelectorAll(redditLinks.toString()).forEach(function (link) {
