@@ -65,6 +65,7 @@
 .tippy-box[data-theme="peek-unified"] {
     user-select: none !important;
     background: #e9ecef !important;
+    box-shadow: 0 3px 10px #eaeaea !important;
 }
 
 .tippy-box[data-theme="peek-unified"] .tippy-content {
@@ -82,12 +83,13 @@
     height: 300px !important;
     width: 100% !important;
     border: 0 !important;
+    background: #e9ecef !important;
 }
 
 .tippy-box[data-theme="peek-unified"] .peek-toolbar {
-    color: rgb(33, 37, 41) !important;
-    padding-top: 5px !important;
-    padding-bottom: 3px !important;
+    color: #212529 !important;
+    padding-top: 2px !important;
+    padding-bottom: 6px !important;
 }
 
 .tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] .tippy-content, .tippy-box[data-theme="peek-unified"] iframe {
@@ -112,4 +114,39 @@
 
 /* Unified Peek in Dark Mode */
 
-/* TODO */
+@media (prefers-color-scheme: dark) {
+
+    .tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] iframe {
+        background: #212529 !important;
+    }
+
+    .tippy-box[data-theme="peek-unified"] {
+        box-shadow: 0 3px 10px #000000 !important;
+    }
+
+    .tippy-box[data-theme="peek-unified"] .peek-toolbar {
+        color: #e9ecef !important;
+    }
+
+    .tippy-box[data-theme="peek-unified"] .tippy-content {
+        border-color: #424549 !important;
+    }
+
+    .tippy-box[data-theme~="peek-unified"][data-placement^="top"]>.tippy-arrow::before {
+        border-top-color: #424549 !important;
+    }
+    
+    .tippy-box[data-theme~="peek-unified"][data-placement^="bottom"]>.tippy-arrow::before {
+        border-bottom-color: #424549 !important;
+    }
+    
+    .tippy-box[data-theme~="peek-unified"][data-placement^="left"]>.tippy-arrow::before {
+        border-left-color: #424549 !important;
+    }
+    
+    .tippy-box[data-theme~="tomato"][data-placement^="right"]>.tippy-arrow::before {
+        border-right-color: #424549 !important;
+    }
+
+}
+

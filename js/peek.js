@@ -36,6 +36,7 @@ function initPreview(inputObject, previewType) {
     // Microsoft Office documents
     console.log('Found Office document link:', realUrl)
     let popupFrame = document.createElement('iframe');
+    popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Open Document Format files can only be opened with Microsoft's viewer, so override user preference
     var ifOfficeOnly = (
       realUrl.href.toLowerCase().endsWith('odt') ||
@@ -54,7 +55,7 @@ function initPreview(inputObject, previewType) {
   let toolbarEl = document.createElement('div');
   toolbarEl.className = 'peek-toolbar'
   toolbarEl.innerText = 'Powered by Peek';
-  popupEl.append(toolbarEl);
+  popupEl.prepend(toolbarEl);
   // Create popup
   tippy(inputObject, {
     content: popupEl,
