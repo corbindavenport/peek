@@ -416,7 +416,7 @@ function loadDOM() {
   // Video links
   var webVideoLinks = [
     'a[href^="https://www.youtube.com/watch?v="]',
-    'a[href^="https://youtu.be/oEkCCHNvel4"]',
+    'a[href^="https://youtu.be/"]',
   ]
 
   // Reddit links
