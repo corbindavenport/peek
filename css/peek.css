@@ -102,13 +102,23 @@
     max-height: 500px !important;
 }
 
+.tippy-box[data-theme="peek-unified"] audio {
+    width: 350px !important;
+    height: 50px !important;
+}
+
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe.peek-embed-portrait {
+    width: 225px !important;
+    height: 400px !important;
+}
+
 .tippy-box[data-theme="peek-unified"] .peek-toolbar {
     color: #212529 !important;
     padding-top: 2px !important;
     padding-bottom: 6px !important;
 }
 
-.tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] .tippy-content, .tippy-box[data-theme="peek-unified"] iframe, .tippy-box[data-theme="peek-unified"] video {
+.tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] .tippy-content, .tippy-box[data-theme="peek-unified"] iframe, .tippy-box[data-theme="peek-unified"] video, .tippy-box[data-theme="peek-unified"] audio {
     border-radius: 10px !important;
 }
 

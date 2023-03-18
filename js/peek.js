@@ -69,15 +69,29 @@ function initPreview(inputObject, previewType) {
         popupVideo.play();
       }
     });
+  } else if (previewType === 'audio') {
+    // Audio files
+    console.log('Found audio link:', realUrl);
+    let audioEl = document.createElement('audio');
+    // Set audio properties
+    audioEl.controls = true;
+    audioEl.setAttribute('controlsList', 'nodownload');
+    audioEl.src = realUrl.href;
+    popupEl.append(audioEl);
   } else if (previewType === 'youtube') {
     // YouTube video
     console.log('Found YouTube video link:', realUrl)
     let popupFrame = document.createElement('iframe');
     popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
-    // Use to find the video ID: https://regex101.com/r/qFx13n/1
-    let regex = /(?:(v?\=)|(youtu.be\/))(?<videoId>.*?)(&|$)/
+    // Use to find the video ID: https://regex101.com/r/UG8utp/1
+    let regex = /(?:(v?\=)|(youtu.be\/)|(embed\/)|(shorts\/))(?<videoId>.*?)(&|$)/
     let videoId = regex.exec(realUrl.href)['groups']['videoId']
     popupFrame.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1';
+    // Add custom properties for YouTube Shorts
+    if (realUrl.href.includes('shorts')) {
+      popupFrame.classList.add('peek-embed-portrait');
+      popupFrame.src += '&loop=1';
+    }
     // Add video to tooltip
     popupEl.append(popupFrame);
   } else {
@@ -158,28 +172,6 @@ function createErrorPreview(object) {
     arrow: true,
     delay: [500, 500]
   })
-}
-
-function previewAudio(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else {
-    console.log('Found audio link: ' + url)
-    // Create audio player
-    var player = '<audio controls controlsList="nodownload nofullscreen noremoteplayback"><source src="' + url + '"></audio>'
-    // Add toolbar
-    player = addToolbar(player)
-    // Create popup
-    tippy(object, {
-      content: player
-    })
-  }
 }
 
 function previewDocument(object) {
@@ -417,6 +409,10 @@ function loadDOM() {
   var webVideoLinks = [
     'a[href^="https://www.youtube.com/watch?v="]',
     'a[href^="https://youtu.be/"]',
+    'a[href^="https://youtube.com/embed/"]',
+    'a[href^="https://www.youtube.com/embed/"]',
+    'a[href^="https://youtube.com/shorts/"]',
+    'a[href^="https://www.youtube.com/shorts/"]',
   ]
 
   // Reddit links
@@ -432,7 +428,7 @@ function loadDOM() {
   })
 
   document.querySelectorAll(audioLinks.toString()).forEach(function (link) {
-    previewAudio(link)
+    initPreview(link, 'audio')
   })
 
   document.querySelectorAll(officeLinks.toString()).forEach(function (link) {
