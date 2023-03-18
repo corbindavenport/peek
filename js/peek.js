@@ -52,6 +52,17 @@ function initPreview(inputObject, previewType) {
       popupFrame.src = 'https://docs.google.com/gview?url=' + encodeURI(realUrl.href) + '&embedded=true';
     }
     popupEl.append(popupFrame);
+  } else if (previewType === 'google-docs') {
+    // Google Doc links
+    console.log('Found Google Doc link:', realUrl);
+    let embedFrame = document.createElement('iframe');
+    embedFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+    // Regex to find the document ID: https://regex101.com/r/1DciHc/2
+    let regex = /(?:(\/d\/)|(\/open\?id=)|(srcid=))(?<docsId>.*?)(?:(\/)|(\&)|($))/
+    let docId = regex.exec(realUrl.href)['groups']['docsId']
+    // Add frame to tooltip
+    embedFrame.src = 'https://docs.google.com/viewer?srcid=' + docId + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true';
+    popupEl.append(embedFrame);
   } else if (previewType === 'native-document') {
     // Documents that can be rendered natively by the browser
     console.log('Found document link:', realUrl);
@@ -227,37 +238,6 @@ function createErrorPreview(object) {
   })
 }
 
-function previewGoogleDocs(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else {
-    console.log('Found Google Docs link: ' + url)
-    // Regex to find the document ID: https://regex101.com/r/1DciHc/2
-    var regex = /(?:(\/d\/)|(\/open\?id=)|(srcid=))(?<docsId>.*?)(?:(\/)|(\&)|($))/
-    var docId = regex.exec(url)['groups']['docsId']
-    // Render the popup
-    if (docId) {
-      // Create embed
-      var viewer = '<embed src="https://docs.google.com/viewer?srcid=' + docId + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true">'
-      // Add toolbar
-      viewer = addToolbar(viewer)
-      // Create popup
-      tippy(object, {
-        content: viewer
-      })
-    } else {
-      renderedPreviews.splice(renderedPreviews.indexOf(url), 1)
-      chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() })
-    }
-  }
-}
-
 // Detect links for previews
 function loadDOM() {
 
@@ -368,7 +348,7 @@ function loadDOM() {
   })
 
   document.querySelectorAll(googleLinks.toString()).forEach(function (link) {
-    previewGoogleDocs(link)
+    initPreview(link, 'google-docs')
   })
 
   document.querySelectorAll(appleLinks.toString()).forEach(function (link) {
@@ -380,7 +360,7 @@ function loadDOM() {
   })
 
   document.querySelectorAll(redditLinks.toString()).forEach(function (link) {
-    if (!window.location.hostname === 'www.reddit.com') {
+    if (!(window.location.hostname === 'www.reddit.com')) {
       initPreview(link, 'reddit')
     }
   })
