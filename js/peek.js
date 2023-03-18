@@ -1,11 +1,89 @@
 // Create array for rendered URLs on the page
-var renderedPreviews = []
+let renderedPreviews = []
 
-// Create global doc viewer setting
-var docViewer
+// Video files
+const videoLinks = [
+  'a[href$=".webm" i]',
+  'a[href$=".mp4" i]',
+  'a[href$=".m4v" i]',
+  'a[href$=".ogg" i]',
+  'a[href$=".ogv" i]',
+  'a[href$=".gifv" i]',
+]
 
-// Reset badge icon
-chrome.runtime.sendMessage({ method: 'resetIcon', key: '' })
+// Audio files
+const audioLinks = [
+  'a[href$=".mp3" i]',
+  'a[href$=".m4a" i]',
+  'a[href$=".oga" i]',
+  'a[href$=".wav" i]',
+]
+
+// Documents that have to be rendered by the Docs/Office viewer
+const officeLinks = [
+  'a[href$=".doc" i]',
+  'a[href$=".docx" i]',
+  'a[href$=".xls" i]',
+  'a[href$=".xlsx" i]',
+  'a[href$=".ppt" i]',
+  'a[href$=".pptx" i]',
+  'a[href$=".rtf" i]',
+  'a[href$=".odt" i]',
+  'a[href$=".ods" i]',
+  'a[href$=".odp" i]',
+]
+
+// Documents and images that can be rendered by the browser
+const docLinks = [
+  'a[href$=".pdf" i]',
+  'a[href$=".txt" i]',
+]
+
+// Images that can be rendered by the browser
+const imgLinks = [
+  'a[href$=".jpeg" i]',
+  'a[href$=".jpg" i]',
+  'a[href$=".png" i]',
+  'a[href$=".apng" i]',
+  'a[href$=".svg" i]',
+  'a[href$=".gif" i]',
+  'a[href$=".ico" i]',
+  'a[href$=".bmp" i]',
+]
+
+// Google Docs links
+const googleLinks = [
+  'a[href^="https://docs.google.com/d/"]',
+  'a[href^="https://docs.google.com/document/d/"]',
+  'a[href^="https://docs.google.com/presentation/d/"]',
+  'a[href^="https://docs.google.com/spreadsheets/d/"]',
+  'a[href^="https://docs.google.com/drawings/d/"]',
+  'a[href^="https://docs.google.com/forms/d/"]',
+  'a[href^="https://drive.google.com/open"]'
+]
+
+// iCloud links (Apple only allows Keynote files to be embedded right now)
+const appleLinks = [
+  //'a[href^="https://www.icloud.com/pages/"]',
+  //'a[href^="https://www.icloud.com/numbers/"]',
+  'a[href^="https://www.icloud.com/keynote/"]',
+]
+
+// Video links
+const webVideoLinks = [
+  'a[href^="https://www.youtube.com/watch?v="]',
+  'a[href^="https://youtu.be/"]',
+  'a[href^="https://youtube.com/embed/"]',
+  'a[href^="https://www.youtube.com/embed/"]',
+  'a[href^="https://youtube.com/shorts/"]',
+  'a[href^="https://www.youtube.com/shorts/"]',
+]
+
+// Reddit links
+const redditLinks = [
+  'a[href^="https://www.reddit.com/r/"]',
+  'a[href^="https://redd.it/"]'
+]
 
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -15,7 +93,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 })
 
 // Unified function for generating previews
-function initPreview(inputObject, previewType) {
+function initPreview(inputObject, previewType, peekSettings) {
   // Get the full original URL
   let inputUrl = DOMPurify.sanitize(inputObject.getAttribute('href'));
   let realUrl = new URL(inputUrl, document.location.href);
@@ -29,9 +107,7 @@ function initPreview(inputObject, previewType) {
     return;
   }
   // Create main container element and Tippy instance
-  let tippyTooltip = tippy(inputObject, {
-    theme: 'peek-unified'
-  });
+  let tippyTooltip = tippy(inputObject);
   let popupEl = document.createElement('div');
   popupEl.dataset.peekType = previewType;
   // Add preview
@@ -46,9 +122,9 @@ function initPreview(inputObject, previewType) {
       realUrl.href.toLowerCase().endsWith('ods') ||
       realUrl.href.toLowerCase().endsWith('odp')
     )
-    if (ifOfficeOnly || docViewer === 'office') {
+    if (ifOfficeOnly || peekSettings.docViewer === 'office') {
       popupFrame.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURI(realUrl.href);
-    } else if (docViewer === 'google') {
+    } else if (peekSettings.docViewer === 'google') {
       popupFrame.src = 'https://docs.google.com/gview?url=' + encodeURI(realUrl.href) + '&embedded=true';
     }
     popupEl.append(popupFrame);
@@ -171,230 +247,58 @@ function initPreview(inputObject, previewType) {
   tippyTooltip.setContent(popupEl);
 };
 
-// Function for adding 'Powered by Peek' label to popup HTML
-function addToolbar(html) {
-  // Get settings gear icon
-  var toolbar = '<div class="peek-info-banner">Powered by Peek</div>'
-  html += toolbar
-  return html
-}
-
-// Prevent mixed protocol warnings
-function checkProtocol(url) {
-  if (url.startsWith('http:') && window.location.protocol === 'https:') {
-    // HTTP link on HTTPS page
-    return false
-  } else {
-    // HTTPS link on HTTP page, HTTPS on HTTPS, etc.
-    return true
-  }
-}
-
-// Find the full path of a given URL
-function processURL(url) {
-  // Fix relative URLs
-  if (url.startsWith('/')) {
-    url = window.location.protocol + "//" + window.location.host + url
-  }
-  // Regex to parse Internet Archive URLs: https://regex101.com/r/4F12w7/3
-  var regex = /(?:web\.archive\.org\/web\/)(\d*)(\/)(.*)/
-  // Fix Internet Archive links
-  if (url.includes('//web.archive.org/')) {
-    // Get date
-    var date = regex.exec(url)[1]
-    // Get original URL
-    var originalURL = regex.exec(url)[3]
-    // Append '_id' to the end of the date, so the Internet Archive returns the original file and not an HTML file
-    url = 'https://web.archive.org/web/' + date + 'id_/' + originalURL
-  }
-  // Don't continue if checkProtocol returns false
-  if (checkProtocol(url)) {
-    // Don't continue if the link already has a tooltip, or if the link is a wiki page
-    if ((renderedPreviews.includes(url)) || (url.includes('/wiki/File:'))) {
-      return null
-    } else {
-      // Get full URL
-      var img = document.createElement('img')
-      img.src = url
-      url = img.src
-      img.src = null
-      // Update toolbar icon and return URL
-      renderedPreviews.push(url)
-      chrome.runtime.sendMessage({ method: "changeIcon", key: renderedPreviews.length.toString() })
-      return url
-    }
-  } else {
-    console.log('Cannot generate a preview for ' + url + ' because it is not served over HTTPS, or it is an invalid URL.')
-    return 'invalid'
-  }
-}
-
-// Show preview for invalid URL/mixed content warning
-function createErrorPreview(object) {
-  tippy(object, {
-    content: 'Peek cannot preview this link because it is served over an insecure connection.',
-    arrow: true,
-    delay: [500, 500]
-  })
-}
-
-// Detect links for previews
-function loadDOM() {
-
-  // Video files
-  var videoLinks = [
-    'a[href$=".webm" i]',
-    'a[href$=".mp4" i]',
-    'a[href$=".m4v" i]',
-    'a[href$=".ogg" i]',
-    'a[href$=".ogv" i]',
-    'a[href$=".gifv" i]',
-  ]
-
-  // Audio files
-  var audioLinks = [
-    'a[href$=".mp3" i]',
-    'a[href$=".m4a" i]',
-    'a[href$=".oga" i]',
-    'a[href$=".wav" i]',
-  ]
-
-  // Documents that have to be rendered by the Docs/Office viewer
-  var officeLinks = [
-    'a[href$=".doc" i]',
-    'a[href$=".docx" i]',
-    'a[href$=".xls" i]',
-    'a[href$=".xlsx" i]',
-    'a[href$=".ppt" i]',
-    'a[href$=".pptx" i]',
-    'a[href$=".rtf" i]',
-    'a[href$=".odt" i]',
-    'a[href$=".ods" i]',
-    'a[href$=".odp" i]',
-  ]
-
-  // Documents and images that can be rendered by the browser
-  var docLinks = [
-    'a[href$=".pdf" i]',
-    'a[href$=".txt" i]',
-  ]
-
-  // Images that can be rendered by the browser
-  var imgLinks = [
-    'a[href$=".jpeg" i]',
-    'a[href$=".jpg" i]',
-    'a[href$=".png" i]',
-    'a[href$=".apng" i]',
-    'a[href$=".svg" i]',
-    'a[href$=".gif" i]',
-    'a[href$=".ico" i]',
-    'a[href$=".bmp" i]',
-  ]
-
-  // Google Docs links
-  var googleLinks = [
-    'a[href^="https://docs.google.com/d/"]',
-    'a[href^="https://docs.google.com/document/d/"]',
-    'a[href^="https://docs.google.com/presentation/d/"]',
-    'a[href^="https://docs.google.com/spreadsheets/d/"]',
-    'a[href^="https://docs.google.com/drawings/d/"]',
-    'a[href^="https://docs.google.com/forms/d/"]',
-    'a[href^="https://drive.google.com/open"]'
-  ]
-
-  // iCloud links (Apple only allows Keynote files to be embedded right now)
-  var appleLinks = [
-    //'a[href^="https://www.icloud.com/pages/"]',
-    //'a[href^="https://www.icloud.com/numbers/"]',
-    'a[href^="https://www.icloud.com/keynote/"]',
-  ]
-
-  // Video links
-  var webVideoLinks = [
-    'a[href^="https://www.youtube.com/watch?v="]',
-    'a[href^="https://youtu.be/"]',
-    'a[href^="https://youtube.com/embed/"]',
-    'a[href^="https://www.youtube.com/embed/"]',
-    'a[href^="https://youtube.com/shorts/"]',
-    'a[href^="https://www.youtube.com/shorts/"]',
-  ]
-
-  // Reddit links
-  var redditLinks = [
-    'a[href^="https://www.reddit.com/r/"]',
-    'a[href^="https://redd.it/"]'
-  ]
-
-  // Generate previews
-
-  document.querySelectorAll(videoLinks.toString()).forEach(function (link) {
-    initPreview(link, 'video')
-  })
-
-  document.querySelectorAll(audioLinks.toString()).forEach(function (link) {
-    initPreview(link, 'audio')
-  })
-
-  document.querySelectorAll(officeLinks.toString()).forEach(function (link) {
-    initPreview(link, 'ms-office')
-  })
-
-  document.querySelectorAll(docLinks.toString()).forEach(function (link) {
-    initPreview(link, 'native-document')
-  })
-
-  document.querySelectorAll(imgLinks.toString()).forEach(function (link) {
-    initPreview(link, 'native-image')
-  })
-
-  document.querySelectorAll(googleLinks.toString()).forEach(function (link) {
-    initPreview(link, 'google-docs')
-  })
-
-  document.querySelectorAll(appleLinks.toString()).forEach(function (link) {
-    initPreview(link, 'icloud')
-  })
-
-  document.querySelectorAll(webVideoLinks.toString()).forEach(function (link) {
-    initPreview(link, 'youtube')
-  })
-
-  document.querySelectorAll(redditLinks.toString()).forEach(function (link) {
-    if (!(window.location.hostname === 'www.reddit.com')) {
-      initPreview(link, 'reddit')
-    }
-  })
-
-}
-
 // Initialize Peek on page load
-chrome.storage.sync.get({
-  docViewer: 'google',
-  previewSize: 400,
-}, function (data) {
-  // Read preference for document viewer from settings
-  docViewer = data.docViewer
-  // Always render previews below link on Firefox, otherwise the positioning is off
-  if (navigator.userAgent.includes('Firefox')) {
-    var placementSetting = 'bottom'
-  } else {
-    var placementSetting = 'top'
-  }
+async function initPeek() {
+  // Get settings from storage
+  const peekSettings = await chrome.storage.sync.get({
+    docViewer: 'google'
+  });
   // Set defaults for previews
   tippy.setDefaultProps({
     arrow: true,
     allowHTML: true,
     delay: [500, 500],
     interactive: true,
-    placement: placementSetting,
-    maxWidth: data.previewSize,
-    maxHeight: data.previewSize,
-    theme: 'peek'
-  })
-  // Set width through injecting CSS code because Tippy doesn't have a property for it
-  var customCSS = document.createElement('style')
-  customCSS.innerHTML = ".tippy-box[data-theme~='peek'] {width: " + data.previewSize + "px !important;} .tippy-box[data-theme~='peek'] embed {height: " + (data.previewSize - 80) + "px !important;}"
-  document.body.appendChild(customCSS)
-  // Initialize previews
-  loadDOM()
-})
+    theme: 'peek-unified'
+  });
+  // Generate video previews
+  document.querySelectorAll(videoLinks.toString()).forEach(function (link) {
+    initPreview(link, 'video', peekSettings);
+  });
+  // Generate audio previews
+  document.querySelectorAll(audioLinks.toString()).forEach(function (link) {
+    initPreview(link, 'audio', peekSettings);
+  });
+  // Generate previews for MS Office docs and other documents not natively supported
+  document.querySelectorAll(officeLinks.toString()).forEach(function (link) {
+    initPreview(link, 'ms-office', peekSettings);
+  });
+  // Genrate previews for documents that the browser can render
+  document.querySelectorAll(docLinks.toString()).forEach(function (link) {
+    initPreview(link, 'native-document', peekSettings);
+  });
+  // Generate image previews
+  document.querySelectorAll(imgLinks.toString()).forEach(function (link) {
+    initPreview(link, 'native-image', peekSettings);
+  });
+  // Generate Google Docs links previews
+  document.querySelectorAll(googleLinks.toString()).forEach(function (link) {
+    initPreview(link, 'google-docs', peekSettings);
+  });
+  // Generate iCloud link previews
+  document.querySelectorAll(appleLinks.toString()).forEach(function (link) {
+    initPreview(link, 'icloud', peekSettings);
+  });
+  // Generae YouTube link previews
+  document.querySelectorAll(webVideoLinks.toString()).forEach(function (link) {
+    initPreview(link, 'youtube', peekSettings);
+  });
+  // Generate Reddit link previews, except on Reddit.com itself
+  if (!(window.location.hostname === 'www.reddit.com')) {
+    document.querySelectorAll(redditLinks.toString()).forEach(function (link) {
+      initPreview(link, 'reddit', peekSettings);
+    })
+  };
+};
+
+initPeek();
