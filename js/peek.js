@@ -37,7 +37,7 @@ function initPreview(inputObject, previewType) {
   // Add preview
   if (previewType === 'ms-office') {
     // Microsoft Office documents
-    console.log('Found Office document link:', realUrl)
+    console.log('Found Office document link:', realUrl);
     let popupFrame = document.createElement('iframe');
     popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Open Document Format files can only be opened with Microsoft's viewer, so override user preference
@@ -52,6 +52,28 @@ function initPreview(inputObject, previewType) {
       popupFrame.src = 'https://docs.google.com/gview?url=' + encodeURI(realUrl.href) + '&embedded=true';
     }
     popupEl.append(popupFrame);
+  } else if (previewType === 'native-document') {
+    // Documents that can be rendered natively by the browser
+    console.log('Found document link:', realUrl);
+    let embedEl = document.createElement('embed');
+    embedEl.src = realUrl.href;
+    // Set options for viewer if file is a PDF
+    if (realUrl.href.toLowerCase().endsWith('.pdf')) {
+      if (navigator.userAgent.includes('Firefox')) {
+        embedEl.src += '#zoom=page-width';
+      } else {
+        embedEl.src += '#toolbar=0'
+      }
+    }
+    // Add embed to tooltip
+    popupEl.append(embedEl)
+  } else if (previewType === 'native-image') {
+    // Documents that can be rendered natively by the browser
+    console.log('Found image link:', realUrl);
+    let embedEl = document.createElement('img');
+    embedEl.src = realUrl.href;
+    // Add embed to tooltip
+    popupEl.append(embedEl)
   } else if (previewType === 'video') {
     // HTML5 Video
     console.log('Found video link:', realUrl);
@@ -77,6 +99,7 @@ function initPreview(inputObject, previewType) {
     audioEl.controls = true;
     audioEl.setAttribute('controlsList', 'nodownload');
     audioEl.src = realUrl.href;
+    // Add audio to tooltip
     popupEl.append(audioEl);
   } else if (previewType === 'youtube') {
     // YouTube video
@@ -94,6 +117,25 @@ function initPreview(inputObject, previewType) {
     }
     // Add video to tooltip
     popupEl.append(popupFrame);
+  } else if (previewType === 'reddit') {
+    // Reddit link
+    console.log('Found Reddit link:', realUrl)
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+    // Modify original URL to embedded format
+    let embedUrl = realUrl;
+    embedUrl.hostname = 'www.redditmedia.com';
+    embedUrl.searchParams.set('embed', 'true');
+    embedUrl.searchParams.set('showmedia', 'true');
+    embedUrl.searchParams.set('depth', '1');
+    frameEl.src = embedUrl;
+    // Modify URL to match system theme
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      embedUrl.searchParams.set('theme', 'dark');
+    }
+    // Add frame to tooltip
+    frameEl.src = embedUrl;
+    popupEl.append(frameEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
@@ -174,39 +216,6 @@ function createErrorPreview(object) {
   })
 }
 
-function previewDocument(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else {
-    console.log('Found document link: ' + url)
-    // Render file with the browser's own viewer
-    if (url.toLowerCase().endsWith('.pdf')) {
-      // Set options for PDF viewer
-      if (navigator.userAgent.includes('Firefox')) {
-        var viewer = '<embed src="' + url + '#zoom=page-width">'
-      } else {
-        var viewer = '<embed src="' + url + '#toolbar=0">'
-      }
-    } else if (url.toLowerCase().endsWith('.txt')) {
-      var viewer = '<embed src="' + url + '">'
-    } else {
-      var viewer = '<img src="' + url + '">'
-    }
-    // Add toolbar
-    viewer = addToolbar(viewer)
-    // Create popup
-    tippy(object, {
-      content: viewer
-    })
-  }
-}
-
 function previewGoogleDocs(object) {
   var url = DOMPurify.sanitize(object.getAttribute('href'))
   url = processURL(url)
@@ -263,81 +272,6 @@ function previewiCloud(object) {
   }
 }
 
-function previewWebVideo(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else if (url.includes('youtube.com/') || url.includes('youtu.be/')) {
-    console.log('Found YouTube link: ' + url)
-    // Regex to find the video ID: https://regex101.com/r/qFx13n/1
-    var regex = /(?:(v?\=)|(youtu.be\/))(?<videoId>.*?)(&|$)/
-    var videoId = regex.exec(url)['groups']['videoId']
-    // Render the popup
-    if (videoId) {
-      // Create embed
-      var viewer = '<div class="video-embed-container"><embed src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1"></div>'
-      // Add toolbar
-      viewer = addToolbar(viewer)
-      // Create popup
-      tippy(object, {
-        content: viewer
-      })
-    } else {
-      renderedPreviews.splice(renderedPreviews.indexOf(url), 1)
-      chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() })
-    }
-  }
-}
-
-function previewReddit(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else if (url.includes('redd.it/') || url.includes('/comments/')) {
-    console.log('Found Reddit link: ' + url)
-    // Regex to parse Reddit links: https://regex101.com/r/nVmy7L/1
-    var regex = /(?:(comments\/)|(redd.it\/))(?<postID>.*?)(?:\/|&|$)/
-    var postID = regex.exec(url)['groups']['postID']
-    if (postID) {
-      // Create popup
-      tippy(object, {
-        content: 'Loading preview...',
-        maxWidth: 400,
-        onShow(instance) {
-          // Make network request only after popup is called
-          console.log('https://api.reddit.com/api/info/?id=t3_' + postID)
-          fetch('https://api.reddit.com/api/info/?id=t3_' + postID).then(function (response) {
-            response.json().then(function (data) {
-              if (data.data.children[0].data) {
-                console.log('Received response from Reddit:', data.data.children[0].data)
-                // Replace popup content with info from Reddit
-                var post = data.data.children[0].data
-                var content = '<b>' + post.title + '</b><br>Posted on ' + post.subreddit_name_prefixed + ' by ' + post.author
-                content = addToolbar(content)
-                instance.setContent(content)
-              }
-            })
-          }).catch(function (err) {
-            console.error('Error with Reddit API:', err)
-          })
-        }
-      })
-    } else {
-      console.error('Could not find Reddit post ID in URL:', url)
-    }
-  }
-}
-
 // Detect links for previews
 function loadDOM() {
 
@@ -377,6 +311,10 @@ function loadDOM() {
   var docLinks = [
     'a[href$=".pdf" i]',
     'a[href$=".txt" i]',
+  ]
+
+  // Images that can be rendered by the browser
+  var imgLinks = [
     'a[href$=".jpeg" i]',
     'a[href$=".jpg" i]',
     'a[href$=".png" i]',
@@ -436,7 +374,11 @@ function loadDOM() {
   })
 
   document.querySelectorAll(docLinks.toString()).forEach(function (link) {
-    previewDocument(link)
+    initPreview(link, 'native-document')
+  })
+
+  document.querySelectorAll(imgLinks.toString()).forEach(function (link) {
+    initPreview(link, 'native-image')
   })
 
   document.querySelectorAll(googleLinks.toString()).forEach(function (link) {
@@ -452,7 +394,9 @@ function loadDOM() {
   })
 
   document.querySelectorAll(redditLinks.toString()).forEach(function (link) {
-    previewReddit(link)
+    if (!window.location.hostname === 'www.reddit.com') {
+      initPreview(link, 'reddit')
+    }
   })
 
 }
