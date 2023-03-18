@@ -67,6 +67,17 @@ function initPreview(inputObject, previewType) {
     }
     // Add embed to tooltip
     popupEl.append(embedEl)
+  } else if (previewType === 'icloud') {
+    // iCloud documents
+    console.log('Found iCloud link:', realUrl);
+    let embedFrame = document.createElement('iframe');
+    embedFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+    // Modify URL to show it in embedded format
+    let embedUrl = realUrl;
+    embedUrl.searchParams.set('embed', 'true');
+    // Add frame to tooltip
+    embedFrame.src = embedUrl.href;
+    popupEl.append(embedFrame);
   } else if (previewType === 'native-image') {
     // Documents that can be rendered natively by the browser
     console.log('Found image link:', realUrl);
@@ -247,31 +258,6 @@ function previewGoogleDocs(object) {
   }
 }
 
-function previewiCloud(object) {
-  var url = DOMPurify.sanitize(object.getAttribute('href'))
-  url = processURL(url)
-  if (url === 'invalid') {
-    // Show error message
-    createErrorPreview(object)
-  } else if (!url) {
-    // If the URL is null or otherwise invalid, silently fail
-    return
-  } else {
-    console.log('Found iCloud link: ' + url)
-    // Regex to parse iCloud links: https://regex101.com/r/IM4eoX/2
-    var regex = /(?:(?<type>pages|numbers|keynote))(?:\/)(?<fileId>.*?)(?:\#|\/|$)/
-    var app = regex.exec(url)['groups']['type']
-    var id = regex.exec(url)['groups']['fileId']
-    var viewer = '<embed src="https://www.icloud.com/' + app + '/' + id + '?embed=true">'
-    // Add toolbar
-    viewer = addToolbar(viewer)
-    // Create popup
-    tippy(object, {
-      content: viewer
-    })
-  }
-}
-
 // Detect links for previews
 function loadDOM() {
 
@@ -386,7 +372,7 @@ function loadDOM() {
   })
 
   document.querySelectorAll(appleLinks.toString()).forEach(function (link) {
-    previewiCloud(link)
+    initPreview(link, 'icloud')
   })
 
   document.querySelectorAll(webVideoLinks.toString()).forEach(function (link) {
