@@ -6,7 +6,7 @@
 
 .tippy-box[data-theme="peek-unified"] {
     user-select: none !important;
-    box-shadow: 0 3px 10px #eaeaea !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5) !important;
 }
 
 .tippy-box[data-theme="peek-unified"] .tippy-content {
@@ -22,7 +22,7 @@
 
 .tippy-box[data-theme="peek-unified"] iframe, .tippy-box[data-theme="peek-unified"] embed {
     height: 300px !important;
-    width: 100% !important;
+    width: 300px !important;
     border: 0 !important;
 }
 
@@ -91,10 +91,6 @@
 
     .tippy-box[data-theme="peek-unified"], .tippy-box[data-theme="peek-unified"] iframe, .tippy-box[data-theme="peek-unified"] video {
         background: #212529 !important;
-    }
-
-    .tippy-box[data-theme="peek-unified"] {
-        box-shadow: 0 3px 10px #000000 !important;
     }
 
     .tippy-box[data-theme="peek-unified"] .peek-toolbar {

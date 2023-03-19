@@ -257,6 +257,7 @@ async function initPeek() {
   tippy.setDefaultProps({
     arrow: true,
     allowHTML: true,
+    maxWidth: 370,
     delay: [500, 500],
     interactive: true,
     theme: 'peek-unified'
