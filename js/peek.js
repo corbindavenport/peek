@@ -238,13 +238,15 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
   // Add toolbar
-  // TODO: Add buttons to right side
   let toolbarEl = document.createElement('div');
   toolbarEl.className = 'peek-toolbar'
   toolbarEl.innerText = 'Powered by Peek';
   popupEl.prepend(toolbarEl);
   // Add content to tooltip
   tippyTooltip.setContent(popupEl);
+  // Update preview counter
+  renderedPreviews.push(realUrl.href);
+  chrome.runtime.sendMessage({ method: 'changeIcon', key: renderedPreviews.length.toString() });
 };
 
 // Initialize Peek on page load
