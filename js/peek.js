@@ -85,6 +85,11 @@ const redditLinks = [
   'a[href^="https://redd.it/"]'
 ]
 
+// Imgur links
+const imgurLinks = [
+  'a[href^="https://imgur.com/"]:not(a[href*="/comment"]):not(a[href*="/user"])'
+]
+
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getPreviews') {
@@ -234,6 +239,22 @@ function initPreview(inputObject, previewType, peekSettings) {
     // Add frame to tooltip
     frameEl.src = embedUrl;
     popupEl.append(frameEl);
+  } else if (previewType === 'imgur') {
+    // Imgur link
+    console.log('Found Imgur link:', realUrl)
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    // Modify original URL to embedded format
+    let embedUrl = realUrl;
+    if (embedUrl.pathname.endsWith('/')) {
+      embedUrl.pathname = embedUrl.pathname.slice(0, -1);
+    }
+    embedUrl.pathname = embedUrl.pathname.replace('/gallery/', '/a/')
+    embedUrl.pathname += '/embed'
+    embedUrl.searchParams.set('pub', 'true')
+    // Add frame to tooltip
+    frameEl.src = embedUrl;
+    popupEl.append(frameEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
@@ -260,7 +281,7 @@ async function initPeek() {
     arrow: true,
     allowHTML: true,
     maxWidth: 370,
-    delay: [500, 500],
+    delay: [500, 50000000],
     interactive: true,
     theme: 'peek-unified'
   });
@@ -300,6 +321,12 @@ async function initPeek() {
   if (!(window.location.hostname === 'www.reddit.com')) {
     document.querySelectorAll(redditLinks.toString()).forEach(function (link) {
       initPreview(link, 'reddit', peekSettings);
+    })
+  };
+  // Generate Imgur link previews, except on Imgur itself
+  if (!(window.location.hostname === 'www.imgur.com')) {
+    document.querySelectorAll(imgurLinks.toString()).forEach(function (link) {
+      initPreview(link, 'imgur', peekSettings);
     })
   };
 };
