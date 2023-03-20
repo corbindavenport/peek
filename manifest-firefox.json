@@ -1,0 +1,68 @@
+{
+	"manifest_version": 3,
+	"name": "Peek",
+	"version": "5.0",
+	"author": "Corbin Davenport",
+	"description": "Preview documents, videos, music, and more with a mouse hover.",
+	"homepage_url": "https://github.com/corbindavenport/peek",
+	"options_ui": {
+		"page": "settings.html",
+		"open_in_tab": true
+	},
+	"permissions": [
+		"storage"
+	],
+	"host_permissions": [
+		"*://*/*"
+	],
+	"background": {
+		"scripts": ["js/background.js"]
+	},
+	"icons": {
+		"32": "img/icon_x32.png",
+		"48": "img/icon_x48.png",
+		"128": "img/icon_x128.png"
+	},
+	"action": {
+		"default_icon": {
+			"32": "img/icon_x32.png",
+			"48": "img/icon_action_x48.png",
+			"128": "img/icon_action_x128.png"
+		},
+		"action": {},
+		"default_title": "Click to open Peek settings"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "{1cea70bd-2da4-41b1-93e9-54dba64e7223}",
+			"strict_min_version": "106.0"
+		}
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"http://*/*",
+				"https://*/*"
+			],
+			"js": [
+				"js/popper.min.js",
+				"js/tippy-bundle.umd.min.js",
+				"js/purify.js",
+				"js/peek.js"
+			],
+			"css": [
+				"css/peek.css"
+			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"https://www.google.com/search*"
+			],
+			"css": [
+				"css/google.css"
+			],
+			"run_at": "document_end"
+		}
+	]
+}
