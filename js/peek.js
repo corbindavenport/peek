@@ -123,7 +123,7 @@ function initPreview(inputObject, previewType, peekSettings) {
   // Add preview
   if (previewType === 'ms-office') {
     // Microsoft Office documents
-    console.log('Found Office document link:', realUrl);
+    console.log('Found Office document link:', realUrl, inputObject);
     let popupFrame = document.createElement('iframe');
     popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Open Document Format files can only be opened with Microsoft's viewer, so override user preference
@@ -140,7 +140,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.append(popupFrame);
   } else if (previewType === 'google-docs') {
     // Google Doc links
-    console.log('Found Google Doc link:', realUrl);
+    console.log('Found Google Doc link:', realUrl, inputObject);
     let embedFrame = document.createElement('iframe');
     embedFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Regex to find the document ID: https://regex101.com/r/1DciHc/2
@@ -151,7 +151,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.append(embedFrame);
   } else if (previewType === 'native-document') {
     // Documents that can be rendered natively by the browser
-    console.log('Found document link:', realUrl);
+    console.log('Found document link:', realUrl, inputObject);
     let embedEl = document.createElement('embed');
     embedEl.src = realUrl.href;
     // Set options for viewer if file is a PDF
@@ -166,7 +166,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.append(embedEl)
   } else if (previewType === 'icloud') {
     // iCloud documents
-    console.log('Found iCloud link:', realUrl);
+    console.log('Found iCloud link:', realUrl, inputObject);
     let embedFrame = document.createElement('iframe');
     embedFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Modify URL to show it in embedded format
@@ -177,14 +177,14 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.append(embedFrame);
   } else if (previewType === 'native-image') {
     // Documents that can be rendered natively by the browser
-    console.log('Found image link:', realUrl);
+    console.log('Found image link:', realUrl, inputObject);
     let embedEl = document.createElement('img');
     embedEl.src = realUrl.href;
     // Add embed to tooltip
     popupEl.append(embedEl)
   } else if (previewType === 'video') {
     // HTML5 Video
-    console.log('Found video link:', realUrl);
+    console.log('Found video link:', realUrl, inputObject);
     let popupVideo = document.createElement('video');
     // Set video properties
     popupVideo.controls = true;
@@ -201,7 +201,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     });
   } else if (previewType === 'audio') {
     // Audio files
-    console.log('Found audio link:', realUrl);
+    console.log('Found audio link:', realUrl, inputObject);
     let audioEl = document.createElement('audio');
     // Set audio properties
     audioEl.controls = true;
@@ -211,7 +211,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.append(audioEl);
   } else if (previewType === 'youtube') {
     // YouTube video
-    console.log('Found YouTube video link:', realUrl)
+    console.log('Found YouTube video link:', realUrl, inputObject);
     let popupFrame = document.createElement('iframe');
     popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Use to find the video ID: https://regex101.com/r/UG8utp/1
@@ -227,7 +227,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.append(popupFrame);
   } else if (previewType === 'reddit') {
     // Reddit link
-    console.log('Found Reddit link:', realUrl)
+    console.log('Found Reddit link:', realUrl, inputObject);
     let frameEl = document.createElement('iframe');
     frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Modify original URL to embedded format
@@ -246,7 +246,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.append(frameEl);
   } else if (previewType === 'imgur') {
     // Imgur link
-    console.log('Found Imgur link:', realUrl)
+    console.log('Found Imgur link:', realUrl, inputObject);
     let frameEl = document.createElement('iframe');
     frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     // Modify original URL to embedded format
@@ -262,7 +262,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.append(frameEl);
   } else if (previewType === 'tiktok') {
     // TikTok link
-    console.log('Found TikTok link:', realUrl)
+    console.log('Found TikTok link:', realUrl, inputObject);
     let frameEl = document.createElement('iframe');
     frameEl.setAttribute('sandbox', 'allow-scripts');
     // Use to find the video ID: https://regex101.com/r/Gvugg7/1

@@ -55,7 +55,7 @@
     height: 50px !important;
 }
 
-.tippy-box[data-theme="peek-unified"] iframe.peek-embed-portrait {
+.tippy-box[data-theme="peek-unified"] iframe.peek-embed-portrait, .tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe.peek-embed-portrait {
     width: 225px !important;
     height: 400px !important;
 }
