@@ -10,6 +10,7 @@ chrome.action.onClicked.addListener(function () {
   chrome.runtime.openOptionsPage();
 });
 
+// Change preview count on action bar based on requests from peek.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.method === 'changeIcon') {
     if (!request || request.key === 0) {
@@ -24,21 +25,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+// Check number of previews from peek.js whenever tab changes
 chrome.tabs.onActivated.addListener((tab) => {
-  // Check number of previews from peek.js whenever tab changes
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    try {
-      chrome.tabs.sendMessage(tabs[0].id, { method: 'getPreviews' }, (response) => {
-        console.log(response)
-        if (!response || response.data === 0) {
-          chrome.action.setBadgeText({ text: '' });
-        } else {
-          chrome.action.setBadgeText({ text: response.data });
-        }
-      });
-    } catch {
-      // Silently fail if communication can't be established with the content script
+  chrome.tabs.sendMessage(tab.tabId, { method: 'getPreviews' }, (response) => {
+    if (!response || response.data === 0) {
       chrome.action.setBadgeText({ text: '' });
+    } else {
+      chrome.action.setBadgeText({ text: response.data.toString() });
     }
   });
 });
