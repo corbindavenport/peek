@@ -90,6 +90,11 @@ const imgurLinks = [
   'a[href^="https://imgur.com/"]:not(a[href*="/comment"]):not(a[href*="/user"])'
 ]
 
+// TikTok links
+const tiktokLinks = [
+  'a[href^="https://www.tiktok.com/"][href*="/video"]'
+]
+
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getPreviews') {
@@ -210,8 +215,8 @@ function initPreview(inputObject, previewType, peekSettings) {
     let popupFrame = document.createElement('iframe');
     popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Use to find the video ID: https://regex101.com/r/UG8utp/1
-    let regex = /(?:(v?\=)|(youtu.be\/)|(embed\/)|(shorts\/))(?<videoId>.*?)(&|$)/
-    let videoId = regex.exec(realUrl.href)['groups']['videoId']
+    let regex = /(?:(v?\=)|(youtu.be\/)|(embed\/)|(shorts\/))(?<videoId>.*?)(&|$)/;
+    let videoId = regex.exec(realUrl.href)['groups']['videoId'];
     popupFrame.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1';
     // Add custom properties for YouTube Shorts
     if (realUrl.href.includes('shorts')) {
@@ -235,7 +240,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     // Modify URL to match system theme
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       embedUrl.searchParams.set('theme', 'dark');
-    }
+    };
     // Add frame to tooltip
     frameEl.src = embedUrl;
     popupEl.append(frameEl);
@@ -248,12 +253,23 @@ function initPreview(inputObject, previewType, peekSettings) {
     let embedUrl = realUrl;
     if (embedUrl.pathname.endsWith('/')) {
       embedUrl.pathname = embedUrl.pathname.slice(0, -1);
-    }
-    embedUrl.pathname = embedUrl.pathname.replace('/gallery/', '/a/')
-    embedUrl.pathname += '/embed'
-    embedUrl.searchParams.set('pub', 'true')
+    };
+    embedUrl.pathname = embedUrl.pathname.replace('/gallery/', '/a/');
+    embedUrl.pathname += '/embed';
+    embedUrl.searchParams.set('pub', 'true');
     // Add frame to tooltip
     frameEl.src = embedUrl;
+    popupEl.append(frameEl);
+  } else if (previewType === 'tiktok') {
+    // TikTok link
+    console.log('Found TikTok link:', realUrl)
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts');
+    // Use to find the video ID: https://regex101.com/r/Gvugg7/1
+    let regex = /(?:(video\/))(?<videoId>.*?)(&|\?|$)/;
+    let videoId = regex.exec(realUrl.href)['groups']['videoId'];
+    frameEl.src = 'https://www.tiktok.com/embed/v2/' + videoId;
+    // Add frame to tooltip
     popupEl.append(frameEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
@@ -281,7 +297,7 @@ async function initPeek() {
     arrow: true,
     allowHTML: true,
     maxWidth: 370,
-    delay: [500, 50000000],
+    delay: [500, 500],
     interactive: true,
     theme: 'peek-unified'
   });
@@ -327,6 +343,12 @@ async function initPeek() {
   if (!(window.location.hostname === 'www.imgur.com')) {
     document.querySelectorAll(imgurLinks.toString()).forEach(function (link) {
       initPreview(link, 'imgur', peekSettings);
+    })
+  };
+  // Generate TikTok link previews, except on TikTok itself
+  if (!(window.location.hostname === 'www.tiktok.com')) {
+    document.querySelectorAll(tiktokLinks.toString()).forEach(function (link) {
+      initPreview(link, 'tiktok', peekSettings);
     })
   };
 };
