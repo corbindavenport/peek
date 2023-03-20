@@ -48,6 +48,15 @@
 				"css/peek.css"
 			],
 			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"https://www.google.com/search*"
+			],
+			"css": [
+				"css/google.css"
+			],
+			"run_at": "document_end"
 		}
 	]
 }
