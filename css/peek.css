@@ -22,14 +22,12 @@
     text-align: initial !important;
 }
 
-.tippy-box[data-theme="peek-unified"] iframe,
-.tippy-box[data-theme="peek-unified"] embed {
+.tippy-box[data-theme="peek-unified"] iframe {
     height: 300px !important;
     width: 300px !important;
     border: 0 !important;
 }
 
-.tippy-box[data-theme="peek-unified"] embed,
 .tippy-box[data-theme="peek-unified"] img {
     object-position: center !important;
     object-fit: scale-down !important;
@@ -64,9 +62,18 @@
     width: 350px !important;
 }
 
-.tippy-box[data-theme="peek-unified"] div[data-peek-type="tiktok"] iframe {
-    width: 340px !important;
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="tiktok"] .peek-tiktok-wrapper {
+    width: 200px !important;
     height: 400px !important;
+    overflow: hidden !important;
+}
+
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="tiktok"] iframe {
+    overflow: none !important;
+    transform: scale(0.6) !important;
+    transform-origin:left top !important;
+    width: 166% !important;
+    height: 166% !important;
 }
 
 .tippy-box[data-theme="peek-unified"] .peek-toolbar {
@@ -80,7 +87,6 @@
 .tippy-box[data-theme="peek-unified"] iframe,
 .tippy-box[data-theme="peek-unified"] video,
 .tippy-box[data-theme="peek-unified"] audio,
-.tippy-box[data-theme="peek-unified"] embed,
 .tippy-box[data-theme="peek-unified"] img {
     border-radius: 10px !important;
 }
@@ -99,6 +105,18 @@
 
 .tippy-box[data-theme~="tomato"][data-placement^="right"]>.tippy-arrow::before {
     border-right-color: #dee2e6 !important;
+}
+
+/* Firefox-specific fixes */
+
+@supports (-moz-appearance:none) {
+
+    /* Firefox PDF viewer needs a larger view */
+    .tippy-box[data-theme="peek-unified"] div[data-peek-type="native-document"] iframe {
+        height: 300px !important;
+        width: 350px !important;
+    }
+
 }
 
 /* Unified Peek in Dark Mode */

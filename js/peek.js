@@ -152,18 +152,21 @@ function initPreview(inputObject, previewType, peekSettings) {
   } else if (previewType === 'native-document') {
     // Documents that can be rendered natively by the browser
     console.log('Found document link:', realUrl, inputObject);
-    let embedEl = document.createElement('embed');
-    embedEl.src = realUrl.href;
+    let embedFrame = document.createElement('iframe');
+    embedFrame.setAttribute('sandbox', '');
+    embedFrame.src = realUrl.href;
     // Set options for viewer if file is a PDF
+    // Firefox documentation: https://github.com/mozilla/pdf.js/wiki/Viewer-options
     if (realUrl.href.toLowerCase().endsWith('.pdf')) {
+      embedFrame.setAttribute('sandbox', 'allow-scripts');
       if (navigator.userAgent.includes('Firefox')) {
-        embedEl.src += '#zoom=page-width';
+        embedFrame.src += '#zoom=page-width&pagemode=none';
       } else {
-        embedEl.src += '#toolbar=0'
+        embedFrame.src += '#toolbar=0'
       }
     }
     // Add embed to tooltip
-    popupEl.append(embedEl)
+    popupEl.append(embedFrame)
   } else if (previewType === 'icloud') {
     // iCloud documents
     console.log('Found iCloud link:', realUrl, inputObject);
@@ -263,6 +266,8 @@ function initPreview(inputObject, previewType, peekSettings) {
   } else if (previewType === 'tiktok') {
     // TikTok link
     console.log('Found TikTok link:', realUrl, inputObject);
+    let wrapperEl = document.createElement('div');
+    wrapperEl.className = 'peek-tiktok-wrapper';
     let frameEl = document.createElement('iframe');
     frameEl.setAttribute('sandbox', 'allow-scripts');
     // Use to find the video ID: https://regex101.com/r/Gvugg7/1
@@ -270,7 +275,8 @@ function initPreview(inputObject, previewType, peekSettings) {
     let videoId = regex.exec(realUrl.href)['groups']['videoId'];
     frameEl.src = 'https://www.tiktok.com/embed/v2/' + videoId;
     // Add frame to tooltip
-    popupEl.append(frameEl);
+    wrapperEl.append(frameEl);
+    popupEl.append(wrapperEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
@@ -297,7 +303,7 @@ async function initPeek() {
     arrow: true,
     allowHTML: true,
     maxWidth: 370,
-    delay: [500, 500],
+    delay: [500, 5000000],
     interactive: true,
     theme: 'peek-unified'
   });
