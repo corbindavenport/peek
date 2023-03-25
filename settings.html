@@ -8,6 +8,14 @@
 	<link rel="icon" type="image/png" href="img/icon_x32.png">
 	<title>Peek Settings</title>
 	<link href="css/bootstrap.css" rel="stylesheet">
+	<style>
+		/* Firefox-specific styles */
+		@supports (-moz-appearance:none) {
+			#firefox-warning {
+				display: block !important;
+			}
+		}
+	</style>
 </head>
 
 <body>
@@ -27,6 +35,12 @@
 		<div class="row">
 			<!-- Main settings -->
 			<div class="col-md-8">
+				<div class="card text-bg-warning w-100 mb-3 d-none" id="firefox-warning">
+					<div class="card-body">
+						<h5 class="card-title">You may need to update permissions</h5>
+						<p class="card-text">Firefox may block Peek from running on a page until you click the Peek button in the toolbar. You can fix this by going to your add-ons list (<b>about:addons</b>) > Peek > Permissions tab > Access your data for all websites.</p>
+					</div>
+				</div>
 				<!-- Document viewer -->
 				<div class="mb-3">
 					<label for="doc-viewer" class="form-label">Document Viewer</label>
@@ -41,6 +55,7 @@
 			</div>
 			<!-- Donation -->
 			<div class="col-md-4">
+				<h2>Donate</h2>
 				<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
 				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
 					<button type="button" class="btn btn-success w-100 mb-3">Donate via PayPal</button>
@@ -49,6 +64,8 @@
 					<button type="button" class="btn btn-success w-100 mb-3">Donate via Cash App</button>
 				</a>
 				<p>Peek is developed by <a href="https://corbin.io/?utm_source=Peek%20Extension">Corbin Davenport</a>.</p>
+				<h2>Need help?</h2>
+				<p>If something isn't working, or if you just want to chat with other Peek users, <a href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on GitHub</a> or <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">join the Discord server</a>.</p>
 			</div>
 		</div>
 		<!-- Footer -->
