@@ -153,16 +153,17 @@ function initPreview(inputObject, previewType, peekSettings) {
     // Documents that can be rendered natively by the browser
     console.log('Found document link:', realUrl, inputObject);
     let embedFrame = document.createElement('iframe');
-    embedFrame.setAttribute('sandbox', '');
+    embedFrame.setAttribute('sandbox', 'allow-scripts');
     embedFrame.src = realUrl.href;
     // Set options for viewer if file is a PDF
     // Firefox documentation: https://github.com/mozilla/pdf.js/wiki/Viewer-options
     if (realUrl.href.toLowerCase().endsWith('.pdf')) {
-      embedFrame.setAttribute('sandbox', 'allow-scripts');
       if (navigator.userAgent.includes('Firefox')) {
         embedFrame.src += '#zoom=page-width&pagemode=none';
       } else {
-        embedFrame.src += '#toolbar=0'
+        embedFrame.src += '#toolbar=0';
+        // The sandbox mode breaks too often with PDF documents in Chromium browsers
+        embedFrame.removeAttribute('sandbox');
       }
     }
     // Add embed to tooltip
@@ -303,7 +304,7 @@ async function initPeek() {
     arrow: true,
     allowHTML: true,
     maxWidth: 370,
-    delay: [500, 5000000],
+    delay: [500, 500],
     interactive: true,
     theme: 'peek-unified'
   });

@@ -8,6 +8,14 @@
 	<link rel="icon" type="image/png" href="img/icon_x32.png">
 	<title>Peek</title>
 	<link href="css/bootstrap.css" rel="stylesheet">
+	<style>
+		/* Firefox-specific styles */
+		@supports (-moz-appearance:none) {
+			#firefox-warning {
+				display: block !important;
+			}
+		}
+	</style>
 </head>
 
 <body>
@@ -27,9 +35,14 @@
 		<!-- Info and donation -->
 		<div class="row">
 			<div class="col-md-8">
+				<div class="card text-bg-warning w-100 mb-3 d-none" id="firefox-warning">
+					<div class="card-body">
+					  <h5 class="card-title">You may need to update permissions</h5>
+					  <p class="card-text">Firefox may block Peek from running on a page until you click the Peek button in the toolbar. You can fix this by going to your add-ons list (<b>about:addons</b>) > Peek > Permissions tab > Access your data for all websites.</p>
+					</div>
+				  </div>
 				<h2>How to use Peek</h2>
-				<p>Peek shows previews over file download links. Just hover your mouse over a link to a file, and the preview will appear. Try <a href="https://www.google.com/search?q=sample+filetype%3Apptx+inurl%3Ahttps" target="_blank">clicking here</a> and hovering over some results.</p>
-				<p>To open Peek settings, click the Peek icon in the toolbar. You can also click <a href="settings.html">here</a>.</p>
+				<p>Peek shows previews for documents, media files, social media posts, and other supported links. Just hover your mouse over a link to a file, and the preview will appear. Try the <a href="https://www.bing.com/search?q=sample+filetype%3Apptx+inurl%3Ahttps" target="_blank">search results demo</a> and hover over some results. The <a href="settings.html" target="_blank">Peek settings</a> allows you to change some options, like the viewer for documents.</p>
 				<p>Peek can create previews for the following file types:</p>
 				<p>
 				<ul>
@@ -55,6 +68,8 @@
 					<button type="button" class="btn btn-success w-100 mb-3">Donate via Cash App</button>
 				</a>
 				<p>Peek is developed by <a href="https://corbin.io/?utm_source=Peek%20Extension">Corbin Davenport</a>.</p>
+				<h2>Need help?</h2>
+				<p>If something isn't working, or if you just want to chat with other Peek users, <a href="https://github.com/corbindavenport/peek/issues" target="_blank">create an issue on GitHub</a> or <a href="https://discord.com/invite/59wfy5cNHw" target="_blank">join the Discord server</a>.</p>
 			</div>
 		</div>
 		<!-- Footer -->

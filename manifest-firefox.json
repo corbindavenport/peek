@@ -28,9 +28,7 @@
 			"32": "img/icon_x32.png",
 			"48": "img/icon_action_x48.png",
 			"128": "img/icon_action_x128.png"
-		},
-		"action": {},
-		"default_title": "Click to open Peek settings"
+		}
 	},
 	"browser_specific_settings": {
 		"gecko": {

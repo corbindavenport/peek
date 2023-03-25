@@ -29,8 +29,7 @@
 			"48": "img/icon_action_x48.png",
 			"128": "img/icon_action_x128.png"
 		},
-		"action": {},
-		"default_title": "Click to open Peek settings"
+		"action": {}
 	},
 	"content_scripts": [
 		{

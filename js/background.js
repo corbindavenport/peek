@@ -5,11 +5,6 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   };
 });
 
-// Open settings page when the Peek toolbar button is clicked
-chrome.action.onClicked.addListener(function () {
-  chrome.runtime.openOptionsPage();
-});
-
 // Change preview count on action bar based on requests from peek.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.method === 'changeIcon') {
