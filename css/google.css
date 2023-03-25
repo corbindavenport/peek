@@ -1,5 +1,0 @@
-/* Fix Google search results cutting off previews */
-#search div:has(div a[data-ved]) {
-    contain: none !important;
-    overflow: visible !important;
-}
