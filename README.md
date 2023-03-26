@@ -1,41 +1,33 @@
-Peek
-================
-Peek is a browser extension that lets you preview dozens of types of documents before you download them. Just hover over a file's link, and Peek will display an interactive preview of the file instantly.
+# Peek
 
-Supported file types:
+Peek is a browser extension that shows previews for links to files and supported services in web pages. Just hover your mouse over a link, and Peek will display a small popup with an interactive preview of the link's content.
 
-* PDF, TXT, RTF documents
-* Word Documents (.doc, .docx)
-* Excel Documents (.xls, .xlsx)
-* PowerPoint Presentations (.ppt, .pptx)
-* OpenDocument (.odt, .ods, .odp)
-* WebM, MP4, GIFV, and OGG/OGV Video
-* MP3 and WAV Audio
-* JPEG, PNG, GIF, SVG, PNG, APNG, ICO, and BMP images
+Peek can show previews for PDFs, Microsoft Office documents, YouTube video links, audio files, Google Docs, and much more. It uses the browser's built-in rendering features, in combination with the [Google Docs Viewer](https://blog.poychang.net/apps/online-docs-viewer/google.html), [Microsoft Office Web Viewer](https://www.microsoft.com/en-us/microsoft-365/blog/2013/04/10/office-web-viewer-view-office-documents-in-a-browser/), and other third-party embedded viewers to display rich previews.
 
-Supported websites:
+**[Download for Google Chrome](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk)**
 
-- Google Docs
-- Apple iCloud (Keynote only)
-- YouTube
-- Reddit (posts only)
+**[Download for Firefox](https://addons.mozilla.org/en-US/firefox/addon/peek-preview/)** (requires Firefox v106+)
 
-[![Download for Chrome](https://corbin.io/img/chrome-button.png)](https://chrome.google.com/webstore/detail/peek/bfpogemllmpcpclnadighnpeeaegigjk) [![Download for Firefox](https://corbin.io/img/firefox-button.png)](https://addons.mozilla.org/en-US/firefox/addon/peek-preview/)
+![Screenshot of extension in Google Chrome](https://i.imgur.com/YJIFCPc.png)
 
----------------------------------------------------------
+# Supported file types and links
 
-__New in Peek 4.0:__
+**Supported file types:**
 
-- New logo by [Mason Conrad](https://twitter.com/MasNConrad)
-- YouTube and Reddit links are now supported
-- OpenDocument files (.odt, .ods, .odp) now supported
-- New setting for changing size of popup previews
-- Cleaned up code
+- PDF, TXT, and RTF documents
+- WebM, MP4, M4V, OGG, OGV, and Imgur GIFV video
+- MP3, M4A, OGA, OGG, and WAV audio
+- Word documents (.doc, .docx)
+- Excel spreadsheets (.xls, .xlsx)
+- PowerPoint files (.ppt, .pptx)
+- OpenDocument files (.odt, .ods, etc.)
+- JPG, PNG, APNG, SVG, GIF, ICO, and BMP images
 
----------------------------------------------------------
+**Supported links:**
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+- Google Docs links
+- iCloud Keynote links
+- YouTube videos and YouTube Shorts
+- Reddit links
+- Imgur links
+- TikTok videos

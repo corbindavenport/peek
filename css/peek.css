@@ -1,56 +1,156 @@
-.tippy-box[data-theme~='peek'] {
-    padding: 0 !important;
-    width: fit-content !important;
-    height: fit-content !important;
-    border-radius: 4px !important;
+/* Unified Peek */
+
+.tippy-box[data-theme="peek-unified"],
+.tippy-box[data-theme="peek-unified"] iframe,
+.tippy-box[data-theme="peek-unified"] video {
+    background: #e9ecef !important;
 }
 
-.tippy-box[data-theme~='peek'] .tippy-content {
-    padding: .30rem !important;
+.tippy-box[data-theme="peek-unified"] {
+    user-select: none !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5) !important;
 }
 
-.tippy-box[data-theme~='peek'] video, .tippy-box[data-theme~='peek'] audio, .tippy-box[data-theme~='peek'] img .tippy-box[data-theme~='peek'] embed {
-    border-radius: 4px !important;
+.tippy-box[data-theme="peek-unified"] .tippy-content {
+    margin: 0 !important;
+    padding: 5px !important;
+    border: 2px solid #dee2e6 !important;
+    font-size: 100% !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+    vertical-align: baseline !important;
+    line-height: 1 !important;
+    text-align: initial !important;
 }
 
-.tippy-box[data-theme~='peek'] img, .tippy-box[data-theme~='peek'] audio, .tippy-box[data-theme~='peek'] embed {
-    width: 100%;
-    height: auto;
+.tippy-box[data-theme="peek-unified"] iframe {
+    height: 300px !important;
+    width: 300px !important;
+    border: 0 !important;
 }
 
-.tippy-box[data-theme~='peek'] video:focus, .tippy-box[data-theme~='peek'] audio:focus {
-    outline: 0 !important;
+.tippy-box[data-theme="peek-unified"] img {
+    object-position: center !important;
+    object-fit: scale-down !important;
 }
 
-.tippy-box[data-theme~='peek'] embed {
-    background: #FFFFFF !important;
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe {
+    width: 350px !important;
+    height: 197px !important;
 }
 
-.tippy-box[data-theme~='peek'] .video-embed-container {
-    overflow: hidden;
-    position: relative;
-    width:100%;
+.tippy-box[data-theme="peek-unified"] video,
+.tippy-box[data-theme="peek-unified"] img {
+    width: 100% !important;
+    min-width: 300px !important;
+    max-width: 350px !important;
+    height: auto !important;
+    min-height: 50px !important;
+    max-height: 500px !important;
 }
 
-.tippy-box[data-theme~='peek'] .video-embed-container::after {
-    padding-top: 56.25%;
-    display: block;
-    content: '';
+.tippy-box[data-theme="peek-unified"] audio {
+    width: 350px !important;
+    height: 50px !important;
 }
 
-.tippy-box[data-theme~='peek'] .video-embed-container * {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.tippy-box[data-theme="peek-unified"] iframe.peek-embed-portrait, .tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe.peek-embed-portrait {
+    width: 225px !important;
+    height: 400px !important;
 }
 
-.tippy-box[data-theme~='peek'] .peek-info-banner {
-    display: block !important;
-    text-align: left !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-weight: normal !important;
-    font-size: 12px !important;
-    margin-top: 5px !important;
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="reddit"] iframe {
+    width: 350px !important;
+}
+
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="tiktok"] .peek-tiktok-wrapper {
+    width: 200px !important;
+    height: 400px !important;
+    overflow: hidden !important;
+}
+
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="tiktok"] iframe {
+    overflow: none !important;
+    transform: scale(0.6) !important;
+    transform-origin:left top !important;
+    width: 166% !important;
+    height: 166% !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .peek-toolbar {
+    color: #212529 !important;
+    padding-top: 2px !important;
+    padding-bottom: 6px !important;
+}
+
+.tippy-box[data-theme="peek-unified"],
+.tippy-box[data-theme="peek-unified"] .tippy-content,
+.tippy-box[data-theme="peek-unified"] iframe,
+.tippy-box[data-theme="peek-unified"] video,
+.tippy-box[data-theme="peek-unified"] audio,
+.tippy-box[data-theme="peek-unified"] img {
+    border-radius: 10px !important;
+}
+
+.tippy-box[data-theme~="peek-unified"][data-placement^="top"]>.tippy-arrow::before {
+    border-top-color: #dee2e6 !important;
+}
+
+.tippy-box[data-theme~="peek-unified"][data-placement^="bottom"]>.tippy-arrow::before {
+    border-bottom-color: #dee2e6 !important;
+}
+
+.tippy-box[data-theme~="peek-unified"][data-placement^="left"]>.tippy-arrow::before {
+    border-left-color: #dee2e6 !important;
+}
+
+.tippy-box[data-theme~="tomato"][data-placement^="right"]>.tippy-arrow::before {
+    border-right-color: #dee2e6 !important;
+}
+
+/* Firefox-specific fixes */
+
+@supports (-moz-appearance:none) {
+
+    /* Firefox PDF viewer needs a larger view */
+    .tippy-box[data-theme="peek-unified"] div[data-peek-type="native-document"] iframe {
+        height: 300px !important;
+        width: 350px !important;
+    }
+
+}
+
+/* Unified Peek in Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+
+    .tippy-box[data-theme="peek-unified"],
+    .tippy-box[data-theme="peek-unified"] iframe,
+    .tippy-box[data-theme="peek-unified"] video {
+        background: #212529 !important;
+    }
+
+    .tippy-box[data-theme="peek-unified"] .peek-toolbar {
+        color: #e9ecef !important;
+    }
+
+    .tippy-box[data-theme="peek-unified"] .tippy-content {
+        border-color: #424549 !important;
+    }
+
+    .tippy-box[data-theme~="peek-unified"][data-placement^="top"]>.tippy-arrow::before {
+        border-top-color: #424549 !important;
+    }
+
+    .tippy-box[data-theme~="peek-unified"][data-placement^="bottom"]>.tippy-arrow::before {
+        border-bottom-color: #424549 !important;
+    }
+
+    .tippy-box[data-theme~="peek-unified"][data-placement^="left"]>.tippy-arrow::before {
+        border-left-color: #424549 !important;
+    }
+
+    .tippy-box[data-theme~="tomato"][data-placement^="right"]>.tippy-arrow::before {
+        border-right-color: #424549 !important;
+    }
+
 }
