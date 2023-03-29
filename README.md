@@ -8,6 +8,8 @@ Peek can show previews for PDFs, Microsoft Office documents, YouTube video links
 
 **[Download for Firefox](https://addons.mozilla.org/en-US/firefox/addon/peek-preview/)** (requires Firefox v106+)
 
+**[Download for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/dgpocgoebbbfmliabbfhobcmphodhdaf)**
+
 ![Screenshot of extension in Google Chrome](https://i.imgur.com/YJIFCPc.png)
 
 # Supported file types and links
