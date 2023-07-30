@@ -81,8 +81,7 @@ const webVideoLinks = [
 
 // Reddit links
 const redditLinks = [
-  'a[href^="https://www.reddit.com/r/"]',
-  'a[href^="https://redd.it/"]'
+  'a[href^="https://www.reddit.com/r/"]'
 ]
 
 // Imgur links
