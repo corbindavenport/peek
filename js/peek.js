@@ -87,7 +87,7 @@ const redditLinks = [
 
 // Imgur links
 const imgurLinks = [
-  'a[href^="https://imgur.com/"]:not(a[href*="/comment"]):not(a[href*="/user"])'
+  'a[href^="https://imgur.com/"]:not(a[href*="/comment"]):not(a[href*="/user"]):not(a[href="https://imgur.com/"])'
 ]
 
 // TikTok links
