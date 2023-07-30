@@ -95,6 +95,12 @@ const tiktokLinks = [
   'a[href^="https://www.tiktok.com/"][href*="/video"]'
 ]
 
+// Mastodon links
+// This matches with a lot of false positives, further matching is handled by JS
+const mastodonLinks = [
+  'a[href^="https://"][href*="/@"]:not(a[href^="https://www.tiktok.com/"]):not(a[href^="https://www.youtube.com/"])'
+]
+
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getPreviews') {
@@ -246,7 +252,6 @@ function initPreview(inputObject, previewType, peekSettings) {
       embedUrl.searchParams.set('theme', 'dark');
     };
     // Add frame to tooltip
-    frameEl.src = embedUrl;
     popupEl.append(frameEl);
   } else if (previewType === 'imgur') {
     // Imgur link
@@ -278,6 +283,29 @@ function initPreview(inputObject, previewType, peekSettings) {
     // Add frame to tooltip
     wrapperEl.append(frameEl);
     popupEl.append(wrapperEl);
+  } else if (previewType === 'mastodon') {
+    // Mastodon link
+    const mastodonRegex = /https?:\/\/([a-zA-Z0-9]+\.)?(?<domain>[a-zA-Z0-9]+\.[a-zA-Z0-9]+)\/@(?<username>[a-zA-Z0-9]+)\/(?<postId>\d+)/;
+    // Verify link is actually a Mastodon post
+    // Regex demo: https://regex101.com/r/vQFw0R/2
+    const match = mastodonRegex.exec(realUrl);
+    if (match) {
+      if (match.groups.domain && match.groups.username && match.groups.postId) {
+        console.log('Found Mastodon link:', realUrl, match.groups, inputObject);
+      } else {
+        console.log('This does not appear to be a Mastodon post link, skipping:', realUrl, inputObject);
+        return;
+      }
+    } else {
+      console.log('This does not appear to be a Mastodon post link, skipping:', realUrl, inputObject);
+      return;
+    }
+    // Create embed
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    frameEl.src = 'https://' + match.groups.domain + '/@' + match.groups.username + '/' + match.groups.postId + '/embed';
+    // Add frame to tooltip
+    popupEl.append(frameEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
@@ -358,6 +386,10 @@ async function initPeek() {
       initPreview(link, 'tiktok', peekSettings);
     })
   };
+  // Generate Mastodon link previews
+  document.querySelectorAll(mastodonLinks.toString()).forEach(function (link) {
+    initPreview(link, 'mastodon', peekSettings);
+  })
 };
 
 initPeek();

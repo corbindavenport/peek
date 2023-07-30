@@ -53,12 +53,14 @@
     height: 50px !important;
 }
 
-.tippy-box[data-theme="peek-unified"] iframe.peek-embed-portrait, .tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe.peek-embed-portrait {
+.tippy-box[data-theme="peek-unified"] iframe.peek-embed-portrait,
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe.peek-embed-portrait {
     width: 225px !important;
     height: 400px !important;
 }
 
-.tippy-box[data-theme="peek-unified"] div[data-peek-type="reddit"] iframe {
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="reddit"] iframe,
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="mastodon"] iframe {
     width: 350px !important;
 }
 
@@ -71,7 +73,7 @@
 .tippy-box[data-theme="peek-unified"] div[data-peek-type="tiktok"] iframe {
     overflow: none !important;
     transform: scale(0.6) !important;
-    transform-origin:left top !important;
+    transform-origin: left top !important;
     width: 166% !important;
     height: 166% !important;
 }
