@@ -105,6 +105,12 @@ const facebookLinks = [
   'a[href^="https://www.facebook.com/"][href*="/posts/"]'
 ]
 
+// Instagram posts
+const instagramLinks = [
+  'a[href^="https://www.instagram.com/"][href*="/p/"]',
+  'a[href^="https://www.instagram.com/"][href*="/reel/"]'
+]
+
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getPreviews') {
@@ -322,6 +328,22 @@ function initPreview(inputObject, previewType, peekSettings) {
     frameEl.src = embedUrl;
     // Add frame to tooltip
     popupEl.append(frameEl);
+  } else if (previewType === 'instagram') {
+    // Instagram link
+    // Get post ID with this regex: https://regex101.com/r/heL5tw/1
+    const instagramRegex = /(?:https?:\/\/www\.)?instagram\.com\S*?(?:\/p\/|\/reel\/)(\w{11})\/?/i;
+    const match = instagramRegex.exec(realUrl);
+    if (match[1]) {
+      console.log('Found Instagram link:', realUrl, inputObject);
+    } else {
+      return;
+    }
+    // Create frame
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    frameEl.src = 'https://www.instagram.com/p/' + match[1] + '/embed/captioned/';
+    // Add frame to tooltip
+    popupEl.append(frameEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
@@ -406,10 +428,16 @@ async function initPeek() {
   document.querySelectorAll(mastodonLinks.toString()).forEach(function (link) {
     initPreview(link, 'mastodon', peekSettings);
   })
-  // Generate Facebook link previews, except on TikTok itself
+  // Generate Facebook link previews, except on Facebook itself
   if (!(window.location.hostname === 'www.facebook.com')) {
     document.querySelectorAll(facebookLinks.toString()).forEach(function (link) {
       initPreview(link, 'facebook', peekSettings);
+    })
+  };
+  // Generate Instagram link previews, except on Instagram itself
+  if (!(window.location.hostname === 'www.instagram.com')) {
+    document.querySelectorAll(instagramLinks.toString()).forEach(function (link) {
+      initPreview(link, 'instagram', peekSettings);
     })
   };
 };

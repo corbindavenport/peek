@@ -35,3 +35,4 @@ Peek can show previews for PDFs, Microsoft Office documents, YouTube video links
 - TikTok videos
 - Mastodon posts
 - Facebook posts
+- Instagram posts and reels
