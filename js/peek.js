@@ -153,6 +153,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     } else if (peekSettings.docViewer === 'google') {
       popupFrame.src = 'https://docs.google.com/gview?url=' + encodeURI(realUrl.href) + '&embedded=true';
     }
+    popupEl.dataset.windowUrl = popupFrame.src;
     popupEl.append(popupFrame);
   } else if (previewType === 'google-docs') {
     // Google Doc links
@@ -164,6 +165,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     let docId = regex.exec(realUrl.href)['groups']['docsId']
     // Add frame to tooltip
     embedFrame.src = 'https://docs.google.com/viewer?srcid=' + docId + '&pid=explorer&efh=false&a=v&chrome=false&embedded=true';
+    popupEl.dataset.windowUrl = embedFrame.src;
     popupEl.append(embedFrame);
   } else if (previewType === 'native-document') {
     // Documents that can be rendered natively by the browser
@@ -182,6 +184,7 @@ function initPreview(inputObject, previewType, peekSettings) {
         embedFrame.removeAttribute('sandbox');
       }
     }
+    popupEl.dataset.windowUrl = realUrl.href;
     // Add embed to tooltip
     popupEl.append(embedFrame)
   } else if (previewType === 'icloud') {
@@ -194,12 +197,14 @@ function initPreview(inputObject, previewType, peekSettings) {
     embedUrl.searchParams.set('embed', 'true');
     // Add frame to tooltip
     embedFrame.src = embedUrl.href;
+    popupEl.dataset.windowUrl = embedUrl.href;
     popupEl.append(embedFrame);
   } else if (previewType === 'native-image') {
     // Documents that can be rendered natively by the browser
     console.log('Found image link:', realUrl, inputObject);
     let embedEl = document.createElement('img');
     embedEl.src = realUrl.href;
+    popupEl.dataset.windowUrl = realUrl.href;
     // Add embed to tooltip
     popupEl.append(embedEl)
   } else if (previewType === 'video') {
@@ -212,6 +217,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupVideo.disablePictureInPicture = true;
     popupVideo.setAttribute('controlsList', 'nodownload nofullscreen');
     popupVideo.src = realUrl.href;
+    popupEl.dataset.windowUrl = realUrl.href;
     // Add video to tooltip and play it on activation
     popupEl.append(popupVideo);
     tippyTooltip.setProps({
@@ -227,6 +233,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     audioEl.controls = true;
     audioEl.setAttribute('controlsList', 'nodownload');
     audioEl.src = realUrl.href;
+    popupEl.dataset.windowUrl = realUrl.href;
     // Add audio to tooltip
     popupEl.append(audioEl);
   } else if (previewType === 'youtube') {
@@ -243,6 +250,7 @@ function initPreview(inputObject, previewType, peekSettings) {
       popupFrame.classList.add('peek-embed-portrait');
       popupFrame.src += '&loop=1';
     }
+    popupEl.dataset.windowUrl = popupFrame.src;
     // Add video to tooltip
     popupEl.append(popupFrame);
   } else if (previewType === 'reddit') {
@@ -261,6 +269,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       embedUrl.searchParams.set('theme', 'dark');
     };
+    popupEl.dataset.windowUrl = embedUrl.href;
     // Add frame to tooltip
     popupEl.append(frameEl);
   } else if (previewType === 'imgur') {
@@ -276,6 +285,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     embedUrl.pathname = embedUrl.pathname.replace('/gallery/', '/a/');
     embedUrl.pathname += '/embed';
     embedUrl.searchParams.set('pub', 'true');
+    popupEl.dataset.windowUrl = embedUrl.href;
     // Add frame to tooltip
     frameEl.src = embedUrl;
     popupEl.append(frameEl);
@@ -290,6 +300,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     let regex = /(?:(video\/))(?<videoId>.*?)(&|\?|$)/;
     let videoId = regex.exec(realUrl.href)['groups']['videoId'];
     frameEl.src = 'https://www.tiktok.com/embed/v2/' + videoId;
+    popupEl.dataset.windowUrl = frameEl.src;
     // Add frame to tooltip
     wrapperEl.append(frameEl);
     popupEl.append(wrapperEl);
@@ -314,6 +325,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     let frameEl = document.createElement('iframe');
     frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     frameEl.src = 'https://' + match.groups.domain + '/@' + match.groups.username + '/' + match.groups.postId + '/embed';
+    popupEl.dataset.windowUrl = frameEl.src;
     // Add frame to tooltip
     popupEl.append(frameEl);
   } else if (previewType === 'facebook') {
@@ -325,7 +337,8 @@ function initPreview(inputObject, previewType, peekSettings) {
     embedUrl.searchParams.set('href', realUrl);
     embedUrl.searchParams.set('show_text', 'true');
     embedUrl.searchParams.set('width', '350');
-    frameEl.src = embedUrl;
+    frameEl.src = embedUrl.href;
+    popupEl.dataset.windowUrl = embedUrl.href.replace('width=350', 'width=800');
     // Add frame to tooltip
     popupEl.append(frameEl);
   } else if (previewType === 'instagram') {
@@ -342,15 +355,26 @@ function initPreview(inputObject, previewType, peekSettings) {
     let frameEl = document.createElement('iframe');
     frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     frameEl.src = 'https://www.instagram.com/p/' + match[1] + '/embed/captioned/';
+    popupEl.dataset.windowUrl = frameEl.src;
     // Add frame to tooltip
     popupEl.append(frameEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
-  // Add toolbar
+  // Create toolbar
   let toolbarEl = document.createElement('div');
   toolbarEl.className = 'peek-toolbar'
-  toolbarEl.innerText = 'Powered by Peek';
+  toolbarEl.innerText = 'Powered by Peek'
+  // Add open button
+  let openBtn = document.createElement('button');
+  openBtn.title = 'Open in new window'
+  openBtn.className = 'peek-open-btn'
+  openBtn.addEventListener('click', function() {
+    chrome.runtime.sendMessage({ method: 'openWindow', key: popupEl.dataset.windowUrl });
+    tippyTooltip.hide();
+  })
+  toolbarEl.appendChild(openBtn);
+  // Insert toolbar
   popupEl.prepend(toolbarEl);
   // Add content to tooltip
   tippyTooltip.setContent(popupEl);
@@ -407,7 +431,7 @@ async function initPeek() {
     initPreview(link, 'youtube', peekSettings);
   });
   // Generate Reddit link previews, except on Reddit.com itself
-  if (!(window.location.hostname === 'www.reddit.com')) {
+  if (!(window.location.hostname.includes('reddit.com'))) {
     document.querySelectorAll(redditLinks.toString()).forEach(function (link) {
       initPreview(link, 'reddit', peekSettings);
     })

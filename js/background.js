@@ -5,16 +5,25 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   };
 });
 
-// Change preview count on action bar based on requests from peek.js
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.method === 'changeIcon') {
-    if (!request || request.key === 0) {
+// Change preview count on action bar based on messages from peek.js
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.method === 'changeIcon') {
+    if (!message || message.key === 0) {
       chrome.action.setBadgeText({ text: '' });
     } else {
-      chrome.action.setBadgeText({ text: request.key });
+      chrome.action.setBadgeText({ text: message.key });
     }
-  } else if (request.method === 'resetIcon') {
+  } else if (message.method === 'resetIcon') {
     chrome.action.setBadgeText({ text: '' });
+  } else if (message.method === 'openWindow') {
+    chrome.windows.create({
+      url: message.key,
+      width: 800,
+      height: 800,
+      left: 50,
+      top: 50,
+      type: 'popup'
+    });
   } else {
     sendResponse({});
   }

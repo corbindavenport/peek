@@ -23,6 +23,16 @@
 		"48": "img/icon_x48.png",
 		"128": "img/icon_x128.png"
 	},
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"img/arrow-up-right-square-fill.svg"
+			],
+			"matches": [
+				"*://*/*"
+			]
+		}
+	],
 	"action": {
 		"default_icon": {
 			"32": "img/icon_x32.png",
