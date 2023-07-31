@@ -60,7 +60,8 @@
 }
 
 .tippy-box[data-theme="peek-unified"] div[data-peek-type="reddit"] iframe,
-.tippy-box[data-theme="peek-unified"] div[data-peek-type="mastodon"] iframe {
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="mastodon"] iframe,
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="facebook"] iframe {
     width: 350px !important;
 }
 

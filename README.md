@@ -33,3 +33,5 @@ Peek can show previews for PDFs, Microsoft Office documents, YouTube video links
 - Reddit links
 - Imgur links
 - TikTok videos
+- Mastodon posts
+- Facebook posts

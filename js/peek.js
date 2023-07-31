@@ -100,6 +100,11 @@ const mastodonLinks = [
   'a[href^="https://"][href*="/@"]:not(a[href^="https://www.tiktok.com/"]):not(a[href^="https://www.youtube.com/"])'
 ]
 
+// Facebook posts
+const facebookLinks = [
+  'a[href^="https://www.facebook.com/"][href*="/posts/"]'
+]
+
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getPreviews') {
@@ -305,6 +310,18 @@ function initPreview(inputObject, previewType, peekSettings) {
     frameEl.src = 'https://' + match.groups.domain + '/@' + match.groups.username + '/' + match.groups.postId + '/embed';
     // Add frame to tooltip
     popupEl.append(frameEl);
+  } else if (previewType === 'facebook') {
+    // Facebook link
+    console.log('Found Facebook link:', realUrl, inputObject);
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts');
+    let embedUrl = new URL('https://www.facebook.com/plugins/post.php');
+    embedUrl.searchParams.set('href', realUrl);
+    embedUrl.searchParams.set('show_text', 'true');
+    embedUrl.searchParams.set('width', '350');
+    frameEl.src = embedUrl;
+    // Add frame to tooltip
+    popupEl.append(frameEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
@@ -389,6 +406,12 @@ async function initPeek() {
   document.querySelectorAll(mastodonLinks.toString()).forEach(function (link) {
     initPreview(link, 'mastodon', peekSettings);
   })
+  // Generate Facebook link previews, except on TikTok itself
+  if (!(window.location.hostname === 'www.facebook.com')) {
+    document.querySelectorAll(facebookLinks.toString()).forEach(function (link) {
+      initPreview(link, 'facebook', peekSettings);
+    })
+  };
 };
 
 initPeek();
