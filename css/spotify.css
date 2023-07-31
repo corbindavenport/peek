@@ -1,0 +1,5 @@
+/* This improves the appearance of Spotify previews opened in a new window */
+
+html, body {
+    background-color: #282828;
+}

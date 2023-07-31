@@ -111,6 +111,13 @@ const instagramLinks = [
   'a[href^="https://www.instagram.com/"][href*="/reel/"]'
 ]
 
+// Spotify links
+const spotifyLinks = [
+  'a[href^="https://open.spotify.com/track/"]',
+  'a[href^="https://open.spotify.com/episode/"]',
+  'a[href^="https://open.spotify.com/album/"]'
+]
+
 // Allow background.js to check number of rendered previews
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.method == 'getPreviews') {
@@ -358,6 +365,20 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.dataset.windowUrl = frameEl.src;
     // Add frame to tooltip
     popupEl.append(frameEl);
+  } else if (previewType === 'spotify') {
+    // Spotify link
+    console.log('Found Spotify link:', realUrl, inputObject);
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts');
+    // Convert URL to embed URL
+    let embedUrl = realUrl;
+    embedUrl.pathname = '/embed' + embedUrl.pathname;
+    embedUrl.searchParams.set('theme', '0');
+    embedUrl.searchParams.set('utm_source', 'peek_extension'); // This is used to apply custom styles in the window popup
+    frameEl.src = embedUrl.href;
+    popupEl.dataset.windowUrl = embedUrl.href;
+    // Add frame to tooltip
+    popupEl.append(frameEl);
   } else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
@@ -462,6 +483,12 @@ async function initPeek() {
   if (!(window.location.hostname === 'www.instagram.com')) {
     document.querySelectorAll(instagramLinks.toString()).forEach(function (link) {
       initPreview(link, 'instagram', peekSettings);
+    })
+  };
+  // Generate Spotify link previews, except on Spotify itself
+  if (!(window.location.hostname === 'open.spotify.com')) {
+    document.querySelectorAll(spotifyLinks.toString()).forEach(function (link) {
+      initPreview(link, 'spotify', peekSettings);
     })
   };
 };
