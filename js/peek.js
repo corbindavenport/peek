@@ -395,6 +395,15 @@ function initPreview(inputObject, previewType, peekSettings) {
     tippyTooltip.hide();
   })
   toolbarEl.appendChild(openBtn);
+  // Add settings button
+  let settingsBtn = document.createElement('button');
+  settingsBtn.title = 'Open Peek extension settings'
+  settingsBtn.className = 'peek-settings-btn'
+  settingsBtn.addEventListener('click', function() {
+    chrome.runtime.sendMessage({ method: 'openSettings' });
+    tippyTooltip.hide();
+  })
+  toolbarEl.appendChild(settingsBtn);
   // Insert toolbar
   popupEl.prepend(toolbarEl);
   // Add content to tooltip

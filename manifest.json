@@ -26,7 +26,8 @@
 	"web_accessible_resources": [
 		{
 			"resources": [
-				"img/arrow-up-right-square-fill.svg"
+				"img/arrow-up-right-circle.svg",
+				"img/gear.svg"
 			],
 			"matches": [
 				"*://*/*"

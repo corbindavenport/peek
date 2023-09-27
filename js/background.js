@@ -15,6 +15,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
   } else if (message.method === 'resetIcon') {
     chrome.action.setBadgeText({ text: '' });
+  } else if (message.method === 'openSettings') {
+    chrome.runtime.openOptionsPage();
   } else if (message.method === 'openWindow') {
     chrome.windows.create({
       url: message.key,

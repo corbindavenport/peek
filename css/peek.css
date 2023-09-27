@@ -86,24 +86,35 @@
 
 .tippy-box[data-theme="peek-unified"] .peek-toolbar {
     color: #212529 !important;
-    padding-top: 2px;
-    padding-bottom: 6px;
+    line-height: 22px !important;
+    padding-top: 0 !important;
+    padding-bottom: 6px !important;
 }
 
-.tippy-box[data-theme="peek-unified"] .peek-open-btn {
+.tippy-box[data-theme="peek-unified"] .peek-open-btn,
+.tippy-box[data-theme="peek-unified"] .peek-settings-btn {
     float: right !important;
     padding: 0 !important;
-    margin: 0 !important;
-    width: 14px !important;
-    height: 14px !important;
-    background: url("chrome-extension://__MSG_@@extension_id__/img/arrow-up-right-square-fill.svg") !important;
-    filter: invert(1) !important; /* The SVG is black but the button needs to be white */
-    background-size: contain !important;
+    margin: 0 0 0 8px !important;
+    width: 22px !important;
+    height: 22px !important;
+    filter: contrast(0.8) !important;
     border: 0 !important;
 }
 
-.tippy-box[data-theme="peek-unified"] .peek-open-btn:hover {
-    filter: invert(0.8) !important;
+.tippy-box[data-theme="peek-unified"] .peek-open-btn {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/arrow-up-right-circle.svg") !important;
+    background-size: contain !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .peek-settings-btn {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/gear.svg") !important;
+    background-size: contain !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .peek-open-btn:hover,
+.tippy-box[data-theme="peek-unified"] .peek-settings-btn:hover {
+    filter: invert(0.5) !important;
 }
 
 .tippy-box[data-theme="peek-unified"],
@@ -173,8 +184,13 @@
         border-left-color: #424549 !important;
     }
 
-    .tippy-box[data-theme~="tomato"][data-placement^="right"]>.tippy-arrow::before {
+    .tippy-box[data-theme~="peek-unified"][data-placement^="right"]>.tippy-arrow::before {
         border-right-color: #424549 !important;
+    }
+
+    .tippy-box[data-theme="peek-unified"] .peek-open-btn,
+    .tippy-box[data-theme="peek-unified"] .peek-settings-btn {
+        filter: invert(1) !important;
     }
 
 }
