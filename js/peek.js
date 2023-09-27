@@ -111,6 +111,11 @@ const instagramLinks = [
   'a[href^="https://www.instagram.com/"][href*="/reel/"]'
 ]
 
+// Threads posts
+const threadsLinks = [
+  'a[href^="https://www.threads.net/"][href*="/post/"]',
+]
+
 // Spotify links
 const spotifyLinks = [
   'a[href^="https://open.spotify.com/track/"]',
@@ -365,6 +370,23 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.dataset.windowUrl = frameEl.src;
     // Add frame to tooltip
     popupEl.append(frameEl);
+  } else if (previewType === 'threads') {
+    // Threads post link
+    console.log('Found Threads link:', realUrl, inputObject);
+    // Convert URL to embed URL
+    let embedUrl = new URL(realUrl);
+    if (embedUrl.pathname.endsWith('/')) {
+      embedUrl.pathname = embedUrl.pathname.slice(0, -1);
+    }
+    embedUrl.pathname += '/embed/';
+    embedUrl.searchParams.set('utm_source', 'peek_extension'); // This is used to apply custom styles in the window popup
+    // Create frame
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    frameEl.src = embedUrl.href;
+    popupEl.dataset.windowUrl = embedUrl.href;
+    // Add frame to tooltip
+    popupEl.append(frameEl);
   } else if (previewType === 'spotify') {
     // Spotify link
     console.log('Found Spotify link:', realUrl, inputObject);
@@ -492,6 +514,12 @@ async function initPeek() {
   if (!(window.location.hostname === 'www.instagram.com')) {
     document.querySelectorAll(instagramLinks.toString()).forEach(function (link) {
       initPreview(link, 'instagram', peekSettings);
+    })
+  };
+  // Generate Threads link previews, except on Threads itself
+  if (!(window.location.hostname === 'www.threads.net')) {
+    document.querySelectorAll(threadsLinks.toString()).forEach(function (link) {
+      initPreview(link, 'threads', peekSettings);
     })
   };
   // Generate Spotify link previews, except on Spotify itself

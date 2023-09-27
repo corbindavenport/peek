@@ -1,0 +1,9 @@
+/* This improves the appearance of Threads previews */
+
+body {
+    overflow-y: auto !important;
+}
+
+.EmbedContainer {
+    border: 0 !important;
+}
