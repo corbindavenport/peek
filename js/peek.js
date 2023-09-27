@@ -271,11 +271,11 @@ function initPreview(inputObject, previewType, peekSettings) {
     embedUrl.searchParams.set('embed', 'true');
     embedUrl.searchParams.set('showmedia', 'true');
     embedUrl.searchParams.set('depth', '1');
-    frameEl.src = embedUrl;
-    // Modify URL to match system theme
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+     // Modify URL to match system theme
+     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       embedUrl.searchParams.set('theme', 'dark');
     };
+    frameEl.src = embedUrl;
     popupEl.dataset.windowUrl = embedUrl.href;
     // Add frame to tooltip
     popupEl.append(frameEl);
