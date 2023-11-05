@@ -328,10 +328,12 @@ function initPreview(inputObject, previewType, peekSettings) {
         console.log('Found Mastodon link:', realUrl, match.groups, inputObject);
       } else {
         console.log('This does not appear to be a Mastodon post link, skipping:', realUrl, inputObject);
+        tippyTooltip.disable();
         return;
       }
     } else {
       console.log('This does not appear to be a Mastodon post link, skipping:', realUrl, inputObject);
+      tippyTooltip.disable();
       return;
     }
     // Create embed
@@ -362,6 +364,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     if (match[1]) {
       console.log('Found Instagram link:', realUrl, inputObject);
     } else {
+      tippyTooltip.disable();
       return;
     }
     // Create frame
