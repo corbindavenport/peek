@@ -29,7 +29,12 @@ Peek can show previews for PDFs, Microsoft Office documents, YouTube video links
 
 - Google Docs links
 - iCloud Keynote links
-- YouTube videos and YouTube Shorts
+- YouTube videos and Shorts
 - Reddit links
 - Imgur links
 - TikTok videos
+- Mastodon posts
+- Facebook posts
+- Instagram posts and reels
+- Threads posts
+- Spotify tracks, albums, and podcast episodes

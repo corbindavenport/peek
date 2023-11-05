@@ -1,0 +1,10 @@
+/* This improves the appearance of Reddit previews */
+
+div[id*="embed-wrapper"] {
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+div[id*="embed-wrapper"]:hover {
+    background-color: none !important;
+}

@@ -15,7 +15,7 @@
     margin: 0 !important;
     padding: 5px !important;
     border: 2px solid #dee2e6 !important;
-    font-size: 100% !important;
+    font-size: 14px !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
     vertical-align: baseline !important;
     line-height: 1 !important;
@@ -53,13 +53,21 @@
     height: 50px !important;
 }
 
-.tippy-box[data-theme="peek-unified"] iframe.peek-embed-portrait, .tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe.peek-embed-portrait {
+.tippy-box[data-theme="peek-unified"] iframe.peek-embed-portrait,
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="youtube"] iframe.peek-embed-portrait {
     width: 225px !important;
     height: 400px !important;
 }
 
-.tippy-box[data-theme="peek-unified"] div[data-peek-type="reddit"] iframe {
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="reddit"] iframe,
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="mastodon"] iframe,
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="facebook"] iframe {
     width: 350px !important;
+}
+
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="spotify"] iframe {
+    width: 350px !important;
+    height: 152px !important;
 }
 
 .tippy-box[data-theme="peek-unified"] div[data-peek-type="tiktok"] .peek-tiktok-wrapper {
@@ -71,15 +79,42 @@
 .tippy-box[data-theme="peek-unified"] div[data-peek-type="tiktok"] iframe {
     overflow: none !important;
     transform: scale(0.6) !important;
-    transform-origin:left top !important;
+    transform-origin: left top !important;
     width: 166% !important;
     height: 166% !important;
 }
 
 .tippy-box[data-theme="peek-unified"] .peek-toolbar {
     color: #212529 !important;
-    padding-top: 2px !important;
+    line-height: 22px !important;
+    padding-top: 0 !important;
     padding-bottom: 6px !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .peek-open-btn,
+.tippy-box[data-theme="peek-unified"] .peek-settings-btn {
+    float: right !important;
+    padding: 0 !important;
+    margin: 0 0 0 8px !important;
+    width: 22px !important;
+    height: 22px !important;
+    filter: contrast(0.8) !important;
+    border: 0 !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .peek-open-btn {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/arrow-up-right-circle.svg") !important;
+    background-size: contain !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .peek-settings-btn {
+    background: url("chrome-extension://__MSG_@@extension_id__/img/gear.svg") !important;
+    background-size: contain !important;
+}
+
+.tippy-box[data-theme="peek-unified"] .peek-open-btn:hover,
+.tippy-box[data-theme="peek-unified"] .peek-settings-btn:hover {
+    filter: invert(0.5) !important;
 }
 
 .tippy-box[data-theme="peek-unified"],
@@ -112,9 +147,22 @@
 @supports (-moz-appearance:none) {
 
     /* Firefox PDF viewer needs a larger view */
+
     .tippy-box[data-theme="peek-unified"] div[data-peek-type="native-document"] iframe {
         height: 300px !important;
         width: 350px !important;
+    }
+
+    /* Firefox uses a different URL scheme for web accessible resources */
+
+    .tippy-box[data-theme="peek-unified"] .peek-open-btn {
+        background: url("moz-extension://__MSG_@@extension_id__/img/arrow-up-right-circle.svg") !important;
+        background-size: contain !important;
+    }
+    
+    .tippy-box[data-theme="peek-unified"] .peek-settings-btn {
+        background: url("moz-extension://__MSG_@@extension_id__/img/gear.svg") !important;
+        background-size: contain !important;
     }
 
 }
@@ -149,8 +197,13 @@
         border-left-color: #424549 !important;
     }
 
-    .tippy-box[data-theme~="tomato"][data-placement^="right"]>.tippy-arrow::before {
+    .tippy-box[data-theme~="peek-unified"][data-placement^="right"]>.tippy-arrow::before {
         border-right-color: #424549 !important;
+    }
+
+    .tippy-box[data-theme="peek-unified"] .peek-open-btn,
+    .tippy-box[data-theme="peek-unified"] .peek-settings-btn {
+        filter: invert(1) !important;
     }
 
 }
