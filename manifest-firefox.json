@@ -1,6 +1,7 @@
 {
 	"manifest_version": 3,
-	"name": "Peek",
+	"name": "Peek: Preview links to PDFs, Office files, and more",
+	"short_name": "Peek",
 	"version": "5.0",
 	"author": "Corbin Davenport",
 	"description": "Preview documents, videos, music, and more with a mouse hover.",
