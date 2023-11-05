@@ -147,9 +147,22 @@
 @supports (-moz-appearance:none) {
 
     /* Firefox PDF viewer needs a larger view */
+
     .tippy-box[data-theme="peek-unified"] div[data-peek-type="native-document"] iframe {
         height: 300px !important;
         width: 350px !important;
+    }
+
+    /* Firefox uses a different URL scheme for web accessible resources */
+
+    .tippy-box[data-theme="peek-unified"] .peek-open-btn {
+        background: url("moz-extension://__MSG_@@extension_id__/img/arrow-up-right-circle.svg") !important;
+        background-size: contain !important;
+    }
+    
+    .tippy-box[data-theme="peek-unified"] .peek-settings-btn {
+        background: url("moz-extension://__MSG_@@extension_id__/img/gear.svg") !important;
+        background-size: contain !important;
     }
 
 }

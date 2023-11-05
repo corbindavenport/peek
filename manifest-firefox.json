@@ -24,6 +24,17 @@
 		"48": "img/icon_x48.png",
 		"128": "img/icon_x128.png"
 	},
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"img/arrow-up-right-circle.svg",
+				"img/gear.svg"
+			],
+			"matches": [
+				"*://*/*"
+			]
+		}
+	],
 	"action": {
 		"default_icon": {
 			"32": "img/icon_x32.png",
@@ -52,6 +63,26 @@
 			"css": [
 				"css/peek.css"
 			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"https://www.threads.net/*utm_source=peek_extension*"
+			],
+			"css": [
+				"css/threads.css"
+			],
+			"all_frames": true,
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"https://embed.reddit.com/r/*utm_source=peek_extension*"
+			],
+			"css": [
+				"css/reddit.css"
+			],
+			"all_frames": true,
 			"run_at": "document_end"
 		}
 	]

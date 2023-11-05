@@ -62,15 +62,6 @@
 		},
 		{
 			"matches": [
-				"https://embed-standalone.spotify.com/*utm_source=peek_extension*"
-			],
-			"css": [
-				"css/spotify.css"
-			],
-			"run_at": "document_end"
-		},
-		{
-			"matches": [
 				"https://www.threads.net/*utm_source=peek_extension*"
 			],
 			"css": [

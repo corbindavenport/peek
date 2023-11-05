@@ -397,7 +397,6 @@ function initPreview(inputObject, previewType, peekSettings) {
     let embedUrl = realUrl;
     embedUrl.pathname = '/embed' + embedUrl.pathname;
     embedUrl.searchParams.set('theme', '0');
-    embedUrl.searchParams.set('utm_source', 'peek_extension'); // This is used to apply custom styles in the window popup
     frameEl.src = embedUrl.href;
     popupEl.dataset.windowUrl = embedUrl.href;
     // Add frame to tooltip
