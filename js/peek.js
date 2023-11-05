@@ -413,7 +413,7 @@ function initPreview(inputObject, previewType, peekSettings) {
   openBtn.title = 'Open in new window'
   openBtn.className = 'peek-open-btn'
   openBtn.addEventListener('click', function() {
-    chrome.runtime.sendMessage({ method: 'openWindow', key: popupEl.dataset.windowUrl });
+    chrome.runtime.sendMessage({ method: 'openPreview', key: [popupEl.dataset.windowUrl, peekSettings.popoutMode] });
     tippyTooltip.hide();
   })
   toolbarEl.appendChild(openBtn);
@@ -439,7 +439,8 @@ function initPreview(inputObject, previewType, peekSettings) {
 async function initPeek() {
   // Get settings from storage
   const peekSettings = await chrome.storage.sync.get({
-    docViewer: 'google'
+    docViewer: 'google',
+    popoutMode: 'popup'
   });
   // Set defaults for previews
   tippy.setDefaultProps({

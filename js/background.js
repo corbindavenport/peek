@@ -17,15 +17,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     chrome.action.setBadgeText({ text: '' });
   } else if (message.method === 'openSettings') {
     chrome.runtime.openOptionsPage();
-  } else if (message.method === 'openWindow') {
-    chrome.windows.create({
-      url: message.key,
-      width: 800,
-      height: 800,
-      left: 50,
-      top: 50,
-      type: 'popup'
-    });
+  } else if (message.method === 'openPreview') {
+    // Open preview as a popup or new tab, depending on setting
+    if (message.key[1] === 'popup') {
+      // Popup window
+      chrome.windows.create({
+        url: message.key[0],
+        width: 800,
+        height: 800,
+        left: 50,
+        top: 50,
+        type: 'popup'
+      });
+    } else {
+      // New browser tab
+      chrome.tabs.create({ 'url': message.key[0] });
+    };
   } else {
     sendResponse({});
   }
