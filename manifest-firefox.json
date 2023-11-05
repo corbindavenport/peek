@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "Peek: Preview links to PDFs, Office files, and more",
 	"short_name": "Peek",
-	"version": "5.0",
+	"version": "6.0",
 	"author": "Corbin Davenport",
 	"description": "Preview documents, videos, music, and more with a mouse hover.",
 	"homepage_url": "https://github.com/corbindavenport/peek",
