@@ -272,10 +272,11 @@ function initPreview(inputObject, previewType, peekSettings) {
     frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     // Modify original URL to embedded format
     let embedUrl = realUrl;
-    embedUrl.hostname = 'www.redditmedia.com';
+    embedUrl.hostname = 'embed.reddit.com';
     embedUrl.searchParams.set('embed', 'true');
     embedUrl.searchParams.set('showmedia', 'true');
     embedUrl.searchParams.set('depth', '1');
+    embedUrl.searchParams.set('utm_source', 'peek_extension'); // This is used to apply custom styles in the window popup
      // Modify URL to match system theme
      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       embedUrl.searchParams.set('theme', 'dark');

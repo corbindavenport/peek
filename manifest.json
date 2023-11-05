@@ -78,6 +78,16 @@
 			],
 			"all_frames": true,
 			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"https://embed.reddit.com/r/*utm_source=peek_extension*"
+			],
+			"css": [
+				"css/reddit.css"
+			],
+			"all_frames": true,
+			"run_at": "document_end"
 		}
 	]
 }
