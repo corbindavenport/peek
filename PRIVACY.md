@@ -4,7 +4,7 @@ Peek is committed to respecting your privacy and being transparent about the col
 
 ## Information collected by Peek
 
-Peek stores your server list and other settings in your web browser. That data may be synchronized to your other devices through your web browser's cloud account (e.g. a Firefox Account in Firefox). The extension itself does not transmit your server list or any other information about you or your device.
+Peek stores your server list and other settings in your web browser. That data may be synchronized to your other devices through your web browser's cloud account (e.g. a Firefox Account in Firefox). The extension itself does not transmit any other information about you or your device.
 
 Peek does load external content in previews, which may collect data through network requests to the original server, or code loaded through the embedded preview. Peek tries to limit this behavior as much as possible by using your browser's own preview and embed functionality, and loading most other content in [sandboxed IFrames](https://web.dev/sandboxed-iframes/).
 
