@@ -2,6 +2,10 @@
 let renderedPreviews = []
 // Check for Google search page (#54)
 const isGoogleSearch = (document.documentElement?.getAttribute('itemtype')?.includes('SearchResultsPage') && window.location.href.includes('google'));
+// Check for Microsoft Teams
+const isMSTeams = (window.location.hostname === 'window.location.hostname');
+// Check for Slack
+const isSlack = (window.location.hostname === 'app.slack.com');
 
 // Video files
 const videoLinks = [
@@ -536,8 +540,8 @@ async function initPeek() {
   };
 };
 
-if (!isGoogleSearch) {
-  initPeek();
-} else {
+if (isGoogleSearch || isMSTeams) {
   console.log('Skipping Peek initialization because this is an invalid page.');
+} else {
+  initPeek();
 }
