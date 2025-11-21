@@ -345,7 +345,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     // Create embed
     let frameEl = document.createElement('iframe');
     frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-    frameEl.src = 'https://' + match.groups.domain + '/@' + match.groups.username + '/' + match.groups.postId + '/embed';
+    frameEl.src = 'https://' + match.groups.domain + '/@' + match.groups.username + '/' + match.groups.postId + '/embed?utm_source=peek_extension';
     popupEl.dataset.windowUrl = frameEl.src;
     // Add frame to tooltip
     popupEl.append(frameEl);
