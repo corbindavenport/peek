@@ -1,5 +1,7 @@
 // Create array for rendered URLs on the page
 let renderedPreviews = []
+// Check for Google search page (#54)
+const isGoogleSearch = (document.documentElement?.getAttribute('itemtype')?.includes('SearchResultsPage') && window.location.href.includes('google'));
 
 // Video files
 const videoLinks = [
@@ -534,4 +536,8 @@ async function initPeek() {
   };
 };
 
-initPeek();
+if (!isGoogleSearch) {
+  initPeek();
+} else {
+  console.log('Skipping Peek initialization because this is an invalid page.');
+}
