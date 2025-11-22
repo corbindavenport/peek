@@ -86,6 +86,7 @@ const webVideoLinks = [
   'a[href^="https://www.youtube.com/embed/"]',
   'a[href^="https://youtube.com/shorts/"]',
   'a[href^="https://www.youtube.com/shorts/"]',
+  'a[href^="https://music.youtube.com/watch?v="]'
 ]
 
 // Reddit links
@@ -130,6 +131,12 @@ const spotifyLinks = [
   'a[href^="https://open.spotify.com/track/"]',
   'a[href^="https://open.spotify.com/episode/"]',
   'a[href^="https://open.spotify.com/album/"]'
+]
+
+// Apple Music and Apple Podcasts links
+const appleMediaLinks = [
+  'a[href^="https://music.apple.com/"]',
+  'a[href^="https://podcasts.apple.com/"]'
 ]
 
 // Allow background.js to check number of rendered previews
@@ -413,7 +420,25 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.dataset.windowUrl = embedUrl.href;
     // Add frame to tooltip
     popupEl.append(frameEl);
-  } else {
+  } else if (previewType === 'apple-media') {
+    // Apple Music or Apple Podcasts link
+    console.log('Found Apple Music link:', realUrl, inputObject);
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    // Convert URL to embed URL
+    let embedUrl = realUrl;
+    if (embedUrl.hostname === 'music.apple.com') {
+      embedUrl.hostname = 'embed.music.apple.com';
+    } else {
+      embedUrl.hostname = 'embed.podcasts.apple.com';
+    }
+    embedUrl.searchParams.set('theme', 'auto');
+    frameEl.src = embedUrl.href;
+    console.log(embedUrl.href)
+    popupEl.dataset.windowUrl = embedUrl.href;
+    // Add frame to tooltip
+    popupEl.append(frameEl);
+  }else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
   // Create toolbar
@@ -458,7 +483,7 @@ async function initPeek() {
   tippy.setDefaultProps({
     arrow: true,
     allowHTML: true,
-    maxWidth: 370,
+    maxWidth: 'none',
     delay: [500, 500],
     interactive: true,
     theme: 'peek-unified'
@@ -539,6 +564,12 @@ async function initPeek() {
   if (!(window.location.hostname === 'open.spotify.com')) {
     document.querySelectorAll(spotifyLinks.toString()).forEach(function (link) {
       initPreview(link, 'spotify', peekSettings);
+    })
+  };
+  // Generate Apple Music link previews, except on Apple Music itself
+  if (!(window.location.hostname === 'music.apple.com')) {
+    document.querySelectorAll(appleMediaLinks.toString()).forEach(function (link) {
+      initPreview(link, 'apple-media', peekSettings);
     })
   };
 };
