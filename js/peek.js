@@ -6,6 +6,8 @@ const isGoogleSearch = (document.documentElement?.getAttribute('itemtype')?.incl
 const isMSTeams = (window.location.hostname === 'window.location.hostname');
 // Check for Slack
 const isSlack = (window.location.hostname === 'app.slack.com');
+// Check for Firefox
+const isFirefox = CSS.supports("(-moz-appearance:none)");
 
 // Video files
 const videoLinks = [
@@ -46,15 +48,16 @@ const docLinks = [
 ]
 
 // Images that can be rendered by the browser
+// Avoids links that contain images, since the link is probably for the same image
 const imgLinks = [
-  'a[href$=".jpeg" i]',
-  'a[href$=".jpg" i]',
-  'a[href$=".png" i]',
-  'a[href$=".apng" i]',
-  'a[href$=".svg" i]',
-  'a[href$=".gif" i]',
-  'a[href$=".ico" i]',
-  'a[href$=".bmp" i]',
+  'a[href$=".jpeg" i]:not(:has(img))',
+  'a[href$=".jpg" i]:not(:has(img))',
+  'a[href$=".png" i]:not(:has(img))',
+  'a[href$=".apng" i]:not(:has(img))',
+  'a[href$=".svg" i]:not(:has(img))',
+  'a[href$=".gif" i]:not(:has(img))',
+  'a[href$=".ico" i]:not(:has(img))',
+  'a[href$=".bmp" i]:not(:has(img))',
 ]
 
 // Google Docs links
@@ -194,7 +197,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     // Set options for viewer if file is a PDF
     // Firefox documentation: https://github.com/mozilla/pdf.js/wiki/Viewer-options
     if (realUrl.href.toLowerCase().endsWith('.pdf')) {
-      if (navigator.userAgent.includes('Firefox')) {
+      if (isFirefox) {
         embedFrame.src += '#zoom=page-width&pagemode=none';
       } else {
         embedFrame.src += '#toolbar=0';
