@@ -8,6 +8,8 @@ const isMSTeams = (window.location.hostname === 'window.location.hostname');
 const isSlack = (window.location.hostname === 'app.slack.com');
 // Check for Firefox
 const isFirefox = CSS.supports("(-moz-appearance:none)");
+// Regular expression for finding video ID from YouTube link: https://regex101.com/r/0Plpyd/1
+const youtubeRegex = /^.*(youtu\.be\/|embed\/|shorts\/|\?v=|\&v=)(?<videoID>[^#\&\?]*).*/;
 
 // Video files
 const videoLinks = [
@@ -270,16 +272,26 @@ function initPreview(inputObject, previewType, peekSettings) {
     console.log('Found YouTube video link:', realUrl, inputObject);
     let popupFrame = document.createElement('iframe');
     popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
-    // Use to find the video ID: https://regex101.com/r/UG8utp/1
-    let regex = /(?:(v?\=)|(youtu.be\/)|(embed\/)|(shorts\/))(?<videoId>.*?)(&|$)/;
-    let videoId = regex.exec(realUrl.href)['groups']['videoId'];
-    popupFrame.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1';
+    var videoId = youtubeRegex.exec(realUrl.href)['groups']['videoID'];
+    // Set up embed URL with playback options
+    // Documentation: https://developers.google.com/youtube/player_parameters
+    let embedUrl = new URL('https://www.youtube.com/embed/' + videoId);
+    embedUrl.searchParams.set('autoplay', '1'); // Enable autoplay
+    embedUrl.searchParams.set('fs', '0'); // Hide fullscreen button
+    embedUrl.searchParams.set('mute', '1'); // Mute video by default
+    // Add timestamp if present in original link
+    if (realUrl.searchParams.has('t')) {
+      embedUrl.searchParams.set('t', realUrl.searchParams.get('t'));
+    }
     // Add custom properties for YouTube Shorts
     if (realUrl.href.includes('shorts')) {
       popupFrame.classList.add('peek-embed-portrait');
-      popupFrame.src += '&loop=1';
+      embedUrl.searchParams.set('loop', '1');
+      embedUrl.searchParams.set('playlist', videoId);
     }
-    popupEl.dataset.windowUrl = popupFrame.src;
+    // Add URL to embed
+    popupFrame.src = embedUrl.href;
+    popupEl.dataset.windowUrl = embedUrl.href;
     // Add video to tooltip
     popupEl.append(popupFrame);
   } else if (previewType === 'reddit') {
