@@ -25,7 +25,7 @@
 			<div class="row">
 				<div class="col-9">
 					<h1 class="display-5 fw-bold">Peek <span class="version"></span> is now installed!</h1>
-					<p>This update adds a pop-out button to previews. It also adds support for Facebook, Instagram, Mastodon, and Threads post links, as well as Spotify links. Check out the <a href="https://github.com/corbindavenport/peek/releases/latest" target="_blank">full changelog</a>!</p>
+					<p>This update adds support for Apple Music and Apple Podcasts links, improves YouTube and Mastodon previews, and fixes some bugs. Check out the <a href="https://github.com/corbindavenport/peek/releases/latest" target="_blank">full changelog</a>!</p>
 				</div>
 			</div>
 		</div>
@@ -39,10 +39,11 @@
 					<div class="card-body">
 						<h5 class="card-title">You may need to update permissions</h5>
 						<p class="card-text">Firefox may block Peek from running on a page until you click the Peek button in the toolbar. You can fix this by going to your add-ons list (<b>about:addons</b>) > Peek > Permissions tab > Access your data for all websites.</p>
+						<p class="card-text">Firefox might also block previews for Reddit, Facebook, and other sites when <a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" target="_blank">Enhanced Tracking Protection</a> is enabled.</p>
 					</div>
 				</div>
 				<h2>How to use Peek</h2>
-				<p>Peek shows previews for documents, media files, social media posts, and other supported links. Just hover your mouse over a link to a file, and the preview will appear. Try the <a href="https://www.bing.com/search?q=sample+filetype%3Apptx+inurl%3Ahttps" target="_blank">search results demo</a> and hover over some results. The <a href="settings.html" target="_blank">Peek settings</a> allows you to change some options, like the viewer for documents.</p>
+				<p>Peek shows previews for documents, media files, social media posts, and other supported links. Just hover your mouse over a link to a file, and the preview will appear. Try the <a href="https://lite.duckduckgo.com/lite/?q=sample+filetype%3Apdf+inurl%3Ahttps" target="_blank">search results demo</a> and hover over some results. The <a href="settings.html" target="_blank">Peek settings</a> allows you to change some options, like the viewer for documents.</p>
 				<p><b>Supported file types:</b></p>
 				<ul>
 					<li>PDF, TXT, and RTF documents</li>
@@ -66,12 +67,17 @@
 					<li>Facebook posts</li>
 					<li>Instagram posts and reels</li>
 					<li>Threads posts</li>
-					<li>Spotify tracks, albums, and podcast episodes</li>
+					<li>Spotify tracks, albums, podcast shows, and podcast episodes</li>
+					<li>Apple Music tracks and albums</li>
+					<li>Apple Podcasts shows and episodes</li>
 				</ul>
 			</div>
 			<div class="col-md-4">
 				<h2>Donate</h2>
 				<p>If you find Peek useful, please donate to support continued development. It would mean a lot!</p>
+				<a href="https://www.patreon.com/corbindavenport" target="_blank">
+					<button type="button" class="btn btn-success w-100 mb-3">Support via Patreon</button>
+				</a>
 				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4SZVSMJKDS35J&lc=US&item_name=Peek%20Donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">
 					<button type="button" class="btn btn-success w-100 mb-3">Donate via PayPal</button>
 				</a>

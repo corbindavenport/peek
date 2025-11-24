@@ -1,0 +1,5 @@
+/* Fix scrollbar on Mastodon embeds */
+
+body.embed {
+    overflow: auto !important;
+}

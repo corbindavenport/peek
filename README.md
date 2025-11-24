@@ -10,7 +10,7 @@ Peek can show previews for PDFs, Microsoft Office documents, YouTube video links
 
 **[Download for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/dgpocgoebbbfmliabbfhobcmphodhdaf)**
 
-![Screenshot of extension in Google Chrome](https://i.imgur.com/YJIFCPc.png)
+![Screenshot of extension in Microsoft Edge](screen.png)
 
 # Supported file types and links
 
@@ -37,4 +37,6 @@ Peek can show previews for PDFs, Microsoft Office documents, YouTube video links
 - Facebook posts
 - Instagram posts and reels
 - Threads posts
-- Spotify tracks, albums, and podcast episodes
+- Spotify tracks, albums, podcast shows, and podcast episodes
+- Apple Music tracks and albums
+- Apple Podcasts shows and episodes

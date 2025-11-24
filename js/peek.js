@@ -1,5 +1,15 @@
 // Create array for rendered URLs on the page
 let renderedPreviews = []
+// Check for Google search page (#54)
+const isGoogleSearch = (document.documentElement?.getAttribute('itemtype')?.includes('SearchResultsPage') && window.location.href.includes('google'));
+// Check for Microsoft Teams
+const isMSTeams = (window.location.hostname === 'window.location.hostname');
+// Check for Slack
+const isSlack = (window.location.hostname === 'app.slack.com');
+// Check for Firefox
+const isFirefox = CSS.supports("(-moz-appearance:none)");
+// Regular expression for finding video ID from YouTube link: https://regex101.com/r/0Plpyd/1
+const youtubeRegex = /^.*(youtu\.be\/|embed\/|shorts\/|\?v=|\&v=)(?<videoID>[^#\&\?]*).*/;
 
 // Video files
 const videoLinks = [
@@ -40,15 +50,16 @@ const docLinks = [
 ]
 
 // Images that can be rendered by the browser
+// Avoids links that contain images, since the link is probably for the same image
 const imgLinks = [
-  'a[href$=".jpeg" i]',
-  'a[href$=".jpg" i]',
-  'a[href$=".png" i]',
-  'a[href$=".apng" i]',
-  'a[href$=".svg" i]',
-  'a[href$=".gif" i]',
-  'a[href$=".ico" i]',
-  'a[href$=".bmp" i]',
+  'a[href$=".jpeg" i]:not(:has(img))',
+  'a[href$=".jpg" i]:not(:has(img))',
+  'a[href$=".png" i]:not(:has(img))',
+  'a[href$=".apng" i]:not(:has(img))',
+  'a[href$=".svg" i]:not(:has(img))',
+  'a[href$=".gif" i]:not(:has(img))',
+  'a[href$=".ico" i]:not(:has(img))',
+  'a[href$=".bmp" i]:not(:has(img))',
 ]
 
 // Google Docs links
@@ -77,6 +88,7 @@ const webVideoLinks = [
   'a[href^="https://www.youtube.com/embed/"]',
   'a[href^="https://youtube.com/shorts/"]',
   'a[href^="https://www.youtube.com/shorts/"]',
+  'a[href^="https://music.youtube.com/watch?v="]'
 ]
 
 // Reddit links
@@ -119,8 +131,15 @@ const threadsLinks = [
 // Spotify links
 const spotifyLinks = [
   'a[href^="https://open.spotify.com/track/"]',
+  'a[href^="https://open.spotify.com/album/"]',
   'a[href^="https://open.spotify.com/episode/"]',
-  'a[href^="https://open.spotify.com/album/"]'
+  'a[href^="https://open.spotify.com/show/"]',
+]
+
+// Apple Music and Apple Podcasts links
+const appleMediaLinks = [
+  'a[href^="https://music.apple.com/"]',
+  'a[href^="https://podcasts.apple.com/"]'
 ]
 
 // Allow background.js to check number of rendered previews
@@ -188,7 +207,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     // Set options for viewer if file is a PDF
     // Firefox documentation: https://github.com/mozilla/pdf.js/wiki/Viewer-options
     if (realUrl.href.toLowerCase().endsWith('.pdf')) {
-      if (navigator.userAgent.includes('Firefox')) {
+      if (isFirefox) {
         embedFrame.src += '#zoom=page-width&pagemode=none';
       } else {
         embedFrame.src += '#toolbar=0';
@@ -253,16 +272,26 @@ function initPreview(inputObject, previewType, peekSettings) {
     console.log('Found YouTube video link:', realUrl, inputObject);
     let popupFrame = document.createElement('iframe');
     popupFrame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
-    // Use to find the video ID: https://regex101.com/r/UG8utp/1
-    let regex = /(?:(v?\=)|(youtu.be\/)|(embed\/)|(shorts\/))(?<videoId>.*?)(&|$)/;
-    let videoId = regex.exec(realUrl.href)['groups']['videoId'];
-    popupFrame.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&fs=0&modestbranding=1';
+    var videoId = youtubeRegex.exec(realUrl.href)['groups']['videoID'];
+    // Set up embed URL with playback options
+    // Documentation: https://developers.google.com/youtube/player_parameters
+    let embedUrl = new URL('https://www.youtube.com/embed/' + videoId);
+    embedUrl.searchParams.set('autoplay', '1'); // Enable autoplay
+    embedUrl.searchParams.set('fs', '0'); // Hide fullscreen button
+    embedUrl.searchParams.set('mute', '1'); // Mute video by default
+    // Add timestamp if present in original link
+    if (realUrl.searchParams.has('t')) {
+      embedUrl.searchParams.set('start', realUrl.searchParams.get('t'));
+    }
     // Add custom properties for YouTube Shorts
     if (realUrl.href.includes('shorts')) {
       popupFrame.classList.add('peek-embed-portrait');
-      popupFrame.src += '&loop=1';
+      embedUrl.searchParams.set('loop', '1');
+      embedUrl.searchParams.set('playlist', videoId);
     }
-    popupEl.dataset.windowUrl = popupFrame.src;
+    // Add URL to embed
+    popupFrame.src = embedUrl.href;
+    popupEl.dataset.windowUrl = embedUrl.href;
     // Add video to tooltip
     popupEl.append(popupFrame);
   } else if (previewType === 'reddit') {
@@ -339,7 +368,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     // Create embed
     let frameEl = document.createElement('iframe');
     frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-    frameEl.src = 'https://' + match.groups.domain + '/@' + match.groups.username + '/' + match.groups.postId + '/embed';
+    frameEl.src = 'https://' + match.groups.domain + '/@' + match.groups.username + '/' + match.groups.postId + '/embed?utm_source=peek_extension';
     popupEl.dataset.windowUrl = frameEl.src;
     // Add frame to tooltip
     popupEl.append(frameEl);
@@ -404,7 +433,25 @@ function initPreview(inputObject, previewType, peekSettings) {
     popupEl.dataset.windowUrl = embedUrl.href;
     // Add frame to tooltip
     popupEl.append(frameEl);
-  } else {
+  } else if (previewType === 'apple-media') {
+    // Apple Music or Apple Podcasts link
+    console.log('Found Apple Music link:', realUrl, inputObject);
+    let frameEl = document.createElement('iframe');
+    frameEl.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    // Convert URL to embed URL
+    let embedUrl = realUrl;
+    if (embedUrl.hostname === 'music.apple.com') {
+      embedUrl.hostname = 'embed.music.apple.com';
+    } else {
+      embedUrl.hostname = 'embed.podcasts.apple.com';
+    }
+    embedUrl.searchParams.set('theme', 'auto');
+    frameEl.src = embedUrl.href;
+    console.log(embedUrl.href)
+    popupEl.dataset.windowUrl = embedUrl.href;
+    // Add frame to tooltip
+    popupEl.append(frameEl);
+  }else {
     popupEl.innerText = 'There was an error rendering this preview.';
   }
   // Create toolbar
@@ -449,7 +496,7 @@ async function initPeek() {
   tippy.setDefaultProps({
     arrow: true,
     allowHTML: true,
-    maxWidth: 370,
+    maxWidth: 'none',
     delay: [500, 500],
     interactive: true,
     theme: 'peek-unified'
@@ -532,6 +579,16 @@ async function initPeek() {
       initPreview(link, 'spotify', peekSettings);
     })
   };
+  // Generate Apple Music link previews, except on Apple Music itself
+  if (!(window.location.hostname === 'music.apple.com')) {
+    document.querySelectorAll(appleMediaLinks.toString()).forEach(function (link) {
+      initPreview(link, 'apple-media', peekSettings);
+    })
+  };
 };
 
-initPeek();
+if (isGoogleSearch || isMSTeams) {
+  console.log('Skipping Peek initialization because this is an invalid page.');
+} else {
+  initPeek();
+}
