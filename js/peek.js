@@ -129,8 +129,9 @@ const threadsLinks = [
 // Spotify links
 const spotifyLinks = [
   'a[href^="https://open.spotify.com/track/"]',
+  'a[href^="https://open.spotify.com/album/"]',
   'a[href^="https://open.spotify.com/episode/"]',
-  'a[href^="https://open.spotify.com/album/"]'
+  'a[href^="https://open.spotify.com/show/"]',
 ]
 
 // Apple Music and Apple Podcasts links

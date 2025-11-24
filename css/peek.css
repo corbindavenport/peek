@@ -75,7 +75,10 @@
     width: 350px !important;
 }
 
-.tippy-box[data-theme="peek-unified"] div[data-peek-type="spotify"] iframe,
+/* Shorter height embed for songs, podcast episodes, and podcast shows on Spotify, and songs and episodes and Apple Music */
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="spotify"][data-window-url*="/episode/"] iframe,
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="spotify"][data-window-url*="/show/"] iframe,
+.tippy-box[data-theme="peek-unified"] div[data-peek-type="spotify"][data-window-url*="/track/"] iframe,
 .tippy-box[data-theme="peek-unified"] div[data-peek-type="apple-media"][data-window-url*="i="] iframe {
     width: 350px !important;
     height: 152px !important;
