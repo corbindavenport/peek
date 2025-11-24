@@ -65,7 +65,7 @@
 			"css": [
 				"css/peek.css"
 			],
-			"run_at": "document_end"
+			"run_at": "document_idle"
 		},
 		{
 			"matches": [
