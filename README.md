@@ -37,4 +37,6 @@ Peek can show previews for PDFs, Microsoft Office documents, YouTube video links
 - Facebook posts
 - Instagram posts and reels
 - Threads posts
-- Spotify tracks, albums, and podcast episodes
+- Spotify tracks, albums, podcast shows, and podcast episodes
+- Apple Music tracks and albums
+- Apple Podcasts shows and episodes

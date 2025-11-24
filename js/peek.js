@@ -281,7 +281,7 @@ function initPreview(inputObject, previewType, peekSettings) {
     embedUrl.searchParams.set('mute', '1'); // Mute video by default
     // Add timestamp if present in original link
     if (realUrl.searchParams.has('t')) {
-      embedUrl.searchParams.set('t', realUrl.searchParams.get('t'));
+      embedUrl.searchParams.set('start', realUrl.searchParams.get('t'));
     }
     // Add custom properties for YouTube Shorts
     if (realUrl.href.includes('shorts')) {
