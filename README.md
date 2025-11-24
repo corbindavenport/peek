@@ -10,7 +10,7 @@ Peek can show previews for PDFs, Microsoft Office documents, YouTube video links
 
 **[Download for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/dgpocgoebbbfmliabbfhobcmphodhdaf)**
 
-![Screenshot of extension in Google Chrome](https://i.imgur.com/YJIFCPc.png)
+![Screenshot of extension in Microsoft Edge](screen.png)
 
 # Supported file types and links
 
